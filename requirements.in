@@ -1,0 +1,12 @@
+# GN - SLA April 2021
+# From 'pip freeze' on STG site
+Django==1.5.4
+Mezzanine==1.4.7
+psycopg2-binary<3
+elasticsearch==1.6.0
+sorl-thumbnail==12.3
+django-haystack==2.4.0
+django-modeltranslation==0.8
+django-grappelli==2.4.5
+# Required by filebrowser < Mezzanine
+future==0.14.3
