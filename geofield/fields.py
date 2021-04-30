@@ -19,7 +19,6 @@ class GeocodePointField(PointField):
 
     # Define a geocoder for the point using GeoNames
 
-from south.modelsinspector import add_introspection_rules
-add_introspection_rules([], ["^geofield\.fields\.GeocodePointField"])
-    
-    
+# GN - TODO
+# from south.modelsinspector import add_introspection_rules
+# add_introspection_rules([], ["^geofield\.fields\.GeocodePointField"])
