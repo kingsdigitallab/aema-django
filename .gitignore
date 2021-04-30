@@ -27,3 +27,4 @@ local_settings.py
 /fabfile.py
 .svn
 /apache
+freeze*.txt
