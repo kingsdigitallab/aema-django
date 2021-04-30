@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html class="no-js" lang="{{ LANGUAGE_CODE }}"{% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
+{% load pages_tags mezzanine_tags i18n future staticfiles %}
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  {% block metatitle %}
+  <title>Atlantic Europe in the Metal Ages</title>
+  {% endblock %}
+  <meta name="description" content="Atlantic Europe in the Metal Ages explores the development of language in Atlantic Europe (Britain, Ireland, northwest France, western Iberia) from 2900BC to the arrival of Latin (AD 400).">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/stylesheets/app.css' %}">
+  <!-- FontAwesome -->
+  <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}">
+  <script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
+  <!-- Typekit fonts -->
+  <script type="text/javascript" src="//use.typekit.net/cfi1aga.js"></script>
+  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+  <script>var neil = 'test'</script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-68574412-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+
+  {% block extra_head %}
+  {% endblock %}
+
+  <script src="{% static 'bower_components/modernizr/modernizr.js' %}"></script>
+</head>
+<body id="{% block body_id %}body{% endblock %}">
+<div class="beta"></div>
+
+<header>
+  <div class="row header">
+    <div class="large-3 columns">
+      <a href="/"><img src="/static/img/header.png" title="AEMA" alt="AEMA"></a>
+    </div>
+    <div class="large-9 columns">
+      {% if LANGUAGE_CODE == 'en' %}
+      <h1 class="site-title"><a href="/">Atlantic Europe in the Metal Ages</a></h1></br>
+      {% elif LANGUAGE_CODE == 'es' %}
+      <h1 class="site-title"><a href="/">Europa Atlántica en la edad de los metales</a></h21</br>
+      {% else %}
+      <h1 class="site-title"><a href="/">Ewrop Môr Iwerydd yn Oesoedd y Metelau</a></h1></br>
+      {% endif %}
+    </div>
+  </div>
+</header>
+
+
+{% block headnav %}	
+{% page_menu "pages/menus/headnav.html" %}
+{% endblock %}
+
+
+{% block content %}
+
+
+
+{% endblock%}	
+	
+{% block footer %}	
+<footer>
+  <div class="row footer">
+    <div class="large-12 columns">
+      <p>{% now "Y" %} &copy; Atlantic Europe in the Metal Ages - Design by <a href="http://www.kcl.ac.uk/artshums/depts/ddh/" title="www.kcl.ac.uk/artshums/depts/ddh/">DDH King's College London</a></p>
+      <img style="max-width:120px;" src="/static/img/KCL-KDL-logo-white.svg">
+      <img style="max-width:400px;" src="/static/img/university_of_wales_logo.png">
+    </div>
+  </div>
+</footer>
+{% endblock %}
+
+<script src="{% static 'bower_components/foundation/js/foundation.min.js' %}"></script>
+<script src="{% static 'js/app.js' %}"></script>
+
+{% block extra_footer %}
+{% endblock %}
+
+<script defer="defer" src="https://kdl.kcl.ac.uk/sla-acpp/js/sla.js" type="text/javascript"></script>
+
+</body>
+</html>

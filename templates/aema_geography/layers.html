@@ -1,0 +1,457 @@
+{% regroup layers by category.short_description as layers_grouped %}
+
+<h4>Additional data layers</h4>
+<p><i class="fa fa-warning"></i> <em>NB. Loading many layers may cause the map to become sluggish and unresponsive.</em></p>
+
+<dl class="accordion" data-accordion>  
+  <dd class="accordion-navigation">
+    <a href="#layer-panel1">Metallurgy</a>
+    <div id="layer-panel1" class="content">
+    	<input id="metal-clear" type="submit" class="geojson-layer-clear button radius less-padding right" value="Clear">
+
+		<form id="metallurgy-form">
+			<ul class="small-block-grid-2 large-block-grid-4">
+				<li>
+					<label for="as-tol">As tolerance</label>
+					<input id="as-tol" type="text" placeholder="0.1" value="0.1">
+				</li>
+				<li>
+					<label for="sb-tol">Sb tolerance</label>
+					<input id="sb-tol" type="text" placeholder="0.1" value="0.1">
+				</li>
+				<li>
+					<label for="ag-tol">Ag tolerance</label>
+					<input id="ag-tol" type="text" placeholder="0.1" value="0.1">
+				</li>
+				<li>
+					<label for="ni-tol">Ni tolerance</label>
+					<input id="ni-tol" type="text" placeholder="0.1" value="0.1">
+				</li>
+			</ul>
+			<ul class="small-block-grid-2 large-block-grid-4">
+				<li>
+					<label>Sn tolerance</label>
+					<input id="sn-tol" type="text" placeholder="1" value="1">
+				</li>
+				<li>
+					<label>Pb tolerance</label>
+					<input id="pb-tol" type="text" placeholder="1" value="1">
+				</li>
+				<li>
+					<label>Zn tolerance</label>
+					<input id="zn-tol" type="text" placeholder="1" value="1">
+				</li>
+			</ul>
+			<ul class="large-block-grid-2">
+				<li>
+					<label>Grid size (degrees)</label>
+					<input id="gridsize" type="text" placeholder="2" value="2">
+				</li>
+				<li>
+					<label>Or choose a hexagonal output grid (this may take minutes to return a result):</label>
+	                <input name="hex" type="radio" value="100"> <lable>100km</lable>
+					<input name="hex" type="radio" value="250"> <lable>250km</lable>
+					<input name="hex" type="radio" value="500"> <lable>500km</lable>
+					<input name="hex" type="radio" value="1000"> <lable>1000km</lable>     
+				</li>						
+			</ul>
+			<input id="metal-submit" type="submit" onsumbit="return false;" onclick="return false;" class="button radius right" value="Submit">
+		</form>
+    </div>
+  </dd>
+</dl>
+
+{% for desc in layers_grouped %}
+<dl class="accordion" data-accordion>
+  <dd class="accordion-navigation">
+    <a href="#layer-panel{{ forloop.counter|add:"1" }}">{{ desc.grouper }}&nbsp;<span class="layer-{{ desc.list.0.category.major_category.description|lower }}"></span></a>
+    <div id="layer-panel{{ forloop.counter|add:"1" }}" class="content">
+		<ul class="inline-list">
+		    {% for item in desc.list %}
+		    <li>
+		    	<label for="{{ item.short_description|lower }}"><div role="button" class="button tiny radius">{{ item }}&nbsp;&nbsp;<input type="checkbox" id="{{ item.short_description|lower }}" class="geojson-layer-select" data-category="{{ item.category.major_category.description|lower }}" data-verbose-name="{{ item.friendly_description }}" data-src="{{ item.file_path }}" value="{{ item }}"></input></div></label>
+		    </li>
+		    {% endfor %}
+        </ul>
+    </div>
+  </dd>
+</dl>
+{% endfor %}
+<a class="close-reveal-modal">&#215;</a>
+
+<script>
+	$(document).foundation();
+
+	$('#gridsize').on('input',function(){
+	        $('input[name=hex]:checked', '#metallurgy-form').attr('checked',false);
+	    }
+	);
+
+	copperGroupColours = [
+	"#C1A4FF", "#BCFF90", "#FFE590", "#7403FF", "#3264FF", "#FF9989", "#8FFF05", "#02FFB6", "#FF9709", "#FFC104", "#02C2FF", "#01FF20", "#80FFFD", "#FFEC02", "#FF03D0", "#FF2F03" ]
+
+	alloyGroupColours = [
+	"#C1A4FF", "#BCFF90", "#FFE590", "#7403FF", "#3264FF", "#FF9989", "#8FFF05", "#02FFB6"]
+
+	function findCopperGroupFill(feature){
+		switch (findDominantCopperGroup(feature)){
+			case('cu_1_pc') : return copperGroupColours[0];
+			case('cu_2_pc') : return copperGroupColours[1];
+			case('cu_3_pc') : return copperGroupColours[2];
+			case('cu_4_pc') : return copperGroupColours[3];
+			case('cu_5_pc') : return copperGroupColours[4];
+			case('cu_6_pc') : return copperGroupColours[5];
+			case('cu_7_pc') : return copperGroupColours[6];
+			case('cu_8_pc') : return copperGroupColours[7];
+			case('cu_9_pc') : return copperGroupColours[8];
+			case('cu_10_pc') : return copperGroupColours[9];
+			case('cu_11_pc') : return copperGroupColours[10];
+			case('cu_12_pc') : return copperGroupColours[11];
+			case('cu_13_pc') : return copperGroupColours[12];
+			case('cu_14_pc') : return copperGroupColours[13];
+			case('cu_15_pc') : return copperGroupColours[14];
+			case('cu_16_pc') : return copperGroupColours[15];
+		}
+	}
+
+	function findAlloyGroupFill(feature){
+		switch (findDominantAlloyGroup(feature)){
+			case('al_1_pc') : return alloyGroupColours[0];
+			case('al_2_pc') : return alloyGroupColours[1];
+			case('al_3_pc') : return alloyGroupColours[2];
+			case('al_4_pc') : return alloyGroupColours[3];
+			case('al_5_pc') : return alloyGroupColours[4];
+			case('al_6_pc') : return alloyGroupColours[5];
+			case('al_7_pc') : return alloyGroupColours[6];
+			case('al_8_pc') : return alloyGroupColours[7];
+		}
+	}
+
+	function findDominantCopperGroup(geojsonFeature){
+		var ret = '';
+		var pc = 0;
+		for (k in geojsonFeature.properties){
+			if ( k.indexOf('_pc')!=-1 && k.indexOf('cu')!=-1){
+				if (geojsonFeature.properties[k]>pc){
+					pc = geojsonFeature.properties[k]
+					ret = k;
+				}
+			}
+		}    
+		return ret;
+	};
+
+	function findDominantAlloyGroup(geojsonFeature){
+		var ret = '';
+		var pc = 0;
+		for (k in geojsonFeature.properties){
+			if ( k.indexOf('_pc')!=-1 && k.indexOf('al')!=-1){
+				if (geojsonFeature.properties[k]>pc){
+					pc = geojsonFeature.properties[k]
+					ret = k;
+				}
+			}
+		}    
+		return ret;
+	};
+
+	function getPieChartData(layer){
+		var data = []
+	    for (k in layer.feature.properties){
+			if (k.indexOf('pc')!=-1 && layer.feature.properties[k] > 0 && k.indexOf('cu_')!=-1){	
+				data.push([ k.replace(/_/g, ' ').replace(' pc','').replace('c','C')  ,layer.feature.properties[k]])
+			}
+		}
+		return data;
+	}
+
+	function getHistogramData(layer){
+		var data = []
+	    for (k in layer.feature.properties){
+			if (k.indexOf('pc')!=-1 && layer.feature.properties[k] > 0 && k.indexOf('cu_')!=-1){	
+				data.push([ k.replace(/_/g, ' ').replace(' pc','').replace('cu','Copper')  ,layer.feature.properties[k]])
+			}
+		}
+		return data;
+	}
+
+	function getAlloyPieChartData(layer){
+		var data = []
+	    for (k in layer.feature.properties){
+			if (k.indexOf('pc')!=-1 && layer.feature.properties[k] > 0 && k.indexOf('al_')!=-1){	
+				data.push([ k.replace(/_/g, ' ').replace(' pc','').replace('al','Alloy')  ,layer.feature.properties[k]])
+			}
+		}
+		return data;
+	}
+
+	function onEachFeatureCopper(feature, layer) {
+	    var popupContent = 
+		'<div>' +
+			'<div class="row"><strong>Total finds - ' + feature.properties.count + '</strong> ID for debugging:'+ feature.properties.unique_id +'</div>' +
+				'<div class="row">' +
+					'<div class="columns large-6"><strong>Dominant copper</strong> - ' + findDominantCopperGroup(feature).replace(/_/g,' ').replace('pc','').replace('cu','Copper') + 
+					'</div>' +	
+					'<div class="columns large-4"><strong>Dominant alloy</strong> - ' + findDominantAlloyGroup(feature).replace(/_/g,' ').replace('pc','').replace('al','Alloy') + 
+					'</div>' +		
+				'</div>' +		
+				'<div class="row">' +	
+					'<div class="columns large-6" id="metal-chart-' + feature.properties.unique_id + '"></div>' +		
+					'<div class="columns large-4" id="alloy-chart-' + feature.properties.unique_id + '"></div>' + 
+				'</div>' +
+				'<div class="row">' +	
+					'<div class="columns large-4" id="sn-chart-' + feature.properties.unique_id + '">Sn distribution</div>' +		
+					'<div class="columns large-4" id="pb-chart-' + feature.properties.unique_id + '">Pb distribution</div>' + 
+					'<div class="columns large-4" id="zn-chart-' + feature.properties.unique_id + '">Zn distribution</div>' + 
+				'</div>' +				
+			'</div>' +
+		'</div>'
+		
+	    layer.bindPopup(popupContent,{ minWidth:parseInt(parseInt($('#map').css('width').replace('px',''))*0.8) }).on('click', function(){
+		
+			var chart = c3.generate({
+			bindto: '#metal-chart-' + feature.properties.unique_id,
+			data: {
+				columns: getPieChartData(this),
+				type:'pie'
+			}		
+			});
+			
+			var alloyChart = c3.generate({
+			bindto: '#alloy-chart-' + feature.properties.unique_id,
+			data: {
+				columns: getAlloyPieChartData(this),
+				type:'pie'
+			}		
+			});
+			
+			// Generate a histogram using twenty uniformly-spaced bins.
+			
+		        var margin = {top: 1, right: 1, bottom: 20, left: 1},
+				//width = 150 //- margin.left - margin.right,
+				width = parseInt(parseInt($('#map').css('width').replace('px',''))*0.75/3)
+				height = 60 //- margin.top - margin.bottom;
+
+			var x = d3.scale.linear()
+				//.domain([0, 1])
+				//.domain([0, _.max(feature.properties.sn)])
+				.domain([0, getMax(feature.properties.sn)])
+				.range([0, width]);
+				
+			var data = d3.layout.histogram()
+				.bins(x.ticks(10))
+				(feature.properties.sn);	
+			var y = d3.scale.linear()
+				.domain([0, d3.max(data, function(d) { return d.y; })])
+				.range([height, 10]);
+			var xAxis = d3.svg.axis()
+				//.scale(_.max(feature.properties.sn))
+				.scale(x)
+				.orient("bottom");			
+			var svg = d3.select('#sn-chart-' + feature.properties.unique_id ).append("svg")
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.top + margin.bottom)
+			.append("g")
+			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+			var bar = svg.selectAll(".bar")
+			.data(data)
+			.enter().append("g")
+			.attr("class", "bar")
+			.attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
+			bar.append("rect")
+			.attr("x", 1)
+			.attr("width", x(data[0].dx) - 1)
+			.attr("height", function(d) { return height - y(d.y); });
+			//bar.append("text")
+			//.attr("dy", ".75em")
+			//.attr("y", 6)
+			//.attr("x", x(data[0].dx) / 2)
+			//.attr("text-anchor", "middle")
+			//.text(function(d) { return formatCount(d.y); });
+			svg.append("g")
+			.attr("class", "x axis")
+			.attr("transform", "translate(0," + height + ")")
+			.call(xAxis);	
+
+				var x = d3.scale.linear()
+				//.domain([0, 1])
+				//.domain([0, _.max(feature.properties.pb)])
+				.domain([0, getMax(feature.properties.pb)])
+				.range([0, width]);
+				
+			var data = d3.layout.histogram()
+				.bins(x.ticks(10))
+				(feature.properties.pb);	
+			var y = d3.scale.linear()
+				.domain([0, d3.max(data, function(d) { return d.y; })])
+				.range([height, 10]);
+			var xAxis = d3.svg.axis()
+				.scale(x)
+				.orient("bottom");			
+			var svg = d3.select('#pb-chart-' + feature.properties.unique_id ).append("svg")
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.top + margin.bottom)
+			.append("g")
+			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+			var bar = svg.selectAll(".bar")
+			.data(data)
+			.enter().append("g")
+			.attr("class", "bar")
+			.attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
+			bar.append("rect")
+			.attr("x", 1)
+			.attr("width", x(data[0].dx) - 1)
+			.attr("height", function(d) { return height - y(d.y); });
+			//bar.append("text")
+			//.attr("dy", ".3em")
+			//.attr("y", 2)
+			//.attr("x", x(data[0].dx) / 2)
+			//.attr("text-anchor", "middle")
+			//.text(function(d) { return formatCount(d.y); });
+			svg.append("g")
+			.attr("class", "x axis")
+			.attr("transform", "translate(0," + height + ")")
+			.call(xAxis);
+
+				var x = d3.scale.linear()
+				//.domain([0, 1])
+				//.domain([0, _.max(feature.properties.zn)])
+				.domain([0, getMax(feature.properties.zn)])
+				.range([0, width]);	
+			
+			var data = d3.layout.histogram()
+				.bins(x.ticks(10))
+				(feature.properties.zn);	
+			var y = d3.scale.linear()
+				.domain([0, d3.max(data, function(d) { return d.y; })])
+				.range([height, 10]);
+			var xAxis = d3.svg.axis()
+				.scale(x)
+				.orient("bottom");			
+			var svg = d3.select('#zn-chart-' + feature.properties.unique_id ).append("svg")
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.top + margin.bottom)
+			.append("g")
+			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+			var bar = svg.selectAll(".bar")
+			.data(data)
+			.enter().append("g")
+			.attr("class", "bar")
+			.attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
+			bar.append("rect")
+			.attr("x", 1)
+			.attr("width", x(data[0].dx) - 1)
+			.attr("height", function(d) { return height - y(d.y); });
+			//bar.append("text")
+			//.attr("dy", ".75em")
+			//.attr("y", 6)
+			//.attr("x", x(data[0].dx) / 2)
+			//.attr("text-anchor", "middle")
+			//.text(function(d) { return formatCount(d.y); });
+			svg.append("g")
+			.attr("class", "x axis")
+			.attr("transform", "translate(0," + height + ")")
+			.call(xAxis);		
+		});
+
+		layer.on('mouseover',function(){
+			layer.setStyle({color:'#FF0000','weight': 1});
+		});
+		layer.on('mouseout',function(){
+			layer.setStyle({color:'#000000','weight': 0.2});
+		});	
+	}
+
+	var metalGeoJson = new L.geoJson([],{style: function(feature) {
+				switch (true) {
+					case ( feature.properties.count < 10 ) : return {'fillOpacity':0.4,'opacity':1,'stroke':'#000000','weight': 0.1,'fillColor': findCopperGroupFill(feature)};
+					case ( feature.properties.count == 10 ) : return {'fillOpacity':0.6,'opacity':1,'stroke':'#000000','weight': 0.2, 'fillColor': findCopperGroupFill(feature)};
+					case ( feature.properties.count > 10 ) : return {'fillOpacity':0.9,'opacity':1,'stroke':'#000000','weight': 0.5, 'fillColor': findCopperGroupFill(feature)};
+				}
+	    },onEachFeature: onEachFeatureCopper
+	});
+
+	var neil;
+
+	$('#metal-submit').on('click',function(){
+	            
+	            var hex = $('input[name=hex]:checked', '#metallurgy-form').val()
+
+	            if (typeof hex !== "undefined"){ 
+	                $.ajax('/metallurgy/metallurgy_geojson/?astol='+ $('#as-tol').val() +'&sbtol='+ $('#as-tol').val() + 
+						'&agtol='+ $('#ag-tol').val() + '&nitol=' + $('#ni-tol').val() + 
+						'&sntol='+ $('#sn-tol').val() + '&pbtol=' + $('#pb-tol').val() + '&zntol=' + $('#zn-tol').val() + 
+	                    '&hexGrid=' + hex.toString()
+					,{
+						success:function(data){
+							metalGeoJson.clearLayers();
+							metalGeoJson.addData(data);
+							neil = data;
+							metalGeoJson.addTo(resultMap);
+							$('.spinner').addClass('inactive').removeClass('active');
+							$('.columns.large-3').removeClass('waiting');						
+						},
+						beforeSend: function(){
+							$('.spinner').addClass('active').removeClass('inactive');
+							$('.columns.large-3').addClass('waiting');
+						}						
+					})
+	            }
+	            else {
+	           
+	                $.ajax('/metallurgy/metallurgy_geojson/?astol='+ $('#as-tol').val() +'&sbtol='+ $('#as-tol').val() + 
+						'&agtol='+ $('#ag-tol').val() + '&nitol=' + $('#ni-tol').val() + 
+						'&sntol='+ $('#sn-tol').val() + '&pbtol=' + $('#pb-tol').val() + '&zntol=' + $('#zn-tol').val() + 
+	                    '&gridsize=' + $('#gridsize').val()
+					,{
+						success:function(data){
+							metalGeoJson.clearLayers();
+							metalGeoJson.addData(data);
+							neil = data;
+							metalGeoJson.addTo(resultMap);
+							$('.spinner').addClass('inactive').removeClass('active');
+							$('.columns.large-3').removeClass('waiting');						
+						},
+						beforeSend: function(){
+							$('.spinner').addClass('active').removeClass('inactive');
+							$('.columns.large-3').addClass('waiting');
+						}						
+					})
+	            }	
+	});
+
+	$('#metal-clear').on('click',function(){
+		metalGeoJson.clearLayers();
+		resultMap.removeLayer(metalGeoJson);
+	})
+
+	function getGeoJsonCentre(obj){
+		var cx = obj.getBounds()._southWest.lng + ((obj.getBounds()._northEast.lng  - obj.getBounds()._southWest.lng)/2);
+		var cy = obj.getBounds()._southWest.lat + ((obj.getBounds()._northEast.lat  - obj.getBounds()._southWest.lat)/2);
+		return [cy,cx]	
+	};
+
+	// D3 stuff
+
+	var formatCount = d3.format(",.0f");
+
+	function debugCharts(int){
+
+	ret = []
+
+	for (i in neil){
+	  if (neil[i].properties['unique_id'] == int){
+	     return neil[i];
+	  } 
+		}
+	}
+
+	function getMax(arr){
+		if (_.max(arr)>0){
+			return _.max(arr)
+		}
+		else {
+			return 1
+		}
+	}
+</script>

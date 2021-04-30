@@ -1,0 +1,778 @@
+// Text dictionary of translations
+
+// Add a new "icontains"" selector
+
+$.expr[':'].icontains = function(a, i, m) { 
+  return jQuery(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0; 
+};
+
+
+// For h3 and h4 content
+
+spanishHeader3Dict = {
+    'Burials':'Enterramientos','Buried individuals':'Individuos Enterrados','Individuals':'Individuos','Pots':'Cerámicas','Gravegoods':'Ajuares',
+    'Metalwork':'Metalistería','Stelae':'Estelas','Inscriptions':'Inscripciones','Toponyms':'Topónimos','Miscellaneous':'Miscelánea',
+    'Settlements':'Asentamientos','Text search':'Búsqueda por texto (en Inglés)',
+    'Search results':'Resultados de la búsqueda',
+}
+
+spanishHeader4Dict = {
+    'Filters Applied':'Filtros aplicados',
+    'Burial type':'Tipo de enterramiento',
+    'General chronology':'Cronología general',
+    'General site type':'Características generales del lugar',
+    'grave good material':'Material de ajuar',
+    'grave good type':'Tipo de ajuar',
+    'head direction':'Orientación de la cabeza',
+    'head position':'Posición de la cabeza',
+    'individual burial type':'Tipo de enterramiento individual',
+    'individual orientation':'Orientación individual',
+    'individual position':'Posición individual',
+    'individuals gender':'Género de los individuos',
+    'pot condition':'Condición de la cerámica',
+    'pot position':'Posición de la cerámica',
+    'pot types':'Tipos cerámicos',
+    'pot types major':'Principal de los tipos cerámicos',
+    'site type':'Clase de lugar',
+    'site usage':'Uso del sitio',
+    '&nbsp;and&nbsp;' : ' y ',
+    'orientation' : 'Orientación',
+    'position':'Posición',
+    'burial':'enterramiento',   
+    'gender':'Género',
+    'Find type':'Tipo de hallazgo',
+    'General object type':'Clase genérica de objeto',
+    'Specific object type':'Tipo de objeto detallado',
+    'context':'Contexto',    
+    'Language':'Lenguaje',
+    'Type':'Tipo',    
+    'object condition':'Estado del objeto',
+    'Object count':'Número de objetos',
+    'period summary':'Período a grandes rasgos',
+    'Human figure':'Figura humana',
+    'Land type':'Tipo de suelo',
+    'Location':'Ubicación',
+    'Motif':'Motivo',
+    'Region':'Lugar',
+    'Rock':'Roca',
+    'Stone shape':'Forma de la estela',
+    'Technique':'Técnica',
+    'Etymology':'Etimología',    
+    'Age':'Edad',        
+    'Macro Context':'Contexto general',
+    'Micro context':'Contexto específico',
+    'Script':'Tipo de escritura',
+    
+}
+
+
+// For link content
+spanishLinkDict = {
+    'Clear all':'Quitar todos',
+}
+
+spanishParaDict = {
+    'Clustering':'Agrupación','Label':'Etiqueta'
+}
+
+//For label content
+
+spanishLabelDict = {
+    // Leaving on and off as too short and may coincide with shorter strings in the other labels
+    'Adult 18 to 39':'Adulto de 18 a 39','Child 3 to 13':'Niño de 3 a 13','Foetus':'Feto','Infant less than 3':'Bebé menor de 3',
+    'Noenate':'Neonato','Not identified':'No identificada','Old adult over 40':'Adulto de más de 40 años',
+    // end age
+    'Cremation':'Cremación','Inhumation':'Inhumación','Mixed':'Mezcla',
+    // end type
+    'Late Neolithic-Middle Bronze Age':'Neolítico Final-Bronce Medio',
+    'Neolithic-Early Bronze Age':'Neolítico-Bronce Antiguo',
+    'Neolithic-Middle Bronze Age':'Neolítico-Bronce Medio',
+    'Neolithic-Late Bronze Age':'Neolítico-Bronce Final',
+    'Late Neolithic-Beaker':'Neolítico Final-Campaniforme',    
+    'Late Neolithic-Early Bronze Age':'Neolítico Final-Bronce Temprano',        
+    'Late Neolithic-Middle Bronze Age':'Neolítico Final a Bronce Medio',    
+    'Late Neolithic-Bronze Age':'',    
+    'Beaker-Middle Bronze Age':'Campaniforme-Bronce Medio',
+    'Beaker-Early Bronze Age':'Campaniforme-Bronce Temprano',
+    'Beaker-Late Bronze Age':'Campaniforme-Bronce Final',    
+    'Middle-Late Bronze Age':'Bronce Medio-Bronce Final',    
+    'Middle Bronze Age-Iron Age':'Bronce Medio-Edad de Hierro',
+    'Bronze Age-Iron Age':'Edad del Bronce-Edad del Hierro',
+    'Late Bronze Age-Early Iron Age':'Bronce Final-Temprana Edad de Hierro',
+    'Early Iron Age':'Temprana Edad del Hierro',
+    'Early-Middle Iron Age':'Temprana-Mediana Edad del Hierro',
+    'Middle Iron Age':'Mediana Edad del Hierro',
+    'Middle-Late Iron Age':'Mediana-Final Edad del Hierro',
+    'Late Iron Age':'Edad del Hierro Final',
+    // too broad - have these at the end
+    'Early Neolithic':'Neolítico Temprano',    
+    'Late Neolithic':'Neolítico Final',    
+    'Neolithic-Beaker':'Neolítico-Campaniforme',
+    'Neolithic':'Neolítico',
+    'Beaker':'Campaniforme',
+    'Early Bronze Age':'Bronce Temprano',
+    'Middle Bronze Age':'Bronce Medio',
+    'Late Bronze Age':'Bronce Final',
+    'Bronze Age':'Edad del Bronce',
+    'Iron Age':'Edad del Hierro',
+    // end chrono
+    'Boat':'Embarcación',
+    'Cave site':'Cueva',
+    'Domestic':'Doméstico',//*
+    'Funerary uncertain':'Funerario indeterminado',    
+    'Funerary':'Funerario',//*
+    'Ritual uncertain':'Ritual indeterminado',
+    'Rock shelter':'Abrigo',
+    'Settlement':'Asentamiento',//*
+    // end site type
+    'Amber':'Ámbar',
+    'Animal bone':'Osamenta animal',
+    'Animal skeleton':'Esqueleto animal',
+    'Antler':'Cuerno',
+    'Bone':'Hueso',//*
+    'Bronze':'Bronce',//*
+    'Clay':'Arcilla',//*
+    'Copper - Copper alloy':'Cobre-Aleación de cobre',
+    'Faience':'Mayólica',
+    'Flint-Chert':'Sílex-Pedernal',
+    'Glass':'Vidrio',//*
+    'Gold':'Oro',//*
+    'Iron':'Hierro',//*
+    'Ivory':'Marfil',//*
+    'Jet - Lignite - Shale':'Azabache-Lignito-Esquisto',
+    'Lead':'Plomo',//*
+    'Organic':'Orgánico',//*
+    'Pigment':'Pigmento',//*
+    'Quartz':'Cuarzo',//*
+    'Shell':'Concha',//*
+    'Silver':'Plata',//*
+    'Stone':'Piedra',//*
+    'Textile':'Textil',
+    'Tin':'Estaño',
+    'Tooth':'Pieza dental',
+    'Unknown':'Desconocido',//*
+    'Wood':'',//*
+    // end grave material
+    'Amulet':'Amuleto', //*
+    'Animal bone burnt':'Hueso animal quemado',
+    'Animal bone unburnt':'Hueso animal sin quemar',    
+    'Animal tooth':'Pieza dentaria animal',
+    'Antler':'Cuerno',
+    'Armlet':'Brazalete',
+    'Arrowhead':'Punta de flecha',
+    'Awl':'Punzón',
+    'Axehead':'Cabeza de hacha',
+    'Ball':'Bola',//*
+    'Battle axe':'Hacha de guerra',
+    'Bead or button cover':'Cuenta o pendiente',
+    'Bead or Pendant':'Cuenta o cubierta de botón',
+    'Bead':'Cuenta',//*    
+    'Belt ring or toggle':'Anillo de cintura o botón alargado',
+    'Blade':'Cuchilla',
+    'Boar tusk':'Colmillo de jabalí',
+    'Borer':'Perforador',
+    'Bow':'Arco',
+    'Box':'Caje',
+    'Bracelet':'Brazalete',
+    'Bracer':'Brazal',
+    'Button':'Botón',
+    'Chisel':'Cincel',
+    'Coffin':'Ataúd',
+    'Comb':'Peine',
+    'Cone':'Cono',
+    'Core':'Core - to be translated',
+    'Crucible':'Crisol',
+    'Cup non ceramic':'Copa no cerámica',
+    'Cushion stone':'Piedra de almohada',
+    'Dagger':'Puñal',
+    'Diadem':'Diadema',
+    'Disc':'Disco',
+    'Earring basket ornament':'Ornamentación de cesto con aretes',
+    'Fabricator':'',
+    'Fibula':'Fíbula',
+    'Flake':'Lámina',
+    'Flint nodule':'Nódulo de sílex',
+    'Foil':'Lámina de metal',
+    'Food or floral offering':'Ofrenda alimentaria o floral',
+    'Fossil':'Fósil',
+    'Halberd':'Alabarda',
+    'Hammerstone':'Piedra de martillo',
+    'Hide':'Piel',
+    'Hone':'Piedra para afilar',
+    'Horn':'Cuerno',
+    'Idol':'Ídolo',
+    'Knife':'Cuchillo',
+    'Lithics':'Lítico',
+    'Loom weight':'Peso de telar',
+    'Lunuiae':'Lúnulas',
+    'Macehead':'Cabeza de maza',
+    'Metal fragment':'Fragmento metálico',
+    'Necklace':'Collar',
+    'Needle':'Aguja',
+    'Other':'Otros',//*
+    'Oxhide':'Cuero de buey',
+    'Palmela point':'Punta de palmela',
+    'Pebble':'Guijarro',
+    'Pendant':'Pendiente',
+    'Perforated stone':'Piedra perforada',
+    'Pick':'Pico',
+    'Pin':'Alfiler',//*
+    'Plaque':'Placa',//*
+    'Plate':'Plate - to be translated',
+    'Point':'Punta',
+    'Pommel':'Pomo',
+    'Quartz':'Cuarzo',//*
+    'Quartz pebble':'Guijarro de cuarzo',
+    'Quern grinding stone':'Piedra de moler',
+    'Rapier':'Estoque',
+    'Razor':'Rasurador',
+    'Ring':'Anillo',
+    'Rock art':'Arte rupestre',
+    'Rubber':'Goma',
+    'Saw':'Sierra',
+    'Schist plaque':'Placa de esquisto',
+    'Scraper':'Raspador',
+    'Sheet or strip':'Lámina o tira',
+    'Shell':'Concha',//*
+    'Sickle blade':'Hoja de hoz',
+    'Smoother':'Alisador',
+    'Spearhead':'Spearhead - to be translated',
+    'Spindle whorl':'Fusayola',
+    'Spiral':'Espiral',//*
+    'Spoon':'Cuchara',
+    'Stela':'Estela',
+    'Strike a light':'Strike a light - to be translated',
+    'Stud':'Broche',
+    'Sword':'Espada',
+    'Toggle':'Botón alargado',    
+    'Torc':'Torques',
+    'Tube':'Tubo',
+    'Tweezers':'Pincita',
+    'Whetstone':'Piedra de afilar',
+    'Worked bone':'Hueso trabajado',
+    'Worked stone':'Piedra trabajada',
+    // end grave good type
+    'East southeast to West northwest':'De este-sudeste a oeste-noroeste',
+    'East to West':'De este a oeste',
+    'North to South':'De norte a sur',
+    'East northeast':'Este-noreste',
+    'East southeast':'Este-sudeste',
+    'West southwest to East northeast':'De oeste-sudoeste a este-noreste',
+    'Northeast to Southwest':'De noreste a sudoeste',
+    'Northwest to Southeast':'De noroeste a sudeste',
+    'Northeast':'Noreste',
+    'Northwest':'Noroeste',
+    'Southeast':'Sudeste',
+    'Southwest':'Sudoeste',
+    'West northwest':'Oeste-noroeste',
+    'West southwest':'Oeste-sudoeste',
+    'North':'Norte',//*
+    'East':'Este',//*
+    'West':'Oeste',//*
+    'South':'Sur',//*
+    // end head dir
+    'Crouched left':'Flexionado a la izquierda',
+    'Crouched right':'Flexionado a la derecha',
+    'Degraded':'Deteriorado',
+    'Disarticulated':'Desarticulado',
+    'Disturbed':'Movido',
+    'Extended':'Totalmente extendido',
+    'Flexed left':'Doblado a la izquierda',
+    'Flexed right':'Doblado a la derecha',
+    'In bag':'En bolsa',
+    'In box':'En caja',
+    'In ditch':'En zanja',
+    'In situ cremation':'Cremación in situ',
+    'On inhumation':'Sobre inhumación',
+    'Partially articulated':'Parcialmente articulado',
+    'Prone':'Boca abajo',
+    'Redeposited':'Recolocado',
+    'Semi-articulated':'Semiarticulado',
+    'Squatting':'En cuclillas',
+    'Supine':'De espalda',
+    'Un-urned':'Sin urna',
+    'Urned':'En urna',
+    // end body
+    'Child':'Niño',
+    'Female uncertain':'Femenino indeterminado',
+    'Male uncertain':'Masculino indeterminado',
+    'Not identified':'No identificado',
+    'Female':'Femenino',//*    
+    'Male':'Masculino',//*
+    //'Female':'Femenino',//*
+    // end gender
+    'Complete':'Completa',
+    'Fragmentary':'Fragmentaria',
+    'Small number of sherds':'Pequeño número de fragmentos',
+    // endpot pos
+    'Inverted':'Invertida',
+    'On side':'De lado',
+    'Upright':'De pie',
+    // end pot pos
+    'Accessory vessel':'',
+    'Beaker - local or derived':'',
+    'Beaker/Food Vessel hybrid':'',
+    'Bell beaker':'',
+    'Bucket urn':'',
+    'Ciempozuelos Beaker':'',
+    'Cinerary urn':'',
+    'Collared urn':'',
+    'Cordoned urn':'',
+    'Early - Middle Bronze age':'Bronce Inicial-Bronce Medio',
+    'Encrusted urn':'Urna con incrustaciones',
+    'Food vessel':'Vasija de comida',
+    'Globular urn':'Urna globular',
+    'Grooved ware':'Cerámica estriada/acanalada',
+    'Incense cup':'Copa de incienso',
+    'Late Bronze - Iron age':'Bronce Final-Edad del Hierro',
+    'Miniature vessel':'Vasija en miniatura',
+    'Palmela Beaker':'Vaso campaniforme de palmela',
+    'Polypod bowl':'Recipiente polípodo',
+    'Vase urn':'Urna de vaso',
+    '':'',
+    // end pot type
+    'Agglomerated cist with pavement':'Cista aglomerada con pavimento',
+    'Bank':'Montículo',
+    'Barrow':'Túmulo',
+
+    'Bog':'Ciénaga',
+    'Boulder burial':'Enterramiento de piedra',
+    'Burnt mound':'Túmulo quemado',
+    'Cairn':'Túmulo (cairn)',
+    'Cave':'Caverna',
+    'Chambered tomb':'Tumba de cámara',
+
+    'Cist with platform or pavement':'Cista con plataforma o pavimento',
+    'Cist':'Cista',//*
+    'Court Tomb':'Tumba de patio',
+    'Ditch':'Zanja',//*
+    'Enclosure':'Recinto',//*
+    'Flat grave':'Sepultura plana',
+    'henge':'Círculo de piedra',
+    'Hypogeum':'Hipogeo',
+    'Linkardstown type cist':'Cista de tipo Linkardstown',
+    'Megalithic cist':'Cista megalítica',
+    'Megalithic monument':'Monumento megalítico',
+    'Midden':'Basurero',
+    'Mine':'Mina',
+    'Mortuary enclosre':'mortuorio',
+    'Mound':'Túmulo',
+    'Natural feature':'Característica natural',
+    'Passage grave':'Sepultura de pasillo',
+    'Passage tomb':'Sepulcro de pasillo',
+
+    'Pit group':'Grupo de hoyos',
+    'Pit':'Hoyo',//*
+    'Portal Tomb':'Sepulcro de portal',
+    'Post circle':'Círculo de postes',
+    'Pyre':'Pira',
+    'Ring ditch':'Zanja anular',
+    'Roundhouse':'Casa circular',
+    'Standing stone':'Menhir',
+    'Stone circle':'crómlech',
+    'Structure':'Estructura',
+    'Tholos':'Tolo',
+    'timber lined grave or coffin':'Sepultura forrada de madera o ataúd',
+    'Wedge Tomb':'Sepulcro en forma de cuña',
+    'Well':'Pozo',
+    'Flexed':'Doblado',
+    'Crouched':'Flexionado',
+// Start metalwork
+    'Ancient boundary':'Antiguo límite',
+    'Ancient route':'Ruta antigua',
+    'Bog':'Ciénaga',
+    'Cave':'Caverna',
+    'Coastal':'Costero',    
+    'Coast':'Costa',
+    'Crossroads (possible ancient routes)':'Encrucijada (posibles rutas antiguas)',
+    'Enclosure':'Recinto',
+    'Estuary':'Estuario',
+    'Field':'Campo',
+    'Field system':'Parcela',
+    'Foothills':'Estribación',
+    'Funerary':'Funerario',
+    'Hill crossing':'Travesía de montaña',
+    'Hillside':'Ladera',
+    'Hilltop':'Cumbre',
+    'In bag':'En bolsa',
+    'In basket':'En cesta',
+    'In pit':'En hoyo',
+    'In pot':'En recipiente cerámico',
+    'In vessel':'En vasija',
+    'In wooden box':'En caja de madera',
+
+    'Mine':'Mina',
+    'Mound':'Túmulo',
+    'Mountain route':'Ruta de montaña',    
+    'Mountain':'Montaña',
+    'Near barrow':'Cerca de un túmulo',
+    'Near lake':'Cerca de un lago',
+    'Lake':'Lago',    
+    'Near megalithic monumnet':'Cerca de un monumento megalítico',
+    'Near possible old route':'Cerca de una posible vieja ruta',
+    'Near river':'Cera de un río',
+    'Near settlement':'Cerca de un asentamiento',
+    'Near stela':'Cerca de una estela',
+    'Possibly funerary':'Posiblemente funerario',
+    'Resued barrow':'Túmulo reutilizado',
+    'River':'Río',
+    'River bank':'Orilla de un río',    
+    'River crossing':'Vado',
+    'Rock art':'Arte rupestre',
+    'Rock cavity':'Cavidad rocosa',
+    'Rocky crevice':'Grieta rocosa',
+    'Sea':'Mar',
+    'Settlement':'Asentamiento',
+    'Under stone':'Bajo una piedra',
+    'Unknown':'Desconocido',
+    'Valley bottom':'En el fondo de un valle',
+    'Wrapped':'Envuelto',
+    // end Metalwork context
+    'Dry uncertain':'Seco no seguro',
+    'Dry':'Seco',    
+    'Transition uncertain':'Transición sin seguridad',        
+    'Transition':'Transición',    
+    'Wet uncertain':'Mojado sin seguridad',
+    'Wet':'Mojado',
+    
+    'Hoard':'Tesoro',
+    'Pair':'Pareja',
+    'Single find':'Hallazgo individual',
+    'Triple':'Tres piezas',
+    'Axe':'Hacha',
+    'Feasting':'Banquete',
+    'Grooming equipment':'Equipamiento de aseo',
+    'Horse gear':'Lingote',
+    'Mould':'Molde',
+    'Musical instrument':'Instrumento musical',
+    'Ornament':'Ornamento',
+    'Other':'Otro',
+    'Tool':'Herramienta',
+    'Weapon':'Arma',
+    'Amber':'Ámbar',    
+    'Bronze':'Bronce',
+    'Cannel coal/lignite':'Carbón/lignito',
+    'Copper':'Cobre',
+    'Ceramic':'Ceramico',
+    'Copper-Copperalloy':'Cobre-aleación de cobre',
+    'Flint':'Sílex',
+    'Gold':'Oro',
+    'Iron':'Hierro',
+    'Casting jet':'Caño de fundición',    
+    'Jet':'Azabache',
+    'Lead':'Plomo',
+    'Organic':'Orgánico',
+    'Silver':'Plata',
+    'Stone':'Piedra',
+    'Tin':'Estaño',
+    'Wood':'Madera',
+    'Broken':'Roto',
+    'Complete':'Completo',
+    'Mainly intact':'Principalmente intacto',
+    'Mixed':'Mezclado',
+    'Mostly fragmented':'Fragmentado en su mayoría',
+    '10 plus':'Más de 10',
+    '1000 plus':'Más de 1000',
+    ' to ':' a ',
+    'Anklet':'Ajorca',
+    'Anvil':'Yunque',
+    'Armlet':'Brazalete',
+    'Armring':'Anilla de brazo',
+    'Arrowhead':'Punta de flecha',
+    'Articulated spit':'Cordón articulado',
+    'Awl':'Punzón',
+    'Bangle':'Pulsera',
+    'Bead':'Cuenta',
+    'Bell':'Campana/Campanilla ',
+    'Belt clip':'Broche de cinturón',
+    'Belt fittings':'Accesorios de cinturón',
+    'Blade':'Cuchilla',
+    'Bowl':'Recipiente',
+    'Bracelet':'Pulsera',
+    'Bracer':'Brazal',
+    'Bucket':'Cubo',
+    'Bugle':'Corneta',
+    'Burin':'Buril',
+    'Button cover':'Cubierta de botón',
+    'Button':'Botón',
+    'Cake':'Torta',
+
+    'Cauldron':'Caldero',
+    'Chape':'Contera',
+    'Chisel':'Cincel',
+    'Crucible':'Crisol',
+    'Dagger':'Puñal',
+    'Diadem':'Diadema',
+    'Dirk':'Daga',
+    'Disc':'Disco',
+    'Dress fastener':'Cierre de vestido',
+    'Earring':'Pendiente',
+    'Ferrule':'Contera',
+    'Flesh-hook':'Gancho de carne',
+    'Gold foil':'Lámina de oro',
+    'Gouge':'Escoplo',
+    'Hair ornament':'Ornamento de pelo',
+    'Harring':'Anilla de pelo/pendiente',
+    'Halberd':'Alabarda',
+    'Hammer':'Martillo',
+    'Harness attachment':'Accesorio de arnés',
+    'Headdress':'Tocado',
+    'Helmet':'Casco',
+    'Hook':'Gancho',
+    'Horse harness equipment':'Equipación del arnés del caballo',
+    'Knife':'Cucillo',
+    'Lock-ring':'Anillo de cierre',
+    'Lunula':'Lúnula',
+    'Necklace':'collar',
+    'Neckring':'Aro de cuello',
+    'Palstave':'Hacha de talón',
+    'Pendant':'Pendiente',
+    'Phalera':'Falera',
+    'Pin':'Aguja',
+    'Plaque':'Placa',
+    'Pot':'Recipiente de cerámica',
+    'Perforador':'Perforador',
+    'Quoit loop':'Broche/aguja de aro',
+    'Rapier':'Estoque',
+    'Razor':'Rasurador',
+    'Ribbon or Band':'Banda o cinto',
+    'Ring money':'"Dinero" en forma de anillo',
+    'Rivet':'Remache',
+    'Rod':'Varilla',
+    'Scaper':'Raspador',    
+    'Scrap':'Chatarra',
+    'Sheet bronze':'Bronce en lámina',
+    'Shield':'Escudo',
+    'Sickle':'Hoz',
+    'Spearhead':'Punta de lanza',
+    'Spiral':'Espiral',
+    'Tira':'Tira',
+    'Tong':'Pinzas',
+    'Trumpet':'Trompeta',
+    'Tuba':'Tubo',
+    'Tweezers':'Pincita',
+    'Vessel':'Vasija',
+    'Wheel fittings':'Accesorios de rueda',
+    'Wire':'Alambre',
+    // Start stela
+    '7th c BC':'Siglo VII a. C.',
+    'Chalcolithic':'Calcolítico',
+    'Agricultural':'Agrícola',
+    'Cultivated land':'Tierra cultivada',
+    'Hilly':'Con colinas',
+    'Mountainous':'Montañoso',
+    'Pastoral':'De pastoreo',
+    'Ancient route':'Antigua ruta',
+    'Beach':'Playa',
+    'Cemetary of funerary':'Cementerio o funeraria',
+    'Cist grave marker or cover':'Señalizador o cubierta  de enterramiento en cista',
+    'Megalithic tomb':'Tumba megalítica',
+    'Near burial or tomb':'Cerca de un enterramiento o tumba',
+    'Near mine':'Cerca de una mina',
+    'Near stelae':'Cerca de estelas',
+    'Pastoral route':'Ruta de pastoreo',
+    'Re-used':'Reutilizada',
+    'River valley':'Valle de un río',
+    'Spring':'Manantial',
+    'Stone circle':'Crómlech',
+    'Valley pass':'Paso de valle',
+    'Ancoriforme idol':'Ídolo ancoriforme',
+    'Axehead':'Cabeza de hacha',
+    'Beaerd':'Barba',
+    'Belt':'Cinturón',
+    'Bird':'Pájaro',
+    'Boe and arrow':'Arco y flecha',
+    'Breasts':'Pechos',
+    'Circles cups and rings':'Huecos y anillos circulares',
+    'Cloak':'Capa',
+    'Clothing':'Vestido',
+    'Comb':'Peine',
+    'Crook':'Cayado',
+    'Dog':'Perro',
+    'Dots':'Puntos',
+    'Footprints':'Pisadas',
+    'Geometric motifs':'Motivos geométricos',
+    'Headdress':'Tocado',
+    'Helmet':'Casco',
+    'Horns':'Cuernos',
+    'Horse':'Caballo',
+    'Human figure':'Figura humana',
+    'Human procession':'Desfile de personas',
+    'Kilt/Skirt':'Falda',
+    'Latin inscription':'Inscripción latina',
+    'Lunula':'Lúnula',
+    'Lyre':'Lira',
+    'Mirror':'Espejo',
+    'Ornaments':'Ornamentos',
+    'Other humans':'Otros personas',
+    'Oxhide ingot':'Lingote de piel de buey',
+    'Penis':'Pene',
+    'Quadroped':'Cuadrúpedo',
+    'Quadropeds':'Cuadrúpedos',    
+    'Rod':'Vara',
+    'Row of dots':'Hilera de puntos',
+    'Scythe':'Guadaña',
+    'Serpentine':'Motivos serpentiformes',
+    'Sledge/ladder':'Trineo/escalera',
+    'Tartessian script':'Escritura tartesia',
+    'Trapezoidal insignia':'Insignias trapezoidales',
+    'Wheeled vehicle':'Vehículo con ruedas',
+    'Italy':'Italia',
+    'France':'Francia',
+    'Basalt':'Basalto',
+    'Black slate':'Pizarra negra',
+    'Calcareous slate':'Pizarra calcárea',
+    'Crystalline limestone':'Caliza cristalina',
+    'Diorite':'Diorita',
+    'Gabbro with granite inclusions':'Gabro con granito',    
+    'Granite':'Granito',
+    'Green slate':'Pizarra verde',
+    'Grey gabbro':'Gabro gris',
+    'Grey sandstone':'Arenisca gris',
+    'Grey slate':'Pizarra gris',
+    'Igneous':'Ígnea',
+    'Leucogranite':'Granito blanco',
+    'Limestone':'Caliza',
+    'Micaceous schist':'Esquisto micáceo',
+    'None':'Ninguno',
+    'Quartzite':'Cuarcita',
+    'Sandstone':'Arenisca',
+    'Slate schist':'Esquisto pizarroso',    
+    'Schist':'Esquisto',
+    'Soft white stone':'Piedra blanca blanda',
+    'Anthropomorphic':'Antropomorfa',
+    'Cylindrical':'Cilíndrica',
+    'Phallic shaped':'Con forma fálica',
+    'Sub-rounded':'Sub-redondeda',
+    'Tapering':'Estrecha',
+    'Vaguely anthropomorphic':'Vagamente antropomorfa',
+    'Carved':'Talla',
+    'Engraved':'Grabado',
+    'Incised':'Incisión',
+    'Painted':'Pintada',
+    'Pecked':'Picada',
+    'Polished':'Pulida',
+    'Releif':'Relieve',
+    'Rubbed':'Frotado',
+    'Sculpted':'Esculpido',
+    'Shaped':'Moldeado',
+    'Smoothed':'Alisado',
+    'Unprepared':'Sin preparación alguna',
+    'Alentejo stela':'Estela del Alentejo',
+    'Alentejo type uncertain':'Tipo del Alentejo sin certeza',
+    'Stela':'Estela',
+    'Decorated stone':'Piedra decorada',
+    'Idol':'Ídolo',
+    'Pebble':'guijarro',
+    'phallic':'fálico',
+    'Rock art panel':'Panel de arte rupestre',    
+    'Rock art':'Arte rupestre',
+    'Type':'Tipo',
+    'Warrior':'Guerrero',
+    //Start inscriptions
+    'Indo European':'Indoeuropeo',
+    'Proto Celtic':'Protocelta',
+    'Coastal':'Costero',
+    'Island':'Isla',
+    'Lowland':'Tierra baja',
+    'Riverine':'Ribereño',
+    'Upland':'Tierra alta',
+    'Burial':'Enterramiento',
+    'Cairn':'Túmulo de piedras',
+    'Cave':'Caverna',
+    'Ecclesiastical':'Eclesiástico',
+    'Landscape':'Paisaje rural',
+    'Settlement broch':'Broch',
+    'Settlement hillfort':'Castro',    
+    'Settlement Roman':'Romano',     
+    'Settlement':'Asentamiento',
+    'Standing stone possible':'Posible menhir',    
+    'Standing stone':'Menhir',
+    'Etruscoid':'Etruscoide',    
+    'Greek':'Griega',    
+    'Indo-european, possibly not Celtic':'Indoeuropea, posiblemente no-celta',    
+    'Not defined':'No determinada',    
+    'Ogam':'Ogham',    
+    'Palaeohispanic':'Paleohispánica',    
+    'Phoenician':'Fenicia',    
+    'Roman':'Latina',    
+    '':'',    
+    '':'',    
+    '':'',    
+    '':'',    
+    '':'',    
+    '':'',    
+    '':'',    
+    '':'',    
+    
+    
+    
+    'Ring':'Anillo',
+    
+    
+    
+}
+
+// For button content
+spanishButtonDict = {
+    'Render map':'Obetener un mapa','Europe':'Europa','UK':'Reino Unido','Ireland':'Irlanda','France':'Francia',
+    'Reset':'Reajuste'
+}
+
+spanishInputDict = {
+    'Export burials markers':'Exportar los marcadores de enterramientos','Graph values':'Valores gráficos','Categorise map':'Definir el mapa',
+    'Export individuals markers':'Exportar los marcadores de individuos',
+    'Export pots markers':'Exportar los marcadores de cerámicas',
+    'Export gravegoods markers':'Exportar los marcadores de ajuares',
+    'Export metalwork markers':'Exportar los marcadores de metalistería',
+    'Export stelae markers':'Exportar los marcadores de estelas',
+    'Export inscriptions markers':'Exportar los marcadores de inscripciones',
+    'Export toponyms markers':'Exportar los marcadores de topónimos',
+    'Export settlements markers':'Exportar los marcadores de asentamientos',
+}
+
+var targets;
+
+function changeTextLanguage(tag,dict,domEl){
+    //console.log(tag,dict,domEl)
+    if (typeof domEl !='undefined'){
+        for (k in dict){
+            targets = domEl.next().children().find(tag + ":icontains('" + k + "')")
+            // Condition to intercept results area:
+            if (domEl.selector.indexOf('header') != -1  ){
+                //console.log('got a header!', k )
+                targets = domEl.next().children(tag + ":icontains('" + k + "')")
+                targets = targets.add( domEl.next().next().children(tag + ":icontains('" + k + "')") )
+                targets = targets.add( domEl.next().next().next().children(tag + ":icontains('" + k + "')")  )       
+            }
+            var l = targets.length
+
+            for (t = 0; t < l ; t++) {
+                target_text = $(targets[t]).html()
+                var regex = '/'+ k +'/gi'
+                // Replace the HTML as nested text in elements is still encountered e.g. <h4>Text1<a>Text2</a></h4>
+                $(targets[t]).html(  target_text.replace( eval(regex), dict[k] ) )
+            }
+        }
+    }
+    else {
+        for (k in dict){
+            targets = $(tag + ":icontains('" + k + "')")
+            var l = targets.length
+            for (t = 0; t < l ; t++) {
+                target_text = $(targets[t]).html()
+                var regex = '/'+ k +'/gi'
+                // Replace the HTML as nested text in elements is still encountered e.g. <h4>Text1<a>Text2</a></h4>
+                $(targets[t]).html(  target_text.replace( eval(regex), dict[k] ) )
+            }
+        }        
+    }
+}
+
+// Separate function for inputs as we are changing value rather than text/html
+
+function changeInputValueLanguage(dict){
+    for (k in dict){
+        $("input[value='"+ k +"']").attr('value',dict[k])            
+    }
+}

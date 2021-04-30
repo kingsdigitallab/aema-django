@@ -1,0 +1,138 @@
+<div class="large-12 columns">
+
+  <h3>{{ ogam.site_fk.site_name }}{% if ogam.site_fk.area_fk %}, {{ogam.site_fk.area_fk.area_name }} {% endif %}{% if ogam.site_fk.area_fk.region_fk %}, {{ ogam.site_fk.area_fk.region_fk.region_name }}{% endif %}{% if ogam.site_fk.area_fk.region_fk.country_fk %}, {{ ogam.site_fk.area_fk.region_fk.country_fk.country_name }}{% endif %}</h3>
+
+  <dl class="accordion" data-accordion>
+    <dd class="accordion-navigation">
+      <a href="#panel1">Ogam summary</a>
+      <div id="panel1" class="content active">
+  		<p>{{ ogam.expanded_text }} </p>
+  		<p>{{ ogam.context_description|safe }}</p>
+      </div>
+    </dd>
+    {% if ogam.ogaminscription_set.all %}
+    <dd class="accordion-navigation">
+      <a href="#panel2">Inscriptions</a>
+      <div id="panel2" class="content">
+        <dl class="tabs" data-tab>
+        	{% for o in ogam.ogaminscription_set.all %}
+          <dd {% if forloop.counter == 1 %}class="active"{% endif %}><a href="#panel2-{{ forloop.counter}}">Inscription {{ forloop.counter }}</a></dd>
+          {% endfor %}
+        </dl>
+        <div class="tabs-content">
+        	{% for o in ogam.ogaminscription_set.all %}
+          <div class="content {% if forloop.first %}active{% endif %}" id="panel2-{{ forloop.counter }}">
+            <table style="width:100%;">
+              <thead>
+              	<tr><th colspan="2">{{ o.reference }}: {{ o.name }}</th></tr>
+              </thead>
+              <tbody>
+              	<tr><th>Name</th><td>{{ o.name }}</td></tr>
+              	<tr><th>Script</th><td>{{ o.script_fk }}</td></tr>
+               	<tr><th>Reference</th><td>{{ o.reference }}</td></tr>
+               	<tr><th>Language </th><td>{{ o.language_fk }}</td></tr>
+              	<tr><th>Etymology</th><td>{{ o.etymology_fk }}</td></tr>          	         	
+              	<tr><th>Etymology</th><td>{{ o.etymology_fk }}</td></tr>          	         	
+          			<tr><th>Context</th><td>{{ o.context|safe }}</td></tr>
+                {% if o.morphology %}
+              	<tr><th>Morpholgy</th><td>{{ o.morphology|safe }} </td></tr>
+                {% endif %}
+                {% if o.syntax %}
+              	<tr><th>Syntax</th><td>{{ o.syntax|safe }} </td></tr>
+                {% endif %}
+                {% if o.semantic %}
+              	<tr><th>Semantic</th><td>{{ o.semantic|safe }} </td></tr>
+                {% endif %}
+                {% if o.phonolgy %}
+              	<tr><th>Phonology</th><td>{{ o.phonology|safe }} </td></tr>
+                {% endif %}
+                {% if o.script %}
+              	<tr><th>Script</th><td>{{ o.script|safe }} </td></tr>
+                {% endif %}
+                {% if o.irish %}
+              	<tr><th>Irish</th><td>{{ o.irish|safe }} </td></tr>
+                {% endif %}
+                {% if o.welsh %}
+              	<tr><th>Welsh</th><td>{{ o.welsh|safe }} </td></tr>
+                {% endif %}
+                {% if o.scottish_gaelic %}
+              	<tr><th>Scottish gaelic</th><td>{{ o.scottish_gaelic|safe }} </td></tr>
+                {% endif %}
+                {% if o.scottish_gaelic_2 %}
+              	<tr><th>Scottish gaelic 2</th><td>{{ o.scottish_gaelic_2|safe }} </td></tr>
+                {% endif %}
+                {% if o.cornish %}
+              	<tr><th>Cornish</th><td>{{ o.cornish|safe }} </td></tr>
+                {% endif %}
+                {% if o.manx %}
+              	<tr><th>Manx</th><td>{{ o.manx|safe }} </td></tr>
+                {% endif %}
+                {% if o.breton %}
+              	<tr><th>Breton</th><td>{{ o.breton|safe }} </td></tr>
+                {% endif %}
+                {% if o.gaulish %}
+              	<tr><th>Gaulish</th><td>{{ o.gaulish|safe }} </td></tr>
+                {% endif %}
+                {% if o.leptonic %}
+              	<tr><th>Leptonic</th><td>{{ o.leptonic|safe }} </td></tr>
+                {% endif %}
+                {% if o.goidelic %}
+              	<tr><th>Goidelic</th><td>{{ o.goidelic|safe }} </td></tr>
+                {% endif %}
+                {% if o.cumbric %}
+              	<tr><th>Cumbric</th><td>{{ o.cumbric|safe }} </td></tr>
+                {% endif %}
+                {% if o.galatian %}
+              	<tr><th>Galatian</th><td>{{ o.galatian|safe }} </td></tr>
+                {% endif %}
+                {% if o.brittonic %}
+              	<tr><th>Brittonic</th><td>{{ o.brittonic|safe }} </td></tr>
+                {% endif %}
+                {% if o.pictish_celtic %}
+              	<tr><th>Pictish celtic</th><td>{{ o.pictish_celtic|safe }} </td></tr>
+                {% endif %}
+                {% if o.insular_celtic %}
+              	<tr><th>Insular Celtic</th><td>{{ o.insular_celtic|safe }} </td></tr>
+                {% endif %}
+                {% if o.cont_celtic %}
+              	<tr><th>Continental Celtic</th><td>{{ o.cont_celtic|safe }} </td></tr>
+                {% endif %}
+                {% if o.cont_celtic_2 %}
+              	<tr><th>Continental Celtic 2</th><td>{{ o.cont_celtic_2|safe }} </td></tr>
+                {% endif %}
+                {% if o.other_hispano_celtic %}
+              	<tr><th>Other Hispano Celtic</th><td>{{ o.other_hispano_celtic|safe }} </td></tr>
+                {% endif %}
+                {% if o.other_hispano_celtic_2 %}
+              	<tr><th>Other Hispano Celtic 2</th><td>{{ o.other_hispano_celtic_2|safe }} </td></tr>
+                {% endif %}
+                {% if o.pie_etymology %}
+              	<tr><th>PIE Etymology</th><td>{{ o.pie_etymology|safe }} </td></tr>
+                {% endif %}
+                {% if o.ie_etymology %}
+              	<tr><th>IE Etymology</th><td>{{ o.ie_etymology|safe }} </td></tr>
+                {% endif %}
+                {% if o.celtic_etymology %}
+              	<tr><th>CelticEtymology</th><td>{{ o.celtic_etymology|safe }} </td></tr>
+                {% endif %}
+                {% if o.proto_celtic_etymology %}
+              	<tr><th>Proto Celtic Etymology</th><td>{{ o.proto_celtic_etymology|safe }} </td></tr>
+                {% endif %}
+                {% if o.celtic_cognates %}
+              	<tr><th>Celtic cognates</th><td>{{ o.celtic_cognates|safe }} </td></tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </dd>
+    {% endif %}
+  </dl>
+  <a class="close-reveal-modal">&#215;</a>
+</div>
+
+<script>
+$(document).foundation()
+</script>

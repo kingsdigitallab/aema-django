@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles thumbnail %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'leaflet/leaflet.css' %}">
+<script src="{% static 'leaflet/mapbox.js' %}"></script>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="row main">
+	<div class="columns large-12">
+		<div class="row main">
+			<div class="columns large-9">
+				<h3>{{ stelae.site_fk.site_name }}, {{ stelae.site_fk.area_fk.area_name }}</h3>
+                {% if stelae.bibliography %}<h5><em>({{ stelae.bibliography }})</em></h5>{% endif %}
+					<table>
+					 <tbody>
+                    <!-- 
+                      <tr>
+                       <td><strong> </strong></td>
+                       <td>{}</td>
+                      </tr>                     
+                    -->
+                      <tr>
+                       <td><strong>Type</strong></td>
+                       <td>{% for t in stelae.stelae_type.all %}{{ t }}{% if not forloop.last %}, {% endif %}{% endfor%}</td>
+                       
+                       <td id="map" width="40%;" rowspan="7"></td>                       
+                      </tr> 
+                      <tr>
+                       <td><strong>Motif(s)</strong></td>
+                       <td>{% for m in stelae.motif.all %}{{ m }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+                      </tr>      
+                      <tr>
+                       <td><strong>Techniques</strong></td>
+                       <td>{% for t in stelae.technique_m2m.all %}{{ t }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+                      </tr>      
+                      <tr>
+                       <td><strong>Stone</strong></td>
+                       <td>{{ stelae.specific_stone_type }}</td>
+                      </tr>   
+                      <tr>
+                       <td><strong>Dimensions and shape</strong></td>
+                       <td>{{ stelae.stone_type_and_description }}{% if stelae.stone_shape_m2m.all %} - {% for s in stelae.stone_shape_m2m.all %}
+                       {{ s }}{% if not forloop.last %}, {% endif %}{% endfor %}{% endif %}</td>
+                      </tr>  
+                    <tr>
+                       <td><strong>Condition</strong></td>
+                       <td>{{ stelae.condition }}</td>
+                      </tr> 
+                      
+                      <tr>
+                       <td><strong>Location</strong></td>
+                       <td>{% for l in stelae.location_summary.all %}{{ l }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+                      </tr>  
+
+                       <td><strong>Summary</strong></td>
+                       <td colspan="2">{{ stelae.location_description }}</td>
+                      </tr> 
+                      <tr>
+                       <td><strong>Chronology</strong></td>
+                       <td colspan="2">{{ stelae.chronology_fk }} {{  stelae.chronology_start_bc }}BC - {{ stelae.chronology_end_bc }}BC ({{ stelae.bibliography }})</td>
+                      </tr>    
+                      <tr>
+                       <td><strong>General description</strong></td>
+                       <td colspan="2">{{ stelae.general_description }}</td>
+                      </tr>                       
+                      <tr>
+                       <td><strong>Motif overview</strong></td>
+                       <td colspan="2">{{ stelae.motif_overview }}</td>
+                      </tr>                        
+                                         
+                     </tbody>
+                    </table>
+
+		     {% if stelae.stelaeimage_set.all %}
+		     <h3>Images</h3>
+		    <table>
+			<tbody>
+			   <tr>
+                <tr colspan="{{ hoard.hoardimage_set.all.length }}">
+            {% for i in stelae.stelaeimage_set.all %}
+                <td>{% thumbnail i.image "50x50" crop="center" as im %}
+			<a href="#" data-reveal-id="image-{{ forloop.counter }}"><img src="{{ im.url }}" align="middle" width="{{ im.width }}" height="{{ im.height}}">
+                {% endthumbnail %}<br><small> {{ i.description }}</small></a></td>
+            {% endfor %}
+                </tr></td>
+		</tbody>
+	  </table>
+	  {% endif %}
+	  </div>
+      <div class="columns large-3">
+        <h3>Nearby stelae</h3>  
+          <table>
+            <tbody>
+              {% if ten %}            
+              <tr><td><strong>Within 10km</strong></td></tr>
+              {% for t in ten %}
+              <tr>
+                <td><a href="/view/stelae_full/{{ t.id }}" class="nearby-record" data-id="{{ t.id }}">{{ t.site_fk.site_name }} ({{ t.distance }}km) &raquo;</a></td>
+              </tr>
+              {% endfor %}
+              {% endif %}
+              <tr><td><strong>Within 50km</strong></td></tr>
+              {% for h in fifty %}
+              <tr>
+                <td><a href="/view/stelae_full/{{ h.id }}" class="nearby-record" data-id="{{ h.id }}">{{  h.site_fk.site_name }} ({{ h.distance }}km)   &raquo;</a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+	    </div>
+		</div>
+	</div>                    
+</div>                    
+
+<script>
+
+var map;
+var marker;
+
+var markers = [];
+
+$('.nearby-record').on('mouseover',function(){
+    m = getMarkerById( $(this).data('id') );
+    m.setRadius( 8 );
+})
+
+$('.nearby-record').on('mouseout',function(){
+    m = getMarkerById( $(this).data('id') );
+    m.setRadius( 5 );
+})
+
+function getMarkerById(id){
+    for (m in markers){
+        if (markers[m].options.id == id ){
+            return markers[m]
+        }
+    }
+};
+
+
+
+$(document).ready(function(){
+    map = L.map('map',{scrollWheelZoom:false,zoomControl:false,minZoom:4,maxZoom:17,
+    fullscreenControl: true
+    }).setView([{{ stelae.point.y}},{{ stelae.point.x}}], 7);
+
+    ancient_world = new L.TileLayer("http://{s}.tiles.mapbox.com/v3/isawnyu.map-knmctlkh/{z}/{x}/{y}.png",
+  {attribution:'Map base by <a href="http://awmc.unc.edu/">AWMC</a>'}).addTo(map);
+
+    marker = L.circleMarker([{{ stelae.point.y}},{{ stelae.point.x}}], {fillColor:'blue',stroke:'darkblue',radius:8,fillOpacity:0.8 } ).addTo(map);
+    
+    markers.push(marker);
+    
+    {% for t in ten %}
+    try {
+        t = L.circleMarker([{{ t.point.y }},{{ t.point.x }} ],{id:"{{ t.id }}",fillColor:'green',color:'darkgreen',radius:5}).addTo(map);
+        markers.push(t);
+    }
+    catch (err) {
+        //
+    }
+    {% endfor%}    
+    {% for h in fifty %}
+    try {
+        h = L.circleMarker([{{ h.point.y }},{{ h.point.x }} ],{id:"{{ h.id }}",fillColor:'red',color:'red',radius:5}).addTo(map); 
+        markers.push(h);        
+    }
+    catch (err) {
+        //
+    }    
+    {% endfor%}
+    
+    
+    
+    
+});
+
+</script>
+
+           {% if stelae.stelaeimage_set %}
+            {% for i in stelae.stelaeimage_set.all %}
+                <div class="reveal-modal" data-reveal id="image-{{ forloop.counter }}">{% thumbnail i.image "500" crop="center" as im %}<img src="{{ im.url }}" align="middle" width="{{ im.width }}" height="{{ im.height }}">
+                {% endthumbnail %}<br>{{ i.description }}
+                <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                </div>
+            {% endfor %}
+           {% endif %}
+
+
+
+{% endblock %}

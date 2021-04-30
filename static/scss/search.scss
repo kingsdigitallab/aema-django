@@ -1,0 +1,662 @@
+@import "settings";
+
+/*** Search specific styles ***/
+
+.no-bullet {
+	label {
+		display: inline-block;
+		margin-left: 0 !important;
+		margin-right: 0 !important;
+		font-size: .8125rem;
+	}
+
+	input {
+		margin-bottom: 0;
+	}
+}
+
+#search {
+	clear: both;
+	display: block;
+	overflow: hidden;
+	background: $tertiary-color;
+	padding-top: 1rem;
+}
+
+.switch-button {
+	position: relative;
+	padding: 0;
+	display: block;
+	overflow: hidden;
+	border-style: solid;
+	border-width: 1px;
+	margin-bottom: 1.25rem;
+	height: 1.5rem;
+	border-color: #ccc;
+	border-radius: 20px;
+}
+
+.switch-button input {
+	left: 0;
+	display: block !important;
+	position: absolute;
+	z-index: 3;
+	opacity: 0;
+	width: 100%;
+	height: 100%;
+	-moz-appearance: none;
+}
+
+.switch-button input:hover,
+.switch-butotn input:focus {
+	cursor: pointer;
+}
+
+.switch-button label {
+	position: absolute;
+	left: 0;
+	top: 0;
+	color: #fff;
+}
+
+.green {
+	background-color: green;
+}
+
+.red {
+	background-color: red;
+}
+
+.yellow {
+	background-color: yellow;
+	color: #000;
+}
+
+.gray {
+	background-color: gray;
+}
+
+.key-box,
+.key-box ul {
+	font-size: .875rem;
+}
+
+.collapse-button {
+	padding-top: .5rem;
+	padding-bottom: .5rem;
+}
+
+.facetz {
+	padding-left: 1rem;
+}
+
+.facetz h4 {
+	font-size: 1.25rem;
+	border-top: 1px solid scale-color($dark-red, $lightness: 80%);
+}
+
+.facetz li {
+	list-style: none; 
+}
+
+ul.atoz,
+.atoz li {
+	margin: 0;
+}
+
+.atoz i {
+	color: #666;
+}
+
+.toggler {
+	cursor: pointer;
+	text-transform: capitalize;
+}
+
+h3.toggler {
+	border-bottom: 1px solid $dark-red;
+	font-size: 1.5rem;
+}
+
+.collapsed:before {
+	content: "\f0da";
+	font-family: "FontAwesome";
+	padding-right: 5px;
+}
+
+.expanded:before {
+	content: "\f0d7";
+	font-family: "FontAwesome";
+	padding-right: 5px;
+}
+
+.filter-controls div {
+	padding: 0;
+}
+
+/* Fix image so annotations can scroll on the side */
+
+#content-sticky-wrapper {
+	min-width: 41.6666667%;
+    width: 41.6666667%;
+    float: left;
+}
+
+.sticky-wrapper {
+    margin-bottom: 1rem;
+}
+
+/** Tabs **/
+
+dl.tabs {
+	border-bottom: 3px solid scale-color($secondary-color, $lightness: 30%);
+}
+
+.tabs dd {
+	border-right: 3px solid $tertiary-color;
+}
+
+.tabs dd:last-child {
+	border-right: none;
+}
+
+.toggle-column {
+	display: none;   
+}
+
+.bar rect {
+	fill: steelblue;
+	shape-rendering: crispEdges;
+}
+
+.bar text {
+	fill: #000;
+}
+
+.tick text {
+	font-size: 6px;
+}
+
+.axis path,
+.axis line {
+	fill: none;
+	stroke: #000;
+	shape-rendering: crispEdges;
+}
+
+/*** Leaflet styling ***/
+
+.facet-label,
+.facet-select {
+	display: inline-block;
+}
+
+.facet-label {
+	margin-left: 0 !important;
+	padding-left: 0;
+}
+
+input[type="checkbox"].facet-select,
+input[type="checkbox"].facet-or-select,
+input[type="checkbox"].facet-exclude {
+	margin-top: 0px !important;
+	margin-right: 5px;
+}
+
+.search-form {
+	float: left;
+	padding-left: 2%;
+	padding-right: 2%;
+}
+
+.search-results {
+	float: left;
+	padding-left: 10px;
+	margin-top: 10px;
+
+}
+
+.results-table th,
+.results-table td {
+	padding: 5px 10px 10px;
+	border-bottom: 1px solid $secondary-color;
+	line-height: 1.625rem;
+}
+
+.results-table tr:last-child td {
+	border-bottom: 0;
+}
+
+.results-table a.button {
+	margin-bottom: 0;
+}
+
+.search-map-results {
+	float: left;
+	margin-top: 10px;
+	position: relative;
+}
+
+#map {
+    height: 800px;
+	border-style: solid;
+	border-width: 1px;
+}
+
+ul.result-list {
+	display: inline !important;	
+}
+
+ul.filters a {
+	display: inline-block;
+	font-size: .9125em;
+	margin-bottom: 0;
+}
+
+#burials-results h4,
+#gravegoods-results h4,
+#individuals-results h4,
+#inscriptions-results h4,
+#metalwork-results h4,
+#pots-results h4,
+#settlements-results h4,
+#stelae-results h4,
+#toponyms-results h4 {
+	text-transform: capitalize;
+	.button {
+		font-size: .625em;
+	}
+}
+
+/* Facets colour key */
+
+#facet-burials h3 i,
+i.burials {
+	color: #0000ff;
+}
+
+#facet-gravegoods h3 i,
+i.gravegoods {
+	color: #0099cc;
+}
+
+#facet-individuals h3 i,
+i.individuals {
+	color: #800080;
+}
+
+#facet-inscriptions h3 i,
+i.inscriptions {
+	color: #b16211;
+}
+
+#facet-metalwork h3 i,
+i.metalwork {
+	color: #955a6f;
+}
+
+#facet-pots h3 i,
+i.pots {
+	color: #336666;
+}
+
+#facet-settlements h3 i,
+i.settlements {
+	color: #6666dd;
+}
+
+#facet-stelae h3 i,
+i.stelae {
+	color: #4d9e4d;
+}
+
+#facet-toponyms h3 i,
+i.toponyms {
+	color: #cccc33;
+}
+
+/* Clustered marker customisations */
+
+.burials-small-cluster,
+.burials-medium-cluster,
+.burials-large-cluster,
+.gravegoods-small-cluster,
+.gravegoods-medium-cluster,
+.gravegoods-large-cluster,
+.individuals-small-cluster,
+.individuals-large-cluster,
+.individuals-medium-cluster,
+.inscriptions-small-cluster,
+.inscriptions-medium-cluster,
+.inscriptions-large-cluster,
+.metalwork-small-cluster,
+.metalwork-medium-cluster,
+.metalwork-large-cluster,
+.pots-small-cluster,
+.pots-medium-cluster,
+.pots-large-cluster,
+.settlements-small-cluster,
+.settlements-medium-cluster,
+.settlements-large-cluster,
+.stelae-small-cluster,
+.stelae-medium-cluster,
+.stelae-large-cluster,
+.toponyms-small-cluster,
+.toponyms-medium-cluster,
+.toponyms-large-cluster {
+	width: 30px;
+	height: 30px;
+	text-align: center;
+	font-size: 24px;
+	border-radius: 20px;
+	background-clip: padding-box;
+	font-size: .875rem;
+	color: #fff;
+}
+
+/* Burials */
+
+.burials-small-cluster {
+	background-color: rgba(0, 0, 255, .4);
+}
+
+.burials-medium-cluster {
+	background-color:  rgba(0, 0, 255, .6);
+}
+
+.burials-large-cluster {
+	background-color:  rgba(0, 0, 255, 1);
+}
+
+/* Gravegoods */
+
+.gravegoods-small-cluster {
+	background-color: rgba(0, 153, 204, .4);
+}
+
+.gravegoods-medium-cluster {
+	background-color: rgba(0, 153, 204, .6);
+}
+
+.gravegoods-large-cluster {
+	background-color: rgba(0, 153, 204, 1);
+}
+
+/* Individuals */
+
+.individuals-small-cluster {
+	background-color: rgba(128, 0, 128, .4);
+}
+
+.individuals-medium-cluster {
+	background-color: rgba(128, 0, 128, .6);
+}
+
+.individuals-large-cluster {
+	background-color:  rgba(128, 0, 128, 1);
+}
+
+/* Inscriptions */
+
+.inscriptions-small-cluster {
+	background-color: rgba(177, 98, 17, .4);
+}
+
+.inscriptions-medium-cluster {
+	background-color: rgba(177, 98, 17, .6);
+}
+
+.inscriptions-large-cluster {
+	background-color:  rgba(177, 98, 17, 1);
+}
+
+/* Metalwork */
+
+.metalwork-small-cluster {
+	background-color: rgba(149, 90, 111, .4);
+}
+
+.metalwork-medium-cluster {
+	background-color: rgba(149, 90, 111, .6);
+}
+
+.metalwork-large-cluster {
+	background-color:  rgba(149, 90, 111, 1);
+}
+
+/* Pots */
+
+.pots-small-cluster {
+	background-color: rgba(51, 102, 102, .4);
+}
+
+.pots-medium-cluster {
+	background-color: rgba(51, 102, 102, .6);
+}
+
+.pots-large-cluster {
+	background-color:  rgba(51, 102, 102, 1);
+}
+
+/* Settlements */
+
+.settlements-small-cluster {
+	background-color: rgba(102, 102, 221, .4);
+}
+
+.settlements-medium-cluster {
+	background-color: rgba(102, 102, 221, .6);
+}
+
+.settlements-large-cluster {
+	background-color:  rgba(102, 102, 221, 1);
+}
+
+/* Stelae */
+
+.stelae-small-cluster {
+	background-color: rgba(77, 158, 77, .4);
+}
+
+.stelae-medium-cluster {
+	background-color: rgba(77, 158, 77, .6);
+}
+
+.stelae-large-cluster {
+	background-color: rgba(77, 158, 77, 1);
+}
+
+/* Toponyms */
+
+.toponyms-small-cluster {
+	background-color: rgba(204, 204, 51, .4);
+}
+
+.toponyms-medium-cluster {
+	background-color: rgba(204, 204, 51, .6);
+}
+
+.toponyms-large-cluster {
+	background-color: rgba(204, 204, 51, 1);
+}
+
+.cluster-count {
+	line-height: 39px;
+}
+
+#tabs,
+.result-container {
+	background-color: #e8e3de;
+	ul.filters {
+		margin-left: 0;
+		li {
+			margin-left: 0;
+		}
+	}
+}
+
+.lat-label,
+.lng-label {
+	color: rgb(26, 115, 183);
+	display: block;
+	font-weight: bold;
+	padding: 1px 6px;
+	position: absolute;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	white-space: nowrap;
+	z-index: 6;
+}
+
+.leaflet-label {
+	background: none;
+	border-radius: none;
+	border: 0 none rgba(0, 0, 0, .25);
+	display: block;
+	color: rgb(26, 115, 183);
+	display: block;
+	font-weight: bold;
+}
+
+.leaflet-label:after,
+.leaflet-label:before {
+	border-right: 0px;
+	border-top: 0px solid transparent;
+	border-bottom: 0px solid transparent;	
+}
+
+div.selected {
+	background-color: #421613;
+}
+
+.ui-widget-content {
+	background: #e8e3de;
+}
+
+.spinner.active {
+	background-image: url("/static/img/spinner.svg");
+	height: 100px;
+	width: 100px;
+	position: relative;
+	top: 45%;
+	left: 45%;
+	display: table-cell;
+	vertical-align: middle;
+	z-index: 10000;
+	-webkit-animation-name: rotate;
+	-moz-animation-name: rotate;
+	-ms-animation-name: rotate;
+	-o-animation-name: rotate;
+	animation-name: rotate;
+	-webkit-animation-duration: 1s;
+	-moz-animation-duration: 1s;
+	-ms-animation-duration: 1s;
+	-o-animation-duration: 1s;
+	animation-duration: 1s;
+	-webkit-animation-iteration-count: infinite;
+	-moz-animation-iteration-count: infinite;
+	-ms-animation-iteration-count: infinite;
+	-o-animation-iteration-count: infinite;
+	animation-iteration-count: infinite;
+	-webkit-transform-origin: 50% 50%;
+	-moz-transform-origin: 50% 50%;
+	-ms-transform-origin: 50% 50%;
+	-o-transform-origin: 50% 50%;
+	transform-origin: 50% 50%;
+	-webkit-animation-timing-function: linear;
+	-moz-animation-timing-function: linear;
+	-ms-animation-timing-function: linear;
+	-o-animation-timing-function: linear;
+	animation-timing-function: linear;
+}
+
+.spinner.inactive {
+	display: none;
+}
+
+.columns.large-3.waiting {
+	opacity: .2;
+}
+
+.layer-axes,
+.layer-coins,
+.layer-horse,
+.layer-pictish,
+.layer-ritual,
+.layer-roman,
+.layer-shields,
+.layer-souterrain,
+.layer-spears,
+.layer-swords {
+	background-size: 30px 30px;
+	background-repeat: no-repeat;
+	width: 40px;
+	height: 40px;
+	display: block;
+	float: left;
+}
+
+.layer-burials,
+.layer-ogam,
+.layer-stelae {
+	background-size: 20px 20px;
+	background-repeat: no-repeat;
+	width: 20px;
+	height: 20px;
+	display: block;
+	float: left;
+}
+
+.layer-axes {
+	background-image: url("/static/map_icons/axe.svg");
+}
+
+.layer-burials {
+	background-image: url("/static/map_icons/burial_icon.svg");
+}
+
+.layer-coins {
+	background-image: url("/static/map_icons/coins.svg");
+}
+
+.layer-horse {
+	background-image: url("/static/map_icons/horse.svg");
+}
+
+.layer-ogam {
+	background-image: url("/static/map_icons/ogam_icon.svg");
+}
+
+.layer-pictish {
+	background-image: url("/static/map_icons/pictish.svg");
+}
+
+.layer-ritual {
+	background-image: url("/static/map_icons/ritual_sites.svg");
+}
+
+.layer-roman {
+	background-image: url("/static/map_icons/roman.svg");
+}
+
+.layer-shields {
+	background-image: url("/static/map_icons/shields.svg");
+}
+
+.layer-souterrain {
+	background-image: url("/static/map_icons/souterrain.svg");
+}
+
+.layer-spears {
+	background-image: url("/static/map_icons/spears.svg");
+}
+
+.layer-stelae {
+	background-image: url("/static/map_icons/stelae_icon.svg");
+}
+
+.layer-swords {
+	background-image: url("/static/map_icons/swords.svg");
+}

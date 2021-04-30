@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles thumbnail %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'leaflet/leaflet.css' %}">
+<script src="{% static 'leaflet/mapbox.js' %}"></script>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="row main">
+	<div class="columns large-12">
+		<div class="row main">
+			<div class="columns large-9">
+				<h3>{{ ogam.site_fk.site_name }}, {{ ogam.site_fk.area_fk.area_name }}</h3>
+					<table>
+					 <tbody>
+                    <!-- 
+                      <tr>
+                       <td><strong> </strong></td>
+                       <td>{}</td>
+                      </tr>                     
+                    -->
+                      <tr>
+                       <!--<td><strong>General type</strong></td>-->
+                       <!--<td>Test</td>-->
+                       
+                       <td id="map" width="100%;" height="334px;"></td>                       
+                      </tr> 
+                     </tbody>
+                    </table>
+		<h3>Inscriptions</h3>
+        {% for  i in ogam.ogaminscription_set.all %}
+		<table>
+			<tbody>
+				<tr>
+					<td><strong>Name</strong>
+					</td>
+					<td>{{ i.name }}
+					</td>
+				</tr>
+				<tr>
+					<td><strong>Related toponym</strong>
+					</td>
+					<td>{{ i.toponym }}
+					</td>
+				</tr>                
+				<tr>
+					<td><strong>Ref.</strong>
+					</td>
+					<td>{{ i.reference }}
+					</td>
+				</tr>                
+                <tr>
+                    <td><strong>Script</strong>
+                    </td>
+                    <td>
+                        {{ i.script_fk }}
+                    </td>
+            </tr>
+            <tr>
+                    <td><strong>Language of name</strong>
+                    </td>
+                    <td>
+                        {{ i.language_fk }}
+                    </td>
+            </tr>
+            <tr>
+                    <td><strong>Language of inscription</strong>
+                    </td>
+                    <td>
+                        {{ i.language_of_inscription }}
+                    </td>
+                </tr>                
+                                    {% for e in i.inscription.all %}
+                                    <tr>
+                                        <td><strong>Etymology {{ forloop.counter }}</strong>
+                                        </td>
+                                        <td>
+                                            {{ e.type }}, {{ e.description }}, {{ e.comment }} 
+                                        </td>
+                                    </tr>
+                                    {% endfor %}             
+                         {% if i.ogamimage_set.all %} 
+                        <tr colspan="{{ i.ogamimage_set.all.length }}">
+                            {% for p in i.ogamimage_set.all %}
+                                            <td>{% thumbnail p.image "50x50" crop="center" as im %}<a href="#" data-reveal-id="image-{{ forloop.counter }}-{{ p.id }}"><img src="{{ im.url }}" align="middle" width="{{ im.width }}" height="{{ im.height }}">
+                                        {% endthumbnail %}<br><small> {{ p.description }}</small></a></td>
+                            {% endfor %}
+                        </tr>
+                        {% endif %}
+   
+			</tbody>
+		</table>
+        {% endfor %}
+
+        
+	  </div>
+      <div class="columns large-3">
+        <h3>Nearby inscriptions</h3>  
+          <table>
+            <tbody>
+              {% if ten %}            
+              <tr><td><strong>Within 10km</strong></td></tr>
+              {% for t in ten %}
+              <tr>
+                <td><a href="/view/ogamsite_full/{{ t.id }}" class="nearby-record" data-id="{{ t.id }}">{{ t.site_fk.site_name }} ({{ t.distance }}km) &raquo;</a></td>
+              </tr>
+              {% endfor %}
+              {% endif %}
+              <tr><td><strong>Within 50km</strong></td></tr>
+              {% for h in fifty %}
+              <tr>
+                <td><a href="/view/ogamsite_full/{{ h.id }}" class="nearby-record" data-id="{{ h.id }}">{{  h.site_fk.site_name }} ({{ h.distance }}km)   &raquo;</a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+	    </div>
+		</div>
+	</div>                    
+</div>                    
+
+<script>
+
+var map;
+var marker;
+
+var markers = [];
+
+$('.nearby-record').on('mouseover',function(){
+    m = getMarkerById( $(this).data('id') );
+    m.setRadius( 8 );
+})
+
+$('.nearby-record').on('mouseout',function(){
+    m = getMarkerById( $(this).data('id') );
+    m.setRadius( 5 );
+})
+
+function getMarkerById(id){
+    for (m in markers){
+        if (markers[m].options.id == id ){
+            return markers[m]
+        }
+    }
+};
+
+
+
+$(document).ready(function(){
+    map = L.map('map',{scrollWheelZoom:false,zoomControl:false,minZoom:4,maxZoom:17,
+    fullscreenControl: true
+    }).setView([{{ ogam.point.y}},{{ ogam.point.x}}], 9);
+
+    ancient_world = new L.TileLayer("http://{s}.tiles.mapbox.com/v3/isawnyu.map-knmctlkh/{z}/{x}/{y}.png",
+  {attribution:'Map base by <a href="http://awmc.unc.edu/">AWMC</a>'}).addTo(map);
+
+    marker = L.circleMarker([{{ ogam.point.y}},{{ ogam.point.x}}], {fillColor:'blue',stroke:'darkblue',radius:8,fillOpacity:0.8 } ).addTo(map);
+    
+    markers.push(marker);
+    
+    {% for t in ten %}
+    try {
+        t = L.circleMarker([{{ t.point.y }},{{ t.point.x }} ],{id:"{{ t.id }}",fillColor:'green',color:'darkgreen',radius:5}).addTo(map);
+        markers.push(t);
+    }
+    catch (err) {
+        //
+    }
+    {% endfor%}    
+    {% for h in fifty %}
+    try {
+        h = L.circleMarker([{{ h.point.y }},{{ h.point.x }} ],{id:"{{ h.id }}",fillColor:'red',color:'red',radius:5}).addTo(map); 
+        markers.push(h);        
+    }
+    catch (err) {
+        //
+    }    
+    {% endfor%}
+    
+    
+    
+    
+});
+
+</script>
+
+            {% if ogam.ogaminscription_set.all %}
+            {% for i in ogam.ogaminscription_set.all %}
+                {% if i.ogamimage_set.all %}
+                    {% for p in i.ogamimage_set.all %}
+                <div class="reveal-modal" data-reveal id="image-{{ forloop.counter }}-{{ p.id }}">{% thumbnail p.image "x500" crop="center" as im %}<img src="{{ im.url }}" align="middle" width="{{ im.width }}" height="{{ im.height }}">
+                {% endthumbnail %}<br>{{ p.description }}
+                <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                </div>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+           {% endif %}
+
+
+
+{% endblock %}

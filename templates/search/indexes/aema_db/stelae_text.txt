@@ -1,0 +1,4 @@
+{{ object.id }}
+{{ object.location_description }}
+{{ object.general_description }}
+{{ object.motif_overview }}

@@ -1,0 +1,54 @@
+{% load stringtags %}
+<div class="contain-to-grid">
+  <nav class="top-bar" data-topbar role="navigation">
+    <ul class="title-area">
+      <li class="name"></li>
+      <li class="toggle-topbar menu-icon"><a href="#">Menu</a></li>
+    </ul>
+    <section class="top-bar-section">
+      <!-- Right Nav Section -->
+      <ul class="right">
+	{% for page in page_branch %}
+        <li><a href="{{ page.get_absolute_url }}" {% if page.is_current_or_ascendant %}class="active"{% endif %}>{{ page.title}}</a></li>
+        {% endfor %}
+        {% if LANGUAGE_CODE == 'es' %}
+        <li><a href="/es/search">Buscar</a></li>
+        {% elif LANGUAGE_CODE == 'cy' %}
+        <li><a href="/cy/search">Chwilio</a></li>        
+        {% else %}
+        <li><a href="/search">Search</a></li>        
+        {% endif %}
+	{% if request.get_full_path = '/search/' or request.get_full_path = '/en/search/' or request.get_full_path = '/cy/search/' or request.get_full_path = '/es/search/' %}
+        <li class="has-dropdown">
+          <a href="#" title="Select a language">
+            {% if LANGUAGE_CODE == 'en' %}English{% elif LANGUAGE_CODE == 'cy' %}Cymraeg{% else %}Castellano {% endif %}
+          </a>
+		{% spaceless %}
+          <ul class="dropdown">
+          {% if LANGUAGE_CODE == 'en' %}<li><a href="/cy/search/">Cymraeg</a></li><li><a href="/es/search/">Castellano</a></li>
+          {% elif LANGUAGE_CODE == 'cy' %}<li><a href="/en/search/">English</a></li><li><a href="/es/search/">Castellano</a></li>
+          {% else %}<li><a href="/en/search/">English</a></li><li><a href="/cy/search/">Cymraeg</a></li>
+          {% endif %}
+          </ul>
+		{% endspaceless %}
+        </li>
+	{% else %}		
+
+        <li class="has-dropdown">
+          <a href="#" title="Select a language">
+            {% if LANGUAGE_CODE == 'en' %}English{% elif LANGUAGE_CODE == 'cy' %}Cymraeg{% else %}Castellano{% endif %}
+          </a>
+		{% spaceless %}          
+          <ul class="dropdown">  
+        		{% if LANGUAGE_CODE == 'en' %}<li><a href="/cy/{{ page.slug }}">Cymraeg</a></li><li><a href="/es/{{ page.slug }}">Castellano</a></li>
+        		{% elif LANGUAGE_CODE == 'cy' %}<li><a href="/en/{{ page.slug }}">English</a></li><li><a href="/es/{{ page.slug }}">Castellano</a></li>
+        		{% elif LANGUAGE_CODE == 'es' %}<li><a href="/en/{{ page.slug }}">English</a></li><li><a href="/cy/{{ page.slug }}">Cymraeg</a></li>
+        		{% endif %}
+          </ul>
+		{% endspaceless %}
+        </li>
+        {% endif %}
+      </ul>
+    </section>
+  </nav>
+</div>

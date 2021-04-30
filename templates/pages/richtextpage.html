@@ -1,0 +1,15 @@
+{% extends "pages/page.html" %}
+{% load mezzanine_tags %}
+{% block content %}{{ block.super }}
+{% editable page.richtextpage.content %}
+<div class="row main">
+	<div class="large-10 columns">
+		{{ page.richtextpage.content|richtext_filter|safe }}
+	</div>
+	<div class="large-2 columns" id="twitter-widget">
+		<a class="twitter-timeline" href="https://twitter.com/AEMAP_UoW" data-widget-id="651761208811458560" data-chrome="nofooter noscrollbar">Tweets by @AEMAP_UoW</a>
+		<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+	</div>
+</div>
+{% endeditable %}
+{% endblock %}

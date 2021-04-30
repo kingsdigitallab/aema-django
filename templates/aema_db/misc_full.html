@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles thumbnail %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'leaflet/leaflet.css' %}">
+<script src="{% static 'leaflet/mapbox.js' %}"></script>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="row main">
+	<div class="columns large-12">
+		<div class="row main">
+			<div class="columns large-9">
+				<h3>{{ hoard.site_fk.site_name }}, {{ hoard.site_fk.area_fk.area_name }}</h3>
+					<table>
+					 <tbody>
+                    <!-- 
+                      <tr>
+                       <td><strong> </strong></td>
+                       <td>{}</td>
+                      </tr>                     
+                    -->
+                      <tr>
+                       <td><strong>General type</strong></td>
+                       <td>{% for t in hoard.general_type_m2m.all %}{{ t}}{% if not forloop.last %}, {% endif %}{% endfor%}</td>
+                       
+                       <td id="map" width="40%;" rowspan="7"></td>                       
+                      </tr> 
+                      <tr>
+                       <td><strong>Specific type(s)</strong></td>
+                       <td>{% for s in hoard.specific_object_type_m2m.all %}{{ s }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+                      </tr>      
+                      <tr>
+                       <td><strong>No. of objects</strong></td>
+                       <td>{% if hoard.no_of_objects_cleaned %}{{ hoard.no_of_objects_cleaned }}{% else %}Not recorded {% endif %}</td>
+                      </tr>      
+                      <tr>
+                       <td><strong>Find type</strong></td>
+                       <td>{% if hoard.find_type_cleaned %}{{ hoard.get_find_type_cleaned_display }}{% else %}Not recorded {% endif %}</td>
+                      </tr>                        
+                      <tr>
+                       <td><strong>Condition</strong></td>
+                       <td>{% if hoard.object_condition_summary_choice %}{{ hoard.get_object_condition_summary_choice_display }}{% else %}Not recorded{% endif %}</td>
+                      </tr>    
+                      <tr>
+                       <td><strong>Context</strong></td>
+                       <td>{% if hoard.dry_wet_context_choice %} {{ hoard.get_dry_wet_context_choice_display }}{% else %}Not recorded{% endif %}</td>
+                      </tr>
+                      <tr>
+                       <td><strong>Context summary</strong></td>
+                       <td>{% if hoard.context_summary_m2m.all %}{% for c in hoard.context_summary_m2m.all %}{{ c }}{% if not forloop.last %}, {% endif %}{% endfor %} {% endif %}</td>
+                      </tr>    
+                      <tr>
+                       <td><strong>Deposit overview</strong></td>
+                       <td colspan="2">{{ hoard.deposit_overview }}</td>
+                      </tr>                        
+                      <tr>
+                       <td><strong>Object descriptions </strong></td>
+                       <td colspan="2">{{ hoard.specific_object_description }}</td>
+                      </tr>                   
+                                        
+                     </tbody>
+                    </table>
+		<h3>Chronology</h3>
+		<table>
+			<tbody>
+				<tr>
+					<td><strong>Period</strong>
+					</td>
+					<td>{{ hoard.period_summary_fk }}
+					</td>
+				</tr>
+                                <tr>
+                                        <td><strong>Date range</strong>
+                                        </td>
+                                        <td>
+						{{ hoard.chronology_start_date_BC }} - {{ hoard.chronoloy_end_date_BC }}
+                                        </td>
+                                </tr>
+                                <tr>
+                                        <td><strong>Ref</strong>
+                                        </td>
+                                        <td>
+						{{ hoard.refs }}
+                                        </td>
+                                </tr>
+			</tbody>
+		</table>
+
+
+		     {% if hoard.hoardimage_set.all %}
+		     <h3>Images</h3>
+		    <table>
+			<tbody>
+			   <tr>
+                <tr colspan="{{ hoard.hoardimage_set.all.length }}">
+            {% for i in hoard.hoardimage_set.all %}
+                <td>{% thumbnail i.image "50x50" crop="center" as im %}
+			<a href="#" data-reveal-id="image-{{ forloop.counter }}"><img src="{{ im.url }}" align="middle" width="{{ im.width }}" height="{{ im.height}}">
+                {% endthumbnail %}<br><small> {{ i.description }}</small></a></td>
+            {% endfor %}
+                </tr></td>
+		</tbody>
+	  </table>
+	  {% endif %}
+	  </div>
+      <div class="columns large-3">
+        <h3>Nearby miscellaneous finds</h3>  
+          <table>
+            <tbody>
+              {% if ten %}            
+              <tr><td><strong>Within 10km</strong></td></tr>
+              {% for t in ten %}
+              <tr>
+                <td><a href="/view/miscellaneous_full/{{ t.id }}" class="nearby-record" data-id="{{ t.id }}">{{ t.site_fk.site_name }} ({{ t.distance }}km) &raquo;</a></td>
+              </tr>
+              {% endfor %}
+              {% endif %}
+              <tr><td><strong>Within 50km</strong></td></tr>
+              {% for h in fifty %}
+              <tr>
+                <td><a href="/view/miscellaneous_full/{{ h.id }}" class="nearby-record" data-id="{{ h.id }}">{{  h.site_fk.site_name }} ({{ h.distance }}km)   &raquo;</a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+	    </div>
+		</div>
+	</div>                    
+</div>                    
+
+<script>
+
+var map;
+var marker;
+
+var markers = [];
+
+$('.nearby-record').on('mouseover',function(){
+    m = getMarkerById( $(this).data('id') );
+    m.setRadius( 8 );
+})
+
+$('.nearby-record').on('mouseout',function(){
+    m = getMarkerById( $(this).data('id') );
+    m.setRadius( 5 );
+})
+
+function getMarkerById(id){
+    for (m in markers){
+        if (markers[m].options.id == id ){
+            return markers[m]
+        }
+    }
+};
+
+
+
+$(document).ready(function(){
+    map = L.map('map',{scrollWheelZoom:false,zoomControl:false,minZoom:4,maxZoom:17,
+    fullscreenControl: true
+    }).setView([{{ hoard.point.y}},{{ hoard.point.x}}], 9);
+
+    ancient_world = new L.TileLayer("http://{s}.tiles.mapbox.com/v3/isawnyu.map-knmctlkh/{z}/{x}/{y}.png",
+  {attribution:'Map base by <a href="http://awmc.unc.edu/">AWMC</a>'}).addTo(map);
+
+    marker = L.circleMarker([{{ hoard.point.y}},{{ hoard.point.x}}], {fillColor:'blue',stroke:'darkblue',radius:8,fillOpacity:0.8 } ).addTo(map);
+    
+    markers.push(marker);
+    
+    {% for t in ten %}
+    try {
+        t = L.circleMarker([{{ t.point.y }},{{ t.point.x }} ],{id:"{{ t.id }}",fillColor:'green',color:'darkgreen',radius:5}).addTo(map);
+        markers.push(t);
+    }
+    catch (err) {
+        //
+    }
+    {% endfor%}    
+    {% for h in fifty %}
+    try {
+        h = L.circleMarker([{{ h.point.y }},{{ h.point.x }} ],{id:"{{ h.id }}",fillColor:'red',color:'red',radius:5}).addTo(map); 
+        markers.push(h);        
+    }
+    catch (err) {
+        //
+    }    
+    {% endfor%}
+    
+    
+    
+    
+});
+
+</script>
+
+           {% if hoard.miscellaneousimage_set %}
+            {% for i in hoard.miscellaneousimage_set.all %}
+                <div class="reveal-modal" data-reveal id="image-{{ forloop.counter }}">{% thumbnail i.image "500" crop="center" as im %}<img src="{{ im.url }}" align="middle" width="{{ im.width }}" height="{{ im.height }}">
+                {% endthumbnail %}<br>{{ i.description }}
+                <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                </div>
+            {% endfor %}
+           {% endif %}
+
+
+
+{% endblock %}

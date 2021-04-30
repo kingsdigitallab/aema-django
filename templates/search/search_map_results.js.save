@@ -1,0 +1,24 @@
+parseMapResults(
+{ "type": "FeatureCollection",
+  "layer": "",
+  "features": [
+{% with related=page.object_list %}
+{% for obj in related %}
+{% if obj.object.get_geojson %}
+{
+        "type": "Feature",
+        "properties": {
+                "name" : "{{ obj.object.site_fk }}",
+                "id" :  "{{ obj.object.id }}",
+                "layer" : "{{ obj.object.cname }}"
+        }                                        
+                ,"geometry": {
+                        "type": "Point",
+                        "coordinates" :{{ obj.object.get_geojson }}
+                }
+}{% if not forloop.last %},{% endif %}
+{% endif %}
+{% endfor %}
+{% endwith %}
+]}
+);

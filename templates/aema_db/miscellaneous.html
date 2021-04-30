@@ -1,0 +1,49 @@
+<div class="large-12 columns">
+
+  <h3>{{ miscellaneous.site_fk.site_name }}{% if miscellaneous.site_fk.area_fk %}, {{miscellaneous.site_fk.area_fk.area_name }} {% endif %}{% if miscellaneous.site_fk.area_fk.region_fk %}, {{ miscellaneous.site_fk.area_fk.region_fk.region_name }}{% endif %}{% if miscellaneous.site_fk.area_fk.region_fk.country_fk %}, {{ miscellaneous.site_fk.area_fk.region_fk.country_fk.country_name }}{% endif %}</h3>
+
+  <dl class="accordion" data-accordion>
+    <dd class="accordion-navigation">
+      <a href="#panel1">Miscellaneous details</a>
+      <div id="panel1" class="content active">
+         <p>{{ miscellaneous.deposit_context|safe }}</p>
+         <p>{{ miscellaneous.specific_object_description|safe }}</p>	   
+         <p>{{ miscellaneous.notes|safe }}</p>	   
+      </div>
+    </dd>
+    <dd class="accordion-navigation">
+      <a href="#panel2">Summary details</a>
+      <div id="panel2" class="content">
+  	    <table style="width:100%;">
+  			<tbody>
+  				{% if miscellaneous.context_summary_m2m.all %}<tr><th>Context summary</th><td>{% for c in miscellaneous.context_summary_m2m.all%}{{ c }}{% if forloop.last %}{% else %} ,{% endif %} {% endfor %} </td></tr>{% endif %}
+  				<tr><th>Number of objects</th><td>{{ miscellaneous.no_of_objects_cleaned }}</td></tr>
+  				{% if miscellaneous.material_type_fk.all %}<tr><th>Material(s)</th><td>{% for c in miscellaneous.material_type_fk.all%}{{ c }}{% if forloop.last %}{% else %} ,{% endif %} {% endfor %} </td></tr>{% endif %}
+  				{% if miscellaneous.general_type_m2m.all %}<tr><th>General types</th><td>{% for c in miscellaneous.general_type_m2m.all%}{{ c }}{% if forloop.last %}{% else %} ,{% endif %} {% endfor %} </td></tr>{% endif %}
+  				{% if miscellaneous.specific_object_type_m2m.all %}<tr><th>Specific types</th><td>{% for c in miscellaneous.specific_object_type_m2m.all%}{{ c }}{% if forloop.last %}{% else %} ,{% endif %} {% endfor %} </td></tr>{% endif %}					
+  				<tr><th>Condition</th><td>{{ miscellaneous.get_object_condition_summary_choice_display }}</td></tr>				
+  				<tr><th>Dry/Wet context</th><td>{{ miscellaneous.get_dry_wet_context_display }}</td></tr>								
+  			</tbody>
+  		</table>
+      </div>
+    </dd>
+    <dd class="accordion-navigation">
+      <a href="#panel3">Chronology details</a>
+      <div id="panel3" class="content">
+  	    <table style="width:100%;">
+  			<tbody>
+  				<tr><th>Date bracket</th><td>{{ miscellaneous.id_chronology_date_bracket_BC }}</td></tr>				
+  				<tr><th>Period</th><td>{{ miscellaneous.period_summary_fk }}</td></tr>								
+  				<tr><th>References</th><td>{{ miscellaneous.refs }}</td></tr>												
+  			</tbody>
+  		</table>
+      </div>
+    </dd>  
+
+  </dl>
+  <a class="close-reveal-modal">&#215;</a>
+</div>
+
+<script>
+$(document).foundation()
+</script>

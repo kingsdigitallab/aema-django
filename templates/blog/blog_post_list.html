@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load i18n future mezzanine_tags blog_tags keyword_tags disqus_tags %}
+
+{% block content %}
+  <div class="row main">
+      <div class="large-3 columns">
+        <div class="panel">
+          <h3>{% if LANGUAGE_CODE == "en" %}Recent posts{% elif LANGUAGE_CODE == "es"%}Mensajes recientes{% endif %}</h3>
+          <ul>
+			{% for blog in blog_posts %}
+            <li><a href="/blog/{{ blog.slug }}">{{  blog.title }}</a></li>
+			{% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="large-7 columns">
+        <h1>Blog</h1>
+        <ul class="blog">
+		{% for blog in blog_posts %}
+          <li>
+            <h3>{{  blog.title }}</h3>
+            <p class="post-meta">by {{ blog.user }}, {{ blog.publish_date }}</p>
+            <div class="row">
+              <div class="large-10 columns">
+                <p class="excerpt">{{ blog.content|truncatewords:20|removetags:"div p h1 h2 span table tr td th tbody a"|safe }}...</p>
+              </div>
+              <div class="large-2 columns">
+                <p class="more"><a href="/blog/{{ blog.slug }}" class="button tiny radius">Read more</a></p>
+              </div>
+            </div>
+          </li>
+		{% endfor %}
+        </ul>
+      </div>
+                    <div class="large-2 columns" id="twitter-widget">
+            <a class="twitter-timeline" href="https://twitter.com/AEMAP_UoW" data-widget-id="651761208811458560" data-chrome="nofooter noscrollbar">Tweets by @AEMAP_UoW</a>
+                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+        </div>
+    </div>
+	
+{% endblock %}

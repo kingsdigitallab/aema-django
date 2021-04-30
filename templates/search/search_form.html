@@ -1,0 +1,273 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles stringtags %}
+
+{% block metatitle %}
+<title>Search | Atlantic Europe in the Metal Ages</title>
+{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'leaflet/leaflet.css' %}">
+<link rel="stylesheet" href="{% static 'leaflet/Leaflet.markercluster-master/dist/MarkerCluster.Default.css' %}">
+<link rel="stylesheet" href="{% static 'js/c3-0.4.9/c3.min.css' %}">
+<link rel="stylesheet" href="{% static 'leaflet/leaflet.label.css' %}">
+<link rel="stylesheet" href="{% static 'leaflet/leaflet.draw.css' %}">
+<link rel="stylesheet" href="{% static 'leaflet/leaflet.fullscreen.css' %}">
+<link rel="stylesheet" href="{% static 'css/stylesheets/search.css' %}">
+{% compress js %}
+<script>
+	L_PREFER_CANVAS = true;
+</script>
+<script src="{% static 'js/jquery-migrate-1.2.1.min.js' %}"></script>
+<script>
+	function columnHide(){
+		if ($('.paginate-count').attr('colspan') == 3) {
+			$('.paginate-count').attr('colspan', 1);
+		}
+		else {
+			$('.paginate-count').attr('colspan', 3);   
+		}
+		$('.toggle-column').toggle("slide", { direction:"right" });
+	}
+</script>
+<script src="{% static 'leaflet/mapbox.js' %}"></script>
+<script src="{% static 'spin/spin.min.js' %}"></script>
+<script src="{% static 'leaflet/Leaflet.markercluster-master/dist/leaflet.markercluster.js' %}"></script>
+<script src="{% static 'js/c3-0.4.9/c3.min.js' %}"></script>
+<script src="{% static 'js/d3.min.js' %}" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+<script src="{% static 'leaflet/leaflet.label.js' %}"></script>
+<script src="{% static 'leaflet/leaflet-graticule.js' %}"></script>
+<script src="{% static 'leaflet/leaflet.draw.js' %}"></script>
+<script src="{% static 'leaflet/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js' %}"></script>
+<script src="{% static 'leaflet/leaflet-image.js' %}"></script>
+<script src="{% static 'leaflet/Leaflet.fullscreen.min.js' %}"></script>
+<script src="{% static 'leaflet/Leaflet.OverIntent-gh-pages/leaflet.overintent.js' %}"></script>
+<script src="{% static 'leaflet/LeafletFunctionButton.js' %}"></script>
+<script src="{% static 'js/config.js' %}"></script>
+<!-- Separate JS for functions that create analysis objects and arrays for a result set -->
+<script src="{% static 'js/analysis.js' %}"></script>
+<script src="{% static 'js/aema_language.js' %}"></script>
+<!-- Sticky bit -->
+<script type="text/javascript" src="{% static 'js/garand-sticky/jquery.sticky.js' %}"></script>
+<script>
+	$(window).load(function(){
+	  $("#content").sticky({ topSpacing: 0, bottomSpacing: 250 }).removeClass('large-5');
+	});
+</script>
+
+<script type="text/javascript">
+	$(window).load(function(){
+		$('.toggler').click(function() {
+		  	$(this).next('div.facetz').slideToggle(400).removeClass('hidden');
+		    $(this).toggleClass("expanded collapsed");
+		    return false;
+		});
+	});
+</script>
+{% endcompress %}
+{% endblock %}
+
+{% block body_id %}search-page{% endblock %}
+
+{% block content %}
+
+    {% if LANGUAGE_CODE == 'en' %}
+<div class="row main">
+<div class="large-12 columns alert-box secondary radius warningnote"" data-alert="">
+		<p><strong>Please note:</strong>The AEMA project website is at an advanced beta phase and more information is being entered into the database regularly. Translations are available for some pages in Spanish and Welsh and effort to provide full translation continues. If you spot any errors or have any comments, we could be very grateful if you could send us an email using the address on the <a href="/about-the-project/#contact">"About"</a> page.</p>
+		<a href="#" class="close">×</a>
+	</div>
+</div>
+    {% elif LANGUAGE_CODE == 'cy' %}
+<div class="row main">
+<div class="large-12 columns alert-box secondary radius warningnote"" data-alert="">
+		<p><strong>Noder:</strong>Mae gwefan prosiect AEMA wedi cyrraedd cyfnod-beta datblygedig ac mewnbynnir rhagor o wybodaeth o hyd. Mae fersiynau Sbaeneg a Chymraeg ar gael am rai tudalennau ac mae ymdrech i gwblhau tudalennau teirieithog yn para. Pe baech yn sylwi ar gamgymeriadau neu hoffech godi awgrymiadau byddem yn ddiolchgar am ebost atom drwy ddefnyddio’r tab cyswllt ar far y fwydlen.</p>
+		<a href="#" class="close">×</a>
+	</div>
+</div>
+    {% elif LANGUAGE_CODE == 'es' %}
+<div class="row main">
+<div class="large-12 columns alert-box secondary radius warningnote"" data-alert="">
+		<p><strong>Advertencia: </strong>la página web del Proyecto AEMA está en una fase beta avanzada y se continúa de manera regular introduciendo datos. Hay traducciones disponibles para algunas páginas en español e galés y el esfuerzo para ofrecer una traducción completa continúa. Si localiza algún error o tiene comentarios que hacer, estaríamos muy agradecidos si nos enviaran un mensaje de correo electrónico utilizando el apartado de contacto en la barra del menú</p>
+		<a href="#" class="close">×</a>
+	</div>
+</div>
+{% endif %}   
+
+<div id="search">
+	{% block facets %}
+	<div class="search-form columns large-3">
+    	<h3>{% if LANGUAGE_CODE == 'es'%}Búsqueda por texto{% else %}Text search{% endif %}</h3>
+		<form action="."> 
+			<div class="row collapse">
+				<div class="large-8 small-9 columns">
+					<input id="text-search" type="text" placeholder="{% if LANGUAGE_CODE == 'es'%}Buscar...{% else %}Search...{% endif %}">
+				</div>
+				<div class="large-4 small-3 columns">
+					<input id="text-search-submit" type="submit" onsubmit='return false;' onclick='return false;' value="{% if LANGUAGE_CODE == 'es'%}Buscar{% else %}Search{% endif %}" class="button expand collapse-button">
+				</div>
+			</div>
+			<div class="row">
+				<div class="large-12 columns">
+					<ul class="no-bullet two-columns">
+						<li>
+							<input id="all-models" type="radio" name="model" value="all" checked>
+							<label for="all-models">{% if LANGUAGE_CODE == 'es'%}Todos{% else %}All{% endif %}</label>
+						</li>
+						<li>
+							<input id="burial-models" type="radio" name="model" value="burials">
+							<label for="burial-models">{% if LANGUAGE_CODE == 'es'%}Enterramientos{% else %}Burials{% endif %}</label>
+						</li>
+						<li>
+							<input id="individual-models" type="radio" name="model" value="individuals">
+							<label for="individuals-models">{% if LANGUAGE_CODE == 'es'%}Individuos{% else %}Individuals{% endif %}</label>
+						</li>
+						<li>
+							<input id="pots-models" type="radio" name="model" value="pots">
+							<label for="pots-models">{% if LANGUAGE_CODE == 'es'%}Cerámicas{% else %}Pots{% endif %}</label>
+						</li>                        
+						<li>
+							<input id="pots-gravegoods" type="radio" name="model" value="gravegoods">
+							<label for="pots-gravegoods">{% if LANGUAGE_CODE == 'es'%}Ajuares{% else %}Gravegoods{% endif %}</label>
+						</li>                          
+						<li>
+							<input id="metalwork-models" type="radio" name="model" value="metalwork">
+							<label for="metalwork-models">{% if LANGUAGE_CODE == 'es'%}Metalistería{% else %}Metalwork{% endif %}</label>
+						</li>
+						<li>
+							<input id="stelae-models" type="radio" name="model" value="stelae">
+							<label for="stelae-models">{% if LANGUAGE_CODE == 'es'%}Estelas{% else %}Stelae{% endif %}</label>
+						</li>
+						<li>
+							<input id="inscriptions-models" type="radio" name="model" value="inscriptions">
+							<label for="inscriptions-models">{% if LANGUAGE_CODE == 'es'%}Inscripciones{% else %}Inscriptions{% endif %}</label>
+						</li>
+						<li>
+							<input id="settlements-models" type="radio" name="model" value="settlements">
+							<label for="settlements-models">{% if LANGUAGE_CODE == 'es'%}Asentamientos{% else %}Settlements{% endif %}</label>
+						</li>
+						<li>
+							<input id="toponyms-models" type="radio" name="model" value="toponyms">
+							<label for="toponyms-models">{% if LANGUAGE_CODE == 'es'%}Topónimos{% else %}Toponyms{% endif %}</label>
+						</li>
+						<li>
+							<input id="miscellaneous-models" type="radio" name="model" value="miscellaneous">
+					 		<label for="miscellaneous-models">{% if LANGUAGE_CODE == 'es'%}Miscellaneous{% else %}Miscellaneous{% endif %}</label>
+						</li>                        
+					</ul>
+				</div>
+			</div>
+		</form>
+
+		<div class="key-box">
+            {% if LANGUAGE_CODE = 'es' %}
+			<h5><i class="fa fa-info-circle"></i> Clave española para búsquedas y resultados</h5>
+			<ul class="no-bullet">
+				<li><i class="fa fa-check-circle"></i> <em>Y</em>: mostrará los elementos que corresponden a todos los criterios seleccionados</li>
+				<li><i class="fa fa-plus-circle"></i> <em>O</em>: mostrará los elementos que se corresponden al menos a uno de los criterios seleccionados</li>
+				<li><i class="fa fa-times-circle"></i> <em>EXCLUIR</em>: no mostrará elementos que se correspondan con estos criterios</li>
+			</ul>
+            {% else %}
+			<h5><i class="fa fa-info-circle"></i> Key to search and results</h5>
+			<ul class="no-bullet">
+				<li><i class="fa fa-check-circle"></i> <em>AND</em>: will show items that meet all selected criteria.</li>
+				<li><i class="fa fa-plus-circle"></i> <em>OR</em>: will show items that meet at least one selected criteria.</li>
+				<li><i class="fa fa-times-circle"></i> <em>Exclude</em>: will <strong>not show</strong> items that meet those criteria.</li>
+			</ul>
+            {% endif %}
+		</div>
+	
+		<div id="facets"><!-- Use model/object type here to identify facet groups ? -->
+			<div id="facet-burials">
+			</div>
+            <div id="facet-individuals">
+            </div>
+            <div id="facet-pots">
+            </div>                
+            <div id="facet-gravegoods">
+            </div>
+			<div id="facet-metalwork">
+			</div>
+			<div id="facet-stelae">
+			</div>
+			<div id="facet-inscriptions">
+			</div>
+			<div id="facet-toponyms">
+			</div>
+			<div id="facet-settlements">
+			</div>
+			<div id="facet-miscellaneous">
+			</div>            
+		</div><!-- end facets -->
+	</div>
+
+	<div id="content" class="search-map-results large-5 columns">
+		<button role="button" class="secondary button radius less-padding right" onclick="printMap()" data-reveal-id="image-modal" data-reveal><i class="fa fa-image"></i> Render map</button>
+		<button role="button" class="button radius less-padding" onclick="zoomToEurope()"><i class="fa fa-map-marker"></i> Europe <i class="fa fa-angle-double-right"></i></button>
+		<button role="button" class="button radius less-padding" onclick="zoomToIberia()"><i class="fa fa-map-marker"></i> Iberia <i class="fa fa-angle-double-right"></i></button>
+		<button role="button" class="button radius less-padding" onclick="zoomToEngland()"><i class="fa fa-map-marker"></i> UK <i class="fa fa-angle-double-right"></i></button>
+		<button role="button" class="button radius less-padding" onclick="zoomToIreland()"><i class="fa fa-map-marker"></i> Ireland <i class="fa fa-angle-double-right"></i></button>		
+		<button role="button" class="button radius less-padding" onclick="zoomToFrance()"><i class="fa fa-map-marker"></i> France <i class="fa fa-angle-double-right"></i></button>
+		{% include 'search/search_map_results.html' %}
+	</div>
+
+	<div class="search-results columns large-4">
+		{% include 'search/search_results.html' %}
+	</div>
+	{% endblock %}
+</div><!-- end search-form -->
+
+<div id="more-detail-modal" class="reveal-modal" data-reveal>
+</div>
+
+<div id="layer-modal" class="reveal-modal" data-reveal>
+</div>
+
+<div id="graph-modal" class="reveal-modal" data-reveal>
+	<p>Nothing to categorise on currently</p>
+</div>
+
+<div id="category-modal" class="reveal-modal" data-reveal>
+	<p>Nothing to categorise on currently</p>
+</div>
+
+<div id="image-modal" class="reveal-modal" data-reveal>
+	<div><a class="close-reveal-modal">&#215;</a></div>
+	<div class="large-12 columns">
+		<div id="map-image" class="large-6 columns">
+			
+		</div>
+		<div id="map-image-details" class="large-6 columns">
+			<p>Right click on this image to download to your hard drive. NB. To print burials etc. <strong>clustering must be toggled <em>off</em></strong>.</p>
+			<p>Selected filters:</p>
+		</div>
+	</div>
+</div>
+{% if LANGUAGE_CODE == 'es' %} 
+	<script>
+    
+    var language = "{{ LANGUAGE_CODE }}"    ;
+    
+		$(document).ready(function(){
+			// On load change headings only...
+			//changeTextLanguage('h4',spanishHeader4Dict);
+			changeTextLanguage('h3',spanishHeader3Dict);
+			changeTextLanguage('p',spanishParaDict);
+			changeTextLanguage('a',spanishLinkDict);
+			changeTextLanguage('a',spanishHeader3Dict);
+			changeTextLanguage('button',spanishButtonDict);	
+
+			$("h3.toggler.collapsed").on('click',function(  ){
+                // Minimise time by only applying changes to the h4s beneaeth this toggle
+                changeTextLanguage('h4',spanishHeader4Dict,$(this));
+			});		
+            
+            $("h4.toggler.collapsed").on('click',function(  ){
+                // Minimise time by only applying changes to the h4s beneaeth this toggle
+                changeTextLanguage('label',spanishLabelDict,$(this));
+			});		
+
+		})
+	</script>
+{% endif %}
+{% endblock %}

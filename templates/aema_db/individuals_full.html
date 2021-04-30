@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'leaflet/leaflet.css' %}">
+<script src="{% static 'leaflet/mapbox.js' %}"></script>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="row main">
+	<div class="columns large-12">
+		<div class="row main">
+			<div class="columns large-9">
+				<h3>{{ individual.burial.site_fk.site_name }}, {{ individual.burial.site_fk.area_fk.area_name }}</h3>
+                    {% if individual.burial.biblio_for_site %}<h5><em>({{ individual.burial.biblio_for_site }})</em></h5>{% endif %}
+					<table>
+					 <tbody>
+                    <!-- 
+                      <tr>
+                       <td><strong> </strong></td>
+                       <td>{ }</td>
+                      </tr>                     
+                    -->
+                    
+					  <tr>
+                        <td colspan="2"><strong><a href="/view/burials_full/{{ individual.burial.id }}">Main burial site record &raquo;</a></strong></td>
+                        <td rowspan="6" id="map" width="30%;"> Map to go here</td>
+					  </tr>
+					  <tr>
+                      
+			 <td><strong>Burial type</strong></td> <td>{{ individual.get_burial_type_display }}</td>
+					  </tr>                      
+					  <tr>
+              <td><strong>Gender</strong></td> <td>{{ individual.get_gender_display }}</td>
+					  </tr>
+					  <tr>
+              <td><strong>Age</strong></td> <td>{{ individual.get_age_display }}</td>
+					  </tr>                      
+					  <tr>
+              <td><strong>Usage</strong></td> <td>{{ individual.get_usage_display }}</td>
+					  </tr>    
+					  <tr>
+              <td><strong>Grave type</strong></td> <td>{{ individual.site_type }}</td>
+					  </tr>       
+                {% if individual.location_in_grave %}
+                      <tr>
+                       <td><strong>Location</strong></td>
+                       <td colspan="2">{{ individual.location_in_grave }}</td>
+                      </tr>     
+                {% endif %}                       
+                {% if individual.position_fk %}
+                      <tr>
+                       <td><strong>Position</strong></td>
+                       <td colspan="2">{{ individual.position_fk }}</td>
+                      </tr>     
+                {% endif %}                      
+                {% if individual.orientation %}
+                    <tr>
+                       <td><strong> </strong></td>
+                       <td colspan="2">{{ individual.get_orientation_display }}</td>
+                      </tr>  
+                {% endif %}
+                {% if individual.head_position %}
+                       <td><strong>Head position</strong></td>
+                       <td colspan="2">{{ individual.get_head_position_display }}</td>
+                      </tr>  
+                {% endif %}
+                {% if individual.head_direction %}
+                       <td><strong>Head direction </strong></td>
+                       <td colspan="2">{{ individual.get_head_direction_display }}</td>
+                      </tr>  
+                {% endif %}                
+                {% if individual.general_chronology_fk %}
+                      <tr>
+                       <td><strong>General chronology</strong></td>
+                       <td colspan="2">{{ individual.general_chronology_fk }}</td>
+                      </tr>                           
+                {% endif %}
+                {% if individual.organic_material_fk %}
+                      <tr>
+                       <td><strong>Organic material</strong></td>
+                       <td colspan="2">{{ individual.organic_material_fk }}</td>
+                      </tr>                           
+                {% endif %}                
+					 </tbody>	
+					</table>
+            {% if individual.burialindividualdates_set.all %}
+            <h3>Individual chronologies</h3>
+            <table>
+                <tbody>
+                    {% for d in individual.burialindividualdates_set.all %}
+                    <tr>
+                        <td><strong>Dating {{ forloop.counter }}</strong></td>
+                        <td>{{ d.approx_uncalibrated_date_bp }}±{{ d.error_margin }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+            {% if individual.pot_m2m.all or individual.grave_good_m2m.all %}
+            <h3>Pots and other gravegoods</h3>
+            <table>
+                <tbody>
+                    {% if individual.pot_m2m.all %}
+                    {% for p in individual.pot_m2m.all %}
+                    <tr>
+                        <td><strong>Pot {{ forloop.counter }}</strong></td>
+                        <td>{{ p.description}}{% if p.pot_disposition %}, {{ p.get_pot_disposition_display }}{% endif %}{% if p.pot_placement_fk %}, {{ p.pot_placement_fk }}{% endif %}{% if p.condition %}, {{ p.get_condition_display }}{% endif %}{% if p.pot_type_fk %}, {{ p.pot_type_fk }}{% endif %}</td>
+                    <tr>
+                    {% endfor %}
+                    {% endif %}
+                    {% if individual.grave_good_m2m.all %}
+                    {% for g in individual.grave_good_m2m.all %}
+                    <tr>
+                        <td><strong>Gravegood {{ forloop.counter }}</strong></td>
+                        <td>{{ g.functional_type_fk }}{% if g.raw_materials_m2m.all %}({% for r in g.raw_materials_m2m.all %}{{ r }}{% if not forloop.last %}, {% endif %}{% endfor %}){% endif %}</td>
+                    <tr>
+                    {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+            {% endif %}
+			</div>
+      <div class="columns large-3">
+        <h3>Sites nearby</h3>  
+          <table>
+            <tbody>
+              {% if ten %}
+              <tr><td><strong>Within 10km :</strong></td></tr>
+              {% for t in ten %}
+              <tr>
+                <td><a href="/view/burials_full/{{ t.id }}" class="nearby-record" data-id="{{ t.id }}">{{ t.site_fk.site_name }} ({{ t.distance }}km) &raquo;</a></td>
+              </tr>
+              {% endfor %}
+              {% endif %}
+              {% if fifty %}
+              <tr><td><strong>Within 50km :</strong></td></tr>
+              {% for h in fifty %}
+              <tr>
+                <td><a href="/view/burials_full/{{ h.id }}" class="nearby-record" data-id="{{ h.id }}">{{  h.site_fk.site_name }} ({{ h.distance }}km) &raquo;</a></td>
+              </tr>
+              {% endfor %}
+              {% endif %}
+            </tbody>
+          </table>
+	    </div>
+		</div>
+	</div>
+</div>
+
+<script>
+
+var map;
+var marker;
+
+var markers = [];
+
+$('.nearby-record').on('mouseover',function(){
+    m = getMarkerById( $(this).data('id') );
+    m.setRadius( 8 );
+})
+
+$('.nearby-record').on('mouseout',function(){
+    m = getMarkerById( $(this).data('id') );
+    m.setRadius( 5 );
+})
+
+function getMarkerById(id){
+    for (m in markers){
+        if (markers[m].options.id == id ){
+            return markers[m]
+        }
+    }
+};
+
+
+
+$(document).ready(function(){
+    map = L.map('map',{scrollWheelZoom:false,zoomControl:false,minZoom:4,maxZoom:17,
+    fullscreenControl: true
+    }).setView([{{ individual.burial.point.y}},{{ individual.burial.point.x}}], 9);
+
+    ancient_world = new L.TileLayer("http://{s}.tiles.mapbox.com/v3/isawnyu.map-knmctlkh/{z}/{x}/{y}.png",
+  {attribution:'Map base by <a href="http://awmc.unc.edu/">AWMC</a>'}).addTo(map);
+
+    marker = L.circleMarker([{{ individual.burial.point.y}},{{ individual.burial.point.x}}], {fillColor:'blue',stroke:'darkblue',radius:8,fillOpacity:0.8 } ).addTo(map);
+    
+    markers.push(marker);
+    
+    {% for t in ten %}
+    try {
+        t = L.circleMarker([{{ t.point.y }},{{ t.point.x }} ],{id:"{{ t.id }}",fillColor:'green',color:'darkgreen',radius:5}).addTo(map);
+        markers.push(t);
+    }
+    catch (err) {
+        //
+    }
+    {% endfor%}    
+    {% for h in fifty %}
+    try {
+        h = L.circleMarker([{{ h.point.y }},{{ h.point.x }} ],{id:"{{ h.id }}",fillColor:'red',color:'red',radius:5}).addTo(map); 
+        markers.push(h);        
+    }
+    catch (err) {
+        //
+    }    
+    {% endfor%}
+    
+    
+    
+    
+});
+
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,6 @@
+{{ object.site_fk }}
+{{ object.site_type_specific.all }}
+{{ object.funerary_context }}
+{{ object.burial_summary }}
+{{ object.skeleton_summary }}
+{{ object.grave_good_short_summary }}

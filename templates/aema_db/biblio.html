@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'leaflet/leaflet.css' %}">
+<script src="{% static 'leaflet/mapbox.js' %}"></script>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="row main">
+	<div class="columns large-12">
+        <table>
+            <tbody>
+                <tr><th>Title</th><th>Year</th><th>Author/Reference</th><th>Editors</th><th>Publisher</th><th>Place of publication</th><th>Volume/Edition</th><th>Pages</th></tr>
+        {% for b in biblios %}
+                <tr>
+                    <td>{{ b.title }}</td>
+                    <td>{{ b.years }}</td>
+                    <td>{% if b.reference %}{{ b.reference }}{% else %}{% endif %}</td>
+                    <td>{% if b.editors %}{{ b.editors }}{% else %}{% endif %}</td>
+                    <td>{% if b.publisher %}{{ b.publisher  }}{% else %}{% endif %}</td>
+                    <td>{% if b.place_of_publication %}{{ b.place_of_publication }}{% else %}{% endif %}</td>
+                    <td>{% if b.volume %}{{ b.volume }}{% else %}{% endif %}</td>
+                    <td>{% if b.page_numbers %}{{ b.page_numbers }}{% else %}{% endif %}</td>                                        
+                </tr>
+        {% endfor %}
+                
+        </table>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block meta_title %}{% trans "Home" %}{% endblock %}
+{% block title %}{% trans "Home" %}{% endblock %}
+
+{% block content %}
+
+    {% if LANGUAGE_CODE == 'en' %}
+<div class="row main">
+<div class="large-12 columns alert-box secondary radius warningnote"" data-alert="">
+		<p><strong>Please note:</strong>The AEMA project website is at an advanced beta phase and more information is being entered into the database regularly. Translations are available for some pages in Spanish and Welsh and effort to provide full translation continues. If you spot any errors or have any comments, we could be very grateful if you could send us an email using the contact address on the <a href="/about-the-project/#contact">"About"</a> page.</p>
+		<a href="#" class="close">×</a>
+	</div>
+</div>
+    {% elif LANGUAGE_CODE == 'cy' %}
+<div class="row main">
+<div class="large-12 columns alert-box secondary radius warningnote"" data-alert="">
+		<p><strong>Noder:</strong>Mae gwefan prosiect AEMA wedi cyrraedd cyfnod-beta datblygedig ac mewnbynnir rhagor o wybodaeth o hyd. Mae fersiynau Sbaeneg a Chymraeg ar gael am rai tudalennau ac mae ymdrech i gwblhau tudalennau teirieithog yn para. Pe baech yn sylwi ar gamgymeriadau neu hoffech godi awgrymiadau byddem yn ddiolchgar am ebost atom drwy ddefnyddio’r tab cyswllt ar far y fwydlen.</p>
+		<a href="#" class="close">×</a>
+	</div>
+</div>
+    {% elif LANGUAGE_CODE == 'es' %}
+<div class="row main">
+<div class="large-12 columns alert-box secondary radius warningnote"" data-alert="">
+		<p><strong>Advertencia: </strong>la página web del Proyecto AEMA está en una fase beta avanzada y se continúa de manera regular introduciendo datos. Hay traducciones disponibles para algunas páginas en español e galés y el esfuerzo para ofrecer una traducción completa continúa. Si localiza algún error o tiene comentarios que hacer, estaríamos muy agradecidos si nos enviaran un mensaje de correo electrónico utilizando el apartado de contacto en la barra del menú</p>
+		<a href="#" class="close">×</a>
+	</div>
+</div>
+{% endif %}    
+
+<div class="row main">
+  <div class="large-10 columns">
+    {% if LANGUAGE_CODE == 'en' %}
+    <p>Atlantic Europe in the Metal Ages explores the development of language in Atlantic Europe (Britain, Ireland, northwest France, western Iberia) from 2900BC to the arrival of Latin (AD 400). It aims to test the hypothesis that Celtic probably evolved from Indo-European in Atlantic Europe during the Bronze Age. The prestigious research team is being led by Professor John Koch at the University of Wales.</p>
+    <p>The project will make extensive use of GIS in compiling scientific evidence and a huge body of historical, linguistic and archaeological data, together with object metadata from the National Museum of Wales. Co-Investigator Paul Vetch, at King's College London's Department of Digital Humanities, will lead a team (including the Department's web mapping specialist, Neil Jakeman) on research and development work around the curation and visualisation of the GIS, and direct exposure of the evidential data following Open Data principles.</p>
+    {% elif LANGUAGE_CODE == 'es' %}
+
+    <p>Europa Atlántica en la Edad de los Metales investiga el desarrollo de las lenguas en la Europa Atlántica (Gran Bretaña, Irlanda, el noroeste de Francia y el oeste de la Península Ibérica) desde 2900 a. C. hasta la llegada del latín a Irlanda (400 d. C.). El motivo de la investigación es el de examinar la hipótesis según la cual el celta evolucionó a partir del indoeuropeo en la Europa Atlántica durante la Edad del Bronce. El prestigioso equipo de investigadores está dirigido por el catedrático John Koch, de la Universidad de Gales.</p>
+
+    <p>El proyecto usará sistemas de información geográfica (SIG) para colocar sobre mapas los datos recogidos, los cuales constituirán un vasto conjunto extraído de fuentes históricas, lingüísticas y arqueológicas, incluyendo registros de objetos del Museo Nacional de Gales. Paul Vetch, miembro del Departamento de Humanidades Digitales del King´s College de Londres, dirigirá por su parte un equipo (el cual incluirá a Neil Jakeman, especialista de dicho departamento en aplicaciones para internet) que se ocupará de los aspectos de edición y visualización de los SIG, incluyendo la exposición de las evidencias de acuerdo con los principios de Datos Abiertos.</p>
+    {% else %}
+    <p>Mae trosiad Cymraeg y testun yn cael ei ddatblygu ar hyn o bryd.</p>
+    {% endif %}
+        
+    <ul data-orbit>
+      <li>
+        <img src="/static/img/slide.jpg" alt="slide 1">
+        <div class="orbit-caption"> AEMA</div>
+      </li>
+      <li>
+        <img src="/static/img/Caergwrle_Oxbow_clippped.jpg" alt="slide 2">
+        <div class="orbit-caption"> Caergwrle Oxbow</div>
+      </li>
+      <li>
+        <img src="/static/img/Seville_clipped.jpg" alt="slide 3">
+        <div class="orbit-caption"> Seville swords</div>
+      </li>
+    </ul>  
+  </div>
+
+  <div class="large-2 columns" id="twitter-widget">
+    <a class="twitter-timeline" href="https://twitter.com/AEMAP_UoW" data-widget-id="651761208811458560" data-chrome="nofooter noscrollbar">Tweets by @AEMAP_UoW</a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+  </div>      
+</div>
+{% endblock %}

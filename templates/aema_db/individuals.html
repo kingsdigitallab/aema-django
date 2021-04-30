@@ -1,0 +1,129 @@
+{% load mezzanine_tags %}
+
+<div class="large-12 columns">
+
+  <h3>{{ burial.burial.site_fk.site_name }}{% if burial.burial.site_fk.area_fk %}, {{burial.burial.site_fk.area_fk.area_name }} {% endif %}{% if burial.burial.site_fk.area_fk.region_fk %}, {{ burial.burial.site_fk.area_fk.region_fk.region_name }}{% endif %}{% if burial.burial.site_fk.area_fk.region_fk.country_fk %}, {{ burial.burial.site_fk.area_fk.region_fk.country_fk.country_name }}{% endif %}</h3>
+
+  <dl class="accordion" data-accordion>
+    <dd class="accordion-navigation">
+      <a href="#panel1">Site details</a>
+      <div id="panel1" class="content active">
+         <p>{% for site in burial.burial.site_type_m2m.all %}{{ site.site_type }}{% if not forloop.last %}, {% endif %}{% endfor %}
+         {% if burial.burial.site_type_specific.all %} ({% for spec in burial.burial.site_type_specific.all %}{{ spec.description }}{% if not forloop.last %}, {% endif %}{% endfor %}){% endif %}</p>
+      </div>
+    </dd>
+    {% if burial.burial.burialindividuals_set.all %}
+    <dd class="accordion-navigation">
+      <a href="#panel2">All Burials at site</a>
+      <div id="panel2" class="content">
+        <dl class="tabs" data-tab>
+        	{% for b in burial.burial.burialindividuals_set.all %}
+          <dd {% if forloop.counter == 1 %}class="active"{% endif %}><a href="#panel2-{{ forloop.counter}}">{% if burial.id = b.id%}Selected Individual{% else %}Indivdual {{ forloop.counter }}{% endif %}</a></dd>
+          {% endfor %}
+        </dl>
+        <div class="tabs-content">
+        	{% for b in burial.burial.burialindividuals_set.all %}
+          <div class="content {% if forloop.first %}active{% endif %}" id="panel2-{{ forloop.counter }}">
+            <table style="width:100%;">
+            <thead>
+            	<tr><th colspan="2">Gender: {{ b.get_gender_display }}, Age: {{ b.get_age_display }}, Burial type: {{ b.get_burial_type_display }}</th></tr>
+            </thead>
+            <tbody>
+            	<tr><th>Usage</th><td>{{ b.get_usage_display }}</td></tr>
+            	<tr><th>Position</th><td>{{ b.position_fk.description }}</td></tr>
+             	<tr><th>Orientation</th><td>{{ b.get_orientation_display }}</td></tr>
+             	<tr><th>Head position</th><td>{{ b.get_head_position_display }}</td></tr>
+            	<tr><th>Head direction</th><td>{{ b.get_head_direction_display }}</td></tr> 	         	
+  			<tr><th>Grave Goods</th><td>{% for g in b.grave_good_m2m.all %} {{ g.description }}{% if g.placement_fk %} ({{ g.placement_fk}}) {% endif %}</br>{% endfor %}</td></tr>
+  			<tr><th>Pots</th><td>{% for p in b.pot_m2m.all %} {{ p.description }} {{ p.pot_placement_fk}}</br>{% endfor %}</td></tr>			
+            </tbody>
+            </table>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </dd>
+    {% endif %}
+    {% if burial.gravegood_set.all %}
+    <dd class="accordion-navigation">
+      <a href="#panel3">Grave goods</a>
+      <div id="panel3" class="content">
+        <dl class="tabs" data-tab>
+          {% for g in burial.gravegood_set.all %}
+          <dd {% if forloop.first %}class="active"{% endif %}><a href="#panel3-{{ forloop.counter }}">Grave good {{ forloop.counter }}</a></dd>
+          {% endfor %}
+        </dl>
+
+        <div class="tabs-content">
+          {% for g in burial.gravegood_set.all %}
+          <div class="content {% if forloop.first %}active{% endif %}" id="panel3-{{ forloop.counter }}">  
+             <table style="width:100%;">
+            <thead>
+            	<tr><th colspan="2">{{ g.functional_type_fk.description }}</th></tr>
+            </thead>
+            <tbody>
+             	<tr><th>Description</th><td>{{ g.description }}</td></tr>
+            	<tr><th>Material</th><td>{% for m in g.raw_materials_m2m.all %}{{ m.description }}{% if not forloop.last %}, {% endif %}{% endfor %}</td></tr>
+            	<tr><th>Placement</th><td>{{ g.placement_fk.description }}</td></tr>
+
+           	         	
+            </tbody>
+            </table>        
+           </div>
+          {% endfor %}
+        </div>
+      </div>
+    </dd>
+    {% endif %}
+
+    {% if burial.Burial.all %}
+    <dd class="accordion-navigation">
+      <a href="#panel4">Pots</a>
+      <div id="panel4" class="content">
+        <dl class="tabs" data-tab>
+          {% for p in burial.Burial.all %}
+          <dd {% if forloop.first %}class="active"{% endif %}><a href="#panel4-{{ forloop.counter }}">Pot {{ forloop.counter }}</a></dd>
+          {% endfor %}
+        </dl>
+
+        <div class="tabs-content">
+          {% for p in burial.Burial.all %}
+          <div class="content {% if forloop.first %}active{% endif %}" id="panel4-{{ forloop.counter }}">  
+            <table style="width:100%;">
+            <thead>
+            	<tr><th colspan="2">{{ p.pot_type_fk.description }}</th></tr>
+            </thead>
+            <tbody>
+             	<tr><th>Description</th><td>{{ p.description }}</td></tr>
+            	<tr><th>Placement</th><td>{{ p.pot_placement_fk }}</td></tr>
+            	<tr><th>Condition</th><td>{{ p.get_condition_display }}</td></tr>
+
+           	         	
+            </tbody>
+            </table>        
+           </div>
+          {% endfor %}
+        </div>
+      </div>
+    </dd>
+    {% endif %}
+
+    {% if burial.burialimage_set.all %}
+    <dd class="accordion-navigation">
+      <a href="#panel5">Images</a>
+      <div id="panel5" class="content">
+  		<ul class="clearing-thumbs  small-block-grid-6" data-clearing>
+          {% for i in burial.burialimage_set.all %}
+  			<li><a href="/static/media/{{ i.image }}"><img  data-caption="{{ i.description }}" src="/static/media/{% thumbnail i.image 200 0 %}"></a></li>
+          {% endfor %}
+  		</ul>
+      </div>
+    </dd>
+    {% endif %}
+  </dl>
+  <a class="close-reveal-modal">&#215;</a>
+</div>
+
+<script>
+$(document).foundation()
+</script>

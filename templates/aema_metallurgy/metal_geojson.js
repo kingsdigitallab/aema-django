@@ -1,0 +1,1 @@
+{% load stringtags %}[{% for m in metal_grid %}{% with mg=m|str_replace:'\\'|str_replace:'["'|str_replace:'"]' %}{{ mg|safe }}{% if forloop.last %}{% else %},{% endif %}{% endwith %}{% endfor %}]

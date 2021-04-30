@@ -1,0 +1,102 @@
+{% load stringtags %}
+<h3 class="toggler collapsed"><i class="fa fa-circle right"></i>{{ query_type }}</h3>
+
+<div class="facetz hidden master">
+	<div class="row filter-controls">
+		<div class="large-6 columns right">
+			<button role="button" class="button less-padding radius right" onclick="clearFacets('{{ query_type }}')"><i class="fa fa-refresh"></i> Reset</button>
+		</div>
+		<div class="large-4 columns">
+			<p>Clustering<p>
+		</div>
+		<div class="large-2 columns">
+			<div class="switch-button tiny round gray">
+				<input class="layer-toggle" data-layer="{{ query_type}}" id="{{ query_type }}-layer-toggle" type="checkbox" disabled>
+				<label for="{{ query_type }}-layer-toggle" class="i-am-label">On</label>
+			</div>
+		</div>
+	</div>
+	<div class="row filter-controls">    
+		<div class="large-6 columns right">
+			<div>&nbsp;</div>
+		</div>     
+		<div class="large-4 columns">
+			<p>Label<p>
+		</div>
+		<div class="large-2 columns">
+			<div class="switch-button tiny round red">
+				<input class="layer-label-toggle" data-layer="{{ query_type}}" id="{{ query_type }}-layer-label-toggle" type="checkbox" disabled>
+				<label for="{{ query_type }}-layer-label-toggle" class="i-am-label">Off</label>
+			</div>
+		</div>        
+	</div>        
+
+	<form id="{{ query_type}}-export" action="/export/{{ query_type }}/output.json" method="post">
+		
+		<input type="submit" class="button secondary less-padding radius" value="Export {{ query_type }} markers">
+		<input id="{{ query_type }}-json" type="hidden" name="stringified-json">
+		<input type="button" id="{{ query_type }}-graphs" data-record-type="{{ query_type }}" class="button secondary less-padding radius graph"
+			 data-reveal-id="graph-modal" value="Graph values"></input>
+		<input type="button" id="{{ query_type }}-categories" data-record-type="{{ query_type }}" class="button secondary less-padding radius categorise"
+			 data-reveal-id="category-modal" value="Categorise map"></input>
+        {% if query_type = 'burials'  %}
+		<input type="button" id="{{ query_type }}-pulse" class="button secondary less-padding radius categorise" onclick="pulseBurials()" value="Pulse Chrono (experimental)"></input>        
+        {% endif %}
+        {% if query_type = 'individuals'  %}
+		<input type="button" id="{{ query_type }}-pulse" class="button secondary less-padding radius categorise" onclick="pulseIndividuals()" value="Pulse Chrono (experimental)"></input>        
+        {% endif %}            
+	</form>
+
+	{% for key,value in facets.fields.items %}
+	<div class="facetz-container">
+		<h4 class="toggler collapsed">{% with key|split:"_" as desc %}{{ desc.1 }} {{ desc.2 }} {{ desc.3 }} {{ desc.4 }} {{ desc.5 }} {{ desc.6 }}{% endwith %}</h4>
+		<div class="facetz hidden">		
+			<ul class="atoz">
+				{% for k,v in value %}
+				<li>
+					{% with key|split:"_" as objtype %}
+					<i class="fa fa-check-circle"></i> <input class="facet-select" type="checkbox" object-type="{{ objtype.0 }}" facet-type="{{ key }}" data-name="{{ k }}" toggle_id="exclude_{{ key }}_{{ forloop.counter }}" id="{{ key }}_{{ forloop.counter }}">
+					<i class="fa fa-plus-circle"></i> <input class="facet-or-select" type="checkbox" object-type="{{ objtype.0 }}" facet-type="{{ key }}" data-name="{{ k }}" toggle_id="exclude_{{ key }}_{{ forloop.counter }}" id="or_{{ key }}_{{ forloop.counter }}">
+					<i class="fa fa-times-circle"></i> <input class="facet-exclude" type="checkbox" object-type="{{ objtype.0 }}" facet-type="{{ key }}" data-name="{{ k }}" toggle_id="{{ key }}_{{ forloop.counter }}" id="exclude_{{ key }}_{{ forloop.counter }}">
+					<label class="facet-label" for="{{ key }}_{{ forloop.counter }}" >{{ k }} <!-- <span class="secondary radius label">{{ v }}</span>--></label>
+					{% endwith %}
+				</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+		
+<script>
+$(document).ready(function(){		
+	try {
+		for (i in $('#facet-{{ query_type|lower }}')){
+			// Get list 
+			var mylist = $('#facet-{{ query_type|lower }}')[i]
+			// Get list items
+			var listitems = $($('#facet-{{ query_type|lower }}')[i]).children('ul')
+			// Sort items
+			listitems.sort(function(a,b){
+				var compA = $(a).text().toUpperCase();
+				var compB = $(b).text().toUpperCase();
+				return (compA < compB) ? -1 : (compA > compB) ? 1 : 0; 
+			})	
+			// Append sorted list
+			$.each(listitems,function(idx,itm) { 
+				mylist.appendChild(itm);
+			});
+		}
+	}
+	catch (e) {
+		//
+	}
+	// var svgStr = mapKeyStyles['{{ query_type|lower }}'];
+	// $("h3:contains('{{ query_type|lower }}')").html( $("h3:contains('{{ query_type|lower }}')").html() + svgStr )
+	sortByChronology();
+    
+    if (language=='es'){
+        changeInputValueLanguage(spanishInputDict);
+    };
+});
+</script>

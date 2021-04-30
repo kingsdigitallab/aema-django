@@ -1,0 +1,61 @@
+<h3>{{ stelae.site_fk.site_name }}{% if stelae.site_fk.area_fk %}, {{stelae.site_fk.area_fk.area_name }} {% endif %}{% if stelae.site_fk.area_fk.region_fk %}, {{ stelae.site_fk.area_fk.region_fk.region_name }}{% endif %}{% if stelae.site_fk.area_fk.region_fk.country_fk %}, {{ stelae.site_fk.area_fk.region_fk.country_fk.country_name }}{% endif %}</h3>
+
+<dl class="accordion" data-accordion>
+  <dd class="accordion-navigation">
+    <a href="#panel1">Stelae details</a>
+    <div id="panel1" class="content active">
+       <p>{{ stelae.location_description|safe }}</p>
+       <p>{{ stelae.type_of_land|safe }}</p>	   
+       <p>{{ stelae.general_description|safe }}</p>	   
+    </div>
+  </dd>
+  <dd class="accordion-navigation">
+    <a href="#panel2">Summary details</a>
+    <div id="panel2" class="content">
+	    <table>
+			<tbody>
+				{% if stelae.stone_shape_m2m.all %}
+				<tr><th>Context summary</th><td>{% for c in stelae.stone_shape_m2m.all%}{{ c }}{% if forloop.last %}{% else %} , {% endif %} {% endfor %} </td></tr>
+				{% endif %}
+				<tr><th>Number of objects</th><td>{{ hoard.no_of_objects_cleaned }}</td></tr>
+				{% if stelae.technique_m2m.all %}
+				<tr><th>Material(s)</th><td>{% for c in stelae.technique_m2m.all%}{{ c }}{% if forloop.last %}{% else %} , {% endif %} {% endfor %} </td></tr>
+				{% endif %}
+				<tr><th>Condition</th><td>{{ stelae.condition }}</td></tr>				
+				<tr><th>Motif</th><td>{{ stelae.motif_overview }}</td></tr>								
+			</tbody>
+		</table>
+    </div>
+  </dd>
+  <dd class="accordion-navigation">
+    <a href="#panel3">Motif details</a>
+    <div id="panel3" class="content">
+	    <table>
+			<tbody>
+				<tr><th>Number of motifs</th><td>{{ stelae.no_of_motifs }}</td></tr>				
+				<tr><th>Human figure</th><td>{{ stelae.human_figure_bool }}</td></tr>								
+				<tr><th>Musical instrument</th><td>{{ stelae.musical_instrument_bool }}</td></tr>				
+				<tr><th>Lance or spear</th><td>{{ stelae.lance_spear_bool }}, {{ stelae.spearhead_location }}</td></tr>
+				<tr><th>Helmet</th><td>{{ stelae.helmet_bool }} {{ stelae.helmet_type }}</td></tr>
+				<tr><th>Sword</th><td>{{ stelae.sword_bool }}, {{ stelae.sword_location }}</td></tr>
+				<tr><th>Shield</th><td>{{ stelae.shield_bool }}, {{ stelae.shield }},{{ stelae.shield_location }}</td></tr>
+				<tr><th>Bow and arrow</th><td>{{ stelae.bow_and_arrow }}</td></tr>				
+				<tr><th>Wheeled vehicle</th><td>{{ stelae.wheeled_vehicle_bool }}</td></tr>
+				<tr><th>Quadropeds</th><td>{{ stelae.quadroped_bool }}</td></tr>
+				<tr><th>Mirror</th><td>{{ stelae.mirror_bool }}</td></tr>
+				<tr><th>Fibula</th><td>{{ stelae.fibula_bool }}</td></tr>
+				<tr><th>Comb</th><td>{{ stelae.comb_bool }}</td></tr>
+				<tr><th>Ornaments</th><td>{{ stelae.ornaments_bool }}</td></tr>				
+				<tr><th>Headdress</th><td>{{ stelae.headdress_bool }}</td></tr>
+				<tr><th>Comb</th><td>{{ stelae.comb_bool }}</td></tr>
+				<tr><th>Circles cups and rings</th><td>{{ stelae.circles_cup_and_rings_bool }}</td></tr>				
+			</tbody>
+		</table>
+    </div>
+  </dd>  
+</dl>
+<a class="close-reveal-modal">&#215;</a>
+
+<script>
+	$(document).foundation()
+</script>

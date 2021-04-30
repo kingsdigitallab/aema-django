@@ -1,0 +1,5 @@
+{{ object.id }}
+{{ object.site_fk }}
+{{ object.specific_object_description }}
+{{ object.context_summary }}
+{{ object.arrangement_of_objects }}

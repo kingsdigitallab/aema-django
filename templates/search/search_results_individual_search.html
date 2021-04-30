@@ -1,0 +1,109 @@
+{% load pages_tags mezzanine_tags i18n future staticfiles stringtags %}
+<div class="{% for result in page.object_list %}{% if forloop.first %}{{result.model_name|lower }}-results">
+	<h4><i class="fa fa-circle {{ query_type }}"></i> {{ query_type }} {{ model }}</h4>
+	<form id="{{ query_type }}-csv-export" action="/export/{{ query_type }}.csv{% if query_type = 'text' %}?textsearchmodel=burials{% endif %}" method="post" class="right">
+        <input type="submit" class="button secondary less-padding radius" value="Export results to CSV ">
+        <input id="{{ query_type}}-csv" type="hidden" name="stringified-csv">
+	</form>
+ 	{% endif %}
+	{% endfor %}
+
+	{% for result in page.object_list %}
+	{% if forloop.first %}
+	<p class="no-margin-bottom"><span class="label radius secondary">{{ page.paginator.count }} result(s)</span></p>
+
+	<ul class="pagination">
+		<li>
+			{% if page.has_previous %}
+	    	<a href="#" onclick="resultPaginate({{ page.previous_page_number }},'{{ query_type }}','{{ query }}')">&laquo; Previous</a>
+	    	{% endif %}
+	    </li>
+	    <li class="paginate-count current">Page <strong>{{ page.number }}</strong></li>
+	    <li>of {{ page.paginator.num_pages }}</li>
+	    <li>
+	    	{% if page.has_next %}
+	    	<a href="#" onclick="resultPaginate({{ page.next_page_number }},'{{ query_type }}','{{ query }}')">Next &raquo;</a>
+	    	{% endif %}
+	    </li>
+	</ul>
+
+	<table class="results-table">
+		<tbody>
+			<thead>
+				<tr>
+					<th>Site name</th>
+					{% if query %}
+					<th>Result type</th>
+					{% else %}
+					<th>AEMA Database ID</th>					
+					{% endif %}
+					<th>Zoom to record</th>
+				</tr>
+			</thead>
+		{% endif %}
+		    <tr>
+		        <td><a href="" onclick="return false;" data-reveal-id='more-detail-modal' data-reveal-ajax="/view/{% if result.model_name|lower = 'ogamiste' %}ogam{% else %}{{result.model_name|lower }}{% endif %}/{{ result.object.id }}">{{ result.object.site_fk.site_name }}{{ result.object.site_name_fake }}</a></td>
+				{% if query %}
+				<td>{{ result.verbose_name }}</td>
+				{% else %}
+		        <td>{{ result.object.id }}</td>
+				{% endif %}					
+		        <td><a href="#" class="button radius less-padding expand" onclick="zoomToRecord({% if result.object.point %}{{ result.object.point.x}},{{ result.object.point.y }}{% elif result.object.burial.point %}{{ result.object.burial.point.x}},{{ result.object.burial.point.y }} {% endif %})">&raquo;</a></td>
+		    </tr>
+			{% if forloop.last %}
+		</tbody>
+	</table>
+	<ul class="pagination">
+		<li>
+			{% if page.has_previous %}
+	    	<a href="#" onclick="resultPaginate({{ page.previous_page_number }},'{{ query_type }}','{{ query }}')">&laquo; Previous</a>
+	    	{% endif %}
+	    </li>
+	    <li class="paginate-count">Page <strong>{{ page.number }}</strong></li>
+	    <li> of {{ page.paginator.num_pages }}</li>
+	    <li>
+	    	{% if page.has_next %}
+	    	<a href="#" onclick="resultPaginate({{ page.next_page_number }},'{{ query_type }}','{{ query }}')">Next &raquo;</a>
+	    	{% endif %}
+	    </li>
+	</ul>
+	{% endif %}
+	{% empty %} 
+	{% if forloop.last %}{% endif %}
+	{% endfor %}
+
+	{% for result in page.object_list %}
+	{% if forloop.first %}
+	<form>
+		<input id="csv-query-{{ result.model_name.lower }}" type="hidden">
+	</form>
+	{% endif %}
+	{% endfor %}
+</div>
+
+<script>
+	function recordQuery(){
+			$('#{{ query_type}}-csv').val( window['{{ query_type }}' + 'Query'] + '&query_type={{ query_type }}');
+			//if (uniqueTextSearchType==false){
+	            $('#text-csv-export').remove();
+	        //}
+	};
+
+	if ("{{ query_type }}"=='text'){
+		makeTabActive('text-search');
+	}
+	else {
+		makeTabActive("{{ query_type }}");
+	}
+
+	recordQuery();
+    
+    // Bilingual stuff to change the filters applied
+   
+
+
+    
+    
+  
+    
+</script>

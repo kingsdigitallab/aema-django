@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles thumbnail %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'leaflet/leaflet.css' %}">
+<script src="{% static 'leaflet/mapbox.js' %}"></script>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="row main">
+	<div class="columns large-12">
+		<div class="row main">
+			<div class="columns large-9">
+				<h3>{{ burial.site_fk.site_name }}, {{ burial.site_fk.area_fk.area_name }}</h3>
+                {% if burial.biblio_for_site %}<h5><em>({{ burial.biblio_for_site }})</em></h5>{% endif %}
+					<table>
+					 <tbody>
+                    <!-- 
+                      <tr>
+                       <td><strong> </strong></td>
+                       <td>{}</td>
+                      </tr>                     
+                    -->
+                     
+					  <tr>
+					   <td><strong>Site type(s)</strong></td> <td>{% for s in burial.site_type_m2m.all %}{{ s }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+             <td rowspan="4" id="map" width="40%;"> Map to go here</td>
+					  </tr>
+					  <tr>
+              <td><strong>Specific Site type(s)</strong></td> <td>{% for s in burial.site_type_specific.all %}{{ s }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+					  </tr>
+            <tr>
+             <td><strong>Site usage</strong></td>
+             <td>{{ burial.get_usage_display }}</td>
+            </tr>     
+                        <tr>
+             <td><strong>Cemetery</strong></td>
+             <td>{{ burial.cemetery }}</td>
+            </tr>
+            <tr>
+             <td><strong>Funerary context</strong></td>
+             <td colspan="2">{{ burial.funerary_context }}</td>
+            </tr>
+                      <tr>
+                       <td><strong>Grave goods summary </strong></td>
+                       <td colspan="2">{{ burial.grave_good_short_summary }}</td>
+                      </tr>               
+            
+            
+          
+                    
+             </tbody>	
+            </table>
+          
+           {% if burial.burialimage_set.all %}
+           <h3>Images</h3>  
+           <table>
+            <tbody>
+                <tr colspan="{{ burial.burialimage_set.all.length }}">
+            {% for i in burial.burialimage_set.all %}
+                <td>{% thumbnail i.image "50x50" crop="center" as im %}<a href="#" data-reveal-id="image-{{ forloop.counter }}"><img src="{{ im.url }}" align="middle" width="{{ im.width }}" height="{{ im.height }}">
+                {% endthumbnail %}<br><small> {{ i.description }}</small></a></td>
+            {% endfor %}
+                </tr>
+           {% endif %}
+           </tbody>
+          </table>
+          <h3>Dating details</h3>
+          <table>
+            <tbody>
+               <tr>
+                <td><strong>General</strong></td><td>{{ burial.general_chronology_fk }} </td>
+               </tr>
+               <tr>
+                <td><strong>Organic material</strong></td><td>{{ burial.organic_material_fk }} </td>
+               </tr>               
+               <tr>
+                <td><strong>Calibrated date BC 2 sigma</strong></td><td>{{ burial.calibrated_date_bc_2_sigma }} </td>
+               </tr>       
+               <tr>
+                <td><strong>Uncalibrated date BP</strong></td><td>{{ burial.uncalibrated_date_bp }} </td>
+               </tr>               
+            </tbody>            
+          </table>            
+            
+          <h3>Burial details</h3>
+          <table>
+            <tbody>
+              <tr>
+               <td><strong>Burial type</strong></td>
+               <td>{{ burial.get_burial_type_display }}</td>
+              </tr>
+              {% if burial.burial_summary %}
+              <tr>
+               <td><strong>Burial summary</strong></td>
+               <td>{{ burial.burial_summary }}</td>
+              </tr>
+              {% endif %}
+              {% if burial.skeleton_summary %}
+              <tr>
+               <td><strong>Skeleton summary</strong></td>
+               <td>{{ burial.skeleton_summary }}</td>
+              </tr>
+              {% endif %}
+              <tr>
+               <td><strong>Gender assemblage</strong></td>
+               <td>{% for g in burial.gender_m2m.all %}{{ g}}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
+              </tr>
+              {% for i in burial.burialindividuals_set.all %}
+              <tr>
+                <td><strong>Individual {{ forloop.counter }}</strong></td>
+                <td><a href="/view/individual_full/{{ i.id }}">{{ i }}, {% if i.usage %}{{ i.get_usage_display }}, {% endif %}{% if i.site_type %} {{ i.site_type }}{% endif %}<!--{% if i.position_fk %}
+                  {{ i.position_fk }}, {% endif %}{% if i.orientation %}{{ i.orientation }}, {% endif %}{% if i.head_position %}{{ i.head_position }}, {% endif %}{% if i.head_direction %}{{ i.head_direction }}, {% endif %}{% if i.general_chronolgy_fk %}, {{ i.general_chronology_fk }}{% endif %}--></a></td>
+          
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% if burial.Burial.all or burial.gravegood_set.all %}
+        <h3>Pots and Gravegoods </h3>
+        <table>
+            <tbody>
+                {% for b in burial.Burial.all %}
+                      <tr>
+                       <td><strong>Pot {{ forloop.counter }} </strong></td>
+                       <td>{{ b.pot_type_fk }}, {{ b.description }}{% if b.condition %}, {{ b.get_condition_display }}{% endif %}{% if b.pot_disposition %}, {{ b.get_pot_disposition_display }}{% endif %}{% if b.pot_placement %}, {{ b.get_pot_placement_display }}{% endif %} </td>
+                      </tr> 
+                {% endfor %}
+                {% for g in burial.gravegood_set.all %}
+                      <tr>
+                       <td><strong>Gravegood {{ forloop.counter }} </strong></td>
+                       <td>{{ g.functional_type_fk }},{% if g.description %}, {{ g.description }}{% endif %}{% if g.placement_fk %}, {{ g.placement_fk }}{% endif %}{% if g.raw_materials_m2m.all %}, {% for r in g.raw_materials_m2m.all %}{{ r.description }}{% if not forloop.last %}, {% endif %}{% endfor %}{% endif %}</td>
+                      </tr> 
+                {% endfor %}                
+            </tbody>
+        </table>
+        {% endif %}
+
+	  </div>
+      <div class="columns large-3">
+        <h3>Nearby burials</h3>
+          <table>
+            <tbody>
+              {% if ten %}            
+              <tr><td><strong>Within 10km</strong></td></tr>
+              {% for t in ten %}
+              <tr>
+                <td><a href="/view/burials_full/{{ t.id }}" class="nearby-record" data-id="{{ t.id }}">{{ t.site_fk.site_name }} ({{ t.distance }}km) &raquo;</a></td>
+              </tr>
+              {% endfor %}
+              {% endif %}
+              <tr><td><strong>Within 50km</strong></td></tr>
+              {% for h in fifty %}
+              <tr>
+                <td><a href="/view/burials_full/{{ h.id }}" class="nearby-record" data-id="{{ h.id }}">{{  h.site_fk.site_name }} ({{ h.distance }}km)   &raquo;</a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+	    </div>
+		</div>
+	</div>
+</div>
+
+<script>
+
+var map;
+var marker;
+
+var markers = [];
+
+$('.nearby-record').on('mouseover',function(){
+    m = getMarkerById( $(this).data('id') );
+    m.setRadius( 8 );
+})
+
+$('.nearby-record').on('mouseout',function(){
+    m = getMarkerById( $(this).data('id') );
+    m.setRadius( 5 );
+})
+
+function getMarkerById(id){
+    for (m in markers){
+        if (markers[m].options.id == id ){
+            return markers[m]
+        }
+    }
+};
+
+
+
+$(document).ready(function(){
+    map = L.map('map',{scrollWheelZoom:false,zoomControl:false,minZoom:4,maxZoom:17,
+    fullscreenControl: true
+    }).setView([{{ burial.point.y}},{{ burial.point.x}}], 9);
+
+    ancient_world = new L.TileLayer("http://{s}.tiles.mapbox.com/v3/isawnyu.map-knmctlkh/{z}/{x}/{y}.png",
+  {attribution:'Map base by <a href="http://awmc.unc.edu/">AWMC</a>'}).addTo(map);
+
+    marker = L.circleMarker([{{ burial.point.y}},{{ burial.point.x}}], {fillColor:'blue',stroke:'darkblue',radius:8,fillOpacity:0.8 } ).addTo(map);
+    
+    markers.push(marker);
+    
+    {% for t in ten %}
+    try {
+        t = L.circleMarker([{{ t.point.y }},{{ t.point.x }} ],{id:"{{ t.id }}",fillColor:'green',color:'darkgreen',radius:5}).addTo(map);
+        markers.push(t);
+    }
+    catch (err) {
+        //
+    }
+    {% endfor%}    
+    {% for h in fifty %}
+    try {
+        h = L.circleMarker([{{ h.point.y }},{{ h.point.x }} ],{id:"{{ h.id }}",fillColor:'red',color:'red',radius:5}).addTo(map); 
+        markers.push(h);        
+    }
+    catch (err) {
+        //
+    }    
+    {% endfor%}
+    
+    
+    
+    
+});
+
+</script>
+
+           {% if burial.burialimage_set %}
+            {% for i in burial.burialimage_set.all %}
+                <div class="reveal-modal" data-reveal id="image-{{ forloop.counter }}">{% thumbnail i.image "500" crop="center" as im %}<img src="{{ im.url }}" align="middle" width="{{ im.width }}" height="{{ im.height }}">
+                {% endthumbnail %}<br>{{ i.description }}
+                <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+                </div>
+            {% endfor %}
+           {% endif %}
+
+
+
+{% endblock %}
