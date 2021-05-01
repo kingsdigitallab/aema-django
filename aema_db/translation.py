@@ -4,19 +4,17 @@ from mezzanine.blog.models import BlogPost
 
 
 class PageTranslationOptions(TranslationOptions):
-        fields = ('content',)
+    fields = ('content',)
+
 
 class BasicPageTranslationOptions(TranslationOptions):
-        fields = ('title',)        
-        
+    fields = ('title',)
+
+
 class BlogTranslationOptions(TranslationOptions):
-        fields = ('content','title')
+    fields = ('content','title')
 
 
 translator.register(Page,BasicPageTranslationOptions)        
 translator.register(RichTextPage,PageTranslationOptions)
-
-
 translator.register(BlogPost,BlogTranslationOptions)
-
-
