@@ -1,5 +1,5 @@
 from django.template import RequestContext
-from django.shortcuts import get_object_or_404, render_to_response
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.gis.geos import GEOSGeometry
 
@@ -17,6 +17,6 @@ def geoJsonLayer(request):
     context['layer'] = model.objects.all()
     if hasattr(model.objects.all()[0],'polygon'):
         #Return a geojson polygon?
-        return render_to_response('aema_geography/poly_layer.js',context,context_instance=RequestContext(request),mimetype='application/text')
+        return render(request, 'aema_geography/poly_layer.js', context, content_type='application/text')
     if hasattr(model.objects.all()[0],'point'):
-        return render_to_response('aema_geography/point_layer.js',context,context_instance=RequestContext(request),mimetype='application/text')
+        return render(request, 'aema_geography/point_layer.js', context, content_type='application/text')

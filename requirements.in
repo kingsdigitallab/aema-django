@@ -9,8 +9,10 @@ django-haystack<2.8
 elasticsearch==1.6.0
 psycopg2-binary
 sorl-thumbnail<13
-django-modeltranslation<0.14
-# django-grappelli==2.4.5
+# https://django-modeltranslation.readthedocs.io/en/latest/installation.html
+django-modeltranslation<0.11
 # Required by filebrowser < Mezzanine
 # future==0.14.3
 geopy
+# used by project directly, see urls.py, why?
+django-grappelli<2.11

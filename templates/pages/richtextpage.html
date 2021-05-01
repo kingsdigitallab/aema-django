@@ -4,7 +4,7 @@
 {% editable page.richtextpage.content %}
 <div class="row main">
 	<div class="large-10 columns">
-		{{ page.richtextpage.content|richtext_filter|safe }}
+		{{ page.richtextpage.content|richtext_filters }}
 	</div>
 	<div class="large-2 columns" id="twitter-widget">
 		<a class="twitter-timeline" href="https://twitter.com/AEMAP_UoW" data-widget-id="651761208811458560" data-chrome="nofooter noscrollbar">Tweets by @AEMAP_UoW</a>

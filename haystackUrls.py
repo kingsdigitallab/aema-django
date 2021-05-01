@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf.urls import *
 from django import forms
 from haystack.forms import FacetedSearchForm,SearchForm
 from haystack.query import SearchQuerySet
@@ -6,7 +6,8 @@ from haystack.views import FacetedSearchView,SearchView
 from haystack.inputs import AutoQuery, Exact, Clean
 
 from django.template import RequestContext
-from django.shortcuts import get_object_or_404, render_to_response
+from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse,HttpResponseRedirect
 
 from django.contrib.gis.geos import GEOSGeometry
@@ -168,7 +169,8 @@ class CustomSearchForm(FacetedSearchForm):
         else:
             #return sqs.all()
             return SearchQuerySet().none()
-	
+
+
 class CustomSearchView(FacetedSearchView):
     def __init__(self, *args, **kwargs):
         # Needed to switch out the default form class.
@@ -219,6 +221,7 @@ class CustomSearchView(FacetedSearchView):
         kwargs = {
             'load_all': self.load_all,
         }
+
     def create_response(self):
         """
         Generates the actual HttpResponse to send back to the user.
@@ -238,9 +241,8 @@ class CustomSearchView(FacetedSearchView):
         if getattr(settings, 'HAYSTACK_INCLUDE_SPELLING', False):
             context['suggestion'] = self.form.get_suggestion()
         context.update(self.extra_context())
-        if not mime_type is None:
-            return render_to_response(self.template, context, context_instance=self.context_class(self.request),mimetype=mime_type)
-        return render_to_response(self.template, context, context_instance=self.context_class(self.request))
+
+        return render(self.request, self.template, context, content_type=mime_type)
 
 
 class CustomTextSearchView(SearchView):
@@ -290,10 +292,9 @@ class CustomTextSearchView(SearchView):
         if getattr(settings, 'HAYSTACK_INCLUDE_SPELLING', False):
             context['suggestion'] = self.form.get_suggestion()
         context.update(self.extra_context())
-        if not mime_type is None:
-            return render_to_response(self.template, context, context_instance=self.context_class(self.request),mimetype=mime_type)
-        return render_to_response(self.template, context, context_instance=self.context_class(self.request))		
-		
+
+        return render(self.request, self.template, context, content_type=mime_type)
+
 urlpatterns = patterns('',
     url(r'^facet/$', CustomSearchView(template='search/search_facet_list.html',\
        form_class=CustomSearchForm,results_per_page=100000), name='haystack_search'),

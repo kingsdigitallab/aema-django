@@ -143,8 +143,8 @@ class BurialIndividuals(models.Model):
     orientation = models.CharField(max_length=2,choices=burial_orientation_choices,null=True,blank=True)
     head_position = models.CharField(max_length=2,choices=burial_direction_choices,null=True,blank=True)
     head_direction = models.CharField(max_length=2,choices=burial_direction_choices,null=True,blank=True)
-    grave_good_m2m = models.ManyToManyField('GraveGood',null=True,blank=True)
-    pot_m2m = models.ManyToManyField('Pot',null=True,blank=True)    
+    grave_good_m2m = models.ManyToManyField('GraveGood',blank=True)
+    pot_m2m = models.ManyToManyField('Pot',blank=True)
     organic_material_fk = models.ForeignKey('OrganicMaterial',null=True,blank=True,verbose_name='Organic Material')
     date_ref = models.CharField(max_length=30,null=True,blank=True)    
     uncalibrated_date_bp = models.CharField(max_length=100,null=True,blank=True)
@@ -305,7 +305,7 @@ class GraveGood(models.Model):
     placement_fk = models.ForeignKey('GraveGoodPlacement',null=True,blank=True)
     description = models.CharField(max_length=100,null=True,blank=True)
     burial = models.ForeignKey('Burials')
-    raw_materials_m2m = models.ManyToManyField('GraveGoodRawMaterialType',null=True,blank=True,verbose_name=\
+    raw_materials_m2m = models.ManyToManyField('GraveGoodRawMaterialType',blank=True,verbose_name=\
          'Raw materials')
     raw_notes = models.TextField(null=True,blank=True)		 
 

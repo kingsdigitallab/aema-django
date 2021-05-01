@@ -1,5 +1,5 @@
 from django.template import RequestContext
-from django.shortcuts import get_object_or_404, render_to_response
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.gis.geos import GEOSGeometry
 
@@ -11,7 +11,7 @@ def burial_view(request,id):
     id = id
     context = {}
     context['burial'] = Burials.objects.get(pk=id)
-    return render_to_response('aema_db/burial.html',context,context_instance=RequestContext(request))
+    return render(request, 'aema_db/burial.html', context)
 
 
 def burial_full_view(request,id):
@@ -40,7 +40,7 @@ def burial_full_view(request,id):
     # put burial point back again!
     context['ten'] = ten 
     context['fifty'] = fifty
-    return render_to_response('aema_db/burial_full.html',context,context_instance=RequestContext(request))
+    return render(request, 'aema_db/burial_full.html', context)
 
 def individuals_full_view(request,id):
     id = id
@@ -68,7 +68,7 @@ def individuals_full_view(request,id):
     # put burial point back again!
     context['ten'] = ten 
     context['fifty'] = fifty    
-    return render_to_response('aema_db/individuals_full.html',context,context_instance=RequestContext(request))  
+    return render(request, 'aema_db/individuals_full.html', context)  
 
 def burial_popup(request,id):
     b =  Burials.objects.get(pk=id)
@@ -119,7 +119,7 @@ def toponyms_full_view(request,id):
     # put burial point back again!
     context['ten'] = ten 
     context['fifty'] = fifty    
-    return render_to_response('aema_db/toponym_full.html',context,context_instance=RequestContext(request))      
+    return render(request, 'aema_db/toponym_full.html', context)      
 
 def settlements_popup(request,id):
     b =  Core.objects.get(pk=id)
@@ -152,7 +152,7 @@ def settlements_full_view(request,id):
     # put burial point back again!
     context['ten'] = ten 
     context['fifty'] = fifty    
-    return render_to_response('aema_db/settlement_full.html',context,context_instance=RequestContext(request))   
+    return render(request, 'aema_db/settlement_full.html', context)   
 
 def metalwork_popup(request,id):
     b =  Hoards.objects.get(pk=id)
@@ -163,7 +163,7 @@ def miscellaneous_view(request,id):
     id = id
     context = {}
     context['miscellaneous'] = Miscellaneous.objects.get(pk=id)
-    return render_to_response('aema_db/miscellaneous.html',context,context_instance=RequestContext(request))
+    return render(request, 'aema_db/miscellaneous.html', context)
 
 def miscellaneous_full_view(request,id):
     hoard = Miscellaneous.objects.get(pk=id)
@@ -189,7 +189,7 @@ def miscellaneous_full_view(request,id):
     # put burial point back again!
     context['ten'] = ten 
     context['fifty'] = fifty    
-    return render_to_response('aema_db/misc_full.html',context,context_instance=RequestContext(request))    
+    return render(request, 'aema_db/misc_full.html', context)    
     
 def miscellaneous_popup(request,id):
     b =  Miscellaneous.objects.get(pk=id)
@@ -217,7 +217,7 @@ def hoard_view(request,id):
     id = id
     context = {}
     context['hoard'] = Hoards.objects.get(pk=id)
-    return render_to_response('aema_db/hoard.html',context,context_instance=RequestContext(request))
+    return render(request, 'aema_db/hoard.html', context)
 
 def hoard_full_view(request,id):
     id = id
@@ -245,14 +245,14 @@ def hoard_full_view(request,id):
     # put burial point back again!
     context['ten'] = ten 
     context['fifty'] = fifty        
-    return render_to_response('aema_db/hoard_full.html',context,context_instance=RequestContext(request))
+    return render(request, 'aema_db/hoard_full.html', context)
     
     
 def stelae_view(request,id):
     id = id
     context = {}
     context['stelae'] = Stelae.objects.get(pk=id)
-    return render_to_response('aema_db/stelae.html',context,context_instance=RequestContext(request))
+    return render(request, 'aema_db/stelae.html', context)
 
 def stelae_full_view(request,id):
     id = id
@@ -280,7 +280,7 @@ def stelae_full_view(request,id):
     # put burial point back again!
     context['ten'] = ten
     context['fifty'] = fifty
-    return render_to_response('aema_db/stelae_full.html',context,context_instance=RequestContext(request))
+    return render(request, 'aema_db/stelae_full.html', context)
 
 
 
@@ -288,7 +288,7 @@ def ogam_view(request,id):
     id = id
     context = {}
     context['ogam'] = OgamSite.objects.get(pk=id)
-    return render_to_response('aema_db/ogam.html',context,context_instance=RequestContext(request))
+    return render(request, 'aema_db/ogam.html', context)
 
 def ogam_full_view(request,id):
     ogam = OgamSite.objects.get(pk=id)
@@ -315,21 +315,21 @@ def ogam_full_view(request,id):
     # put burial point back again!
     context['ten'] = ten
     context['fifty'] = fifty    
-    return render_to_response('aema_db/ogam_full.html',context,context_instance=RequestContext(request))    
+    return render(request, 'aema_db/ogam_full.html', context)    
     
     
 def individuals_view(request,id):
     id = id
     context = {}
     context['burial'] = BurialIndividuals.objects.get(pk=id)
-    return render_to_response('aema_db/individuals.html',context,context_instance=RequestContext(request))
+    return render(request, 'aema_db/individuals.html', context)
 
  
 	
 def geojson_layers(request):
     context = {}
     context['layers'] = GeojsonFile.objects.filter(category__major_category__isnull=False).order_by('category__short_description','short_description')
-    return render_to_response('aema_geography/layers.html',context,context_instance=RequestContext(request))
+    return render(request, 'aema_geography/layers.html', context)
 
 def metallury_geojson(request):
     from django.db import connection
@@ -352,8 +352,7 @@ def metallury_geojson(request):
         for m in cursor.fetchall():
             geoJsonArray.append(json.dumps(m))
         context['metal_grid'] = geoJsonArray
-        return render_to_response('aema_metallurgy/metal_geojson.js',context,context_instance=RequestContext(request)\
-            ,mimetype="application/json")
+        return render(request, 'aema_metallurgy/metal_geojson.js', context, content_type="application/json")
     else:
         cursor.execute("select * from getcoppergroupsgeojson_hex%s(%s,%s,%s,%s,%s,%s,%s,%s);",[hexGrid,AsTol,SbTol,AgTol,NiTol,SnTol,PbTol,ZnTol,'hex']) 	
         context = {}
@@ -361,5 +360,4 @@ def metallury_geojson(request):
         for m in cursor.fetchall():
             geoJsonArray.append(json.dumps(m))
         context['metal_grid'] = geoJsonArray
-        return render_to_response('aema_metallurgy/metal_geojson.js',context,context_instance=RequestContext(request)\
-            ,mimetype="application/json")
+        return render(request, 'aema_metallurgy/metal_geojson.js', context, content_type="application/json")

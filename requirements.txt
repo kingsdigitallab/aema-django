@@ -20,9 +20,11 @@ django-contrib-comments==1.8.0
     # via
     #   -r requirements.in
     #   mezzanine
+django-grappelli==2.10.4
+    # via -r requirements.in
 django-haystack==2.7.0
     # via -r requirements.in
-django-modeltranslation==0.13.4
+django-modeltranslation==0.9.1
     # via -r requirements.in
 django==1.8.19
     # via

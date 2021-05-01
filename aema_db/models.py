@@ -51,8 +51,8 @@ class Burials(models.Model):
     organic_material_fk = models.ForeignKey('OrganicMaterial',null=True,blank=True,verbose_name='Organic Material')
     site_type = models.CharField(max_length=50,null=True,blank=True)
     #M2M type inserted
-    site_type_m2m = models.ManyToManyField('SiteType',null=True,blank=True,verbose_name='Site type(s)')
-    site_type_specific = models.ManyToManyField('SiteTypeSpecific',null=True,blank=True,verbose_name='Specific site type(s)')
+    site_type_m2m = models.ManyToManyField('SiteType',verbose_name='Site type(s)')
+    site_type_specific = models.ManyToManyField('SiteTypeSpecific',verbose_name='Specific site type(s)')
     cemetery =  models.NullBooleanField()
     usage = models.CharField(max_length='2',choices=burial_use_period_choice,null=True,blank=True)
     funerary_context = models.TextField(null=True,blank=True)
@@ -65,7 +65,7 @@ class Burials(models.Model):
     no_of_grave_goods = models.IntegerField(null=True,blank=True,help_text='Redundant - to be replaced/moved')    
     gender = models.CharField(max_length=20,null=True,blank=True)
     #M2M Field added
-    gender_m2m = models.ManyToManyField('Gender',null=True,blank=True,verbose_name='Gender assemblage')    
+    gender_m2m = models.ManyToManyField('Gender',verbose_name='Gender assemblage')
     age = models.CharField(max_length=20,null=True,blank=True,help_text='Redundant - to be replaced/moved')    
     pot = models.CharField(max_length=20,null=True,blank=True)
     # Bool field added    
@@ -107,7 +107,7 @@ class Burials(models.Model):
     # Bool field added
     jet_lignite_shale_bool = models.NullBooleanField(default=False,verbose_name="Jet/Lignite/Shale")
     grave_good_short_summary = models.TextField(max_length=1000,null=True,blank=True)
-    grave_good_class_m2m = models.ManyToManyField('GraveGoodClass',null=True,blank=True,verbose_name='Grave good classes')	
+    grave_good_class_m2m = models.ManyToManyField('GraveGoodClass',verbose_name='Grave good classes')
     calibrated_date_bc_2_sigma = models.CharField(max_length=50,null=True,blank=True)
     pot_type =  models.CharField(max_length=1000,null=True,blank=True)
     pot_type_summary =  models.CharField(max_length=100,null=True,blank=True)    
@@ -253,11 +253,11 @@ class Stelae(models.Model):
     dimensions_thickness_m  = models.FloatField(null=True,blank=True)
     stone_shape  = models.CharField(max_length=100,null=True,blank=True)
     #m2m
-    stone_shape_m2m = models.ManyToManyField('StelaeStoneShape',null=True,blank=True)
+    stone_shape_m2m = models.ManyToManyField('StelaeStoneShape',blank=True)
 
     condition  = models.TextField(null=True,blank=True)
     technique_of_creation  = models.CharField(max_length=200,null=True,blank=True)
-    technique_m2m = models.ManyToManyField('StelaeTechnique',null=True,blank=True)
+    technique_m2m = models.ManyToManyField('StelaeTechnique',blank=True)
     stone_type_and_description  = models.TextField(null=True,blank=True)
 	#fk
     specific_stone_type = models.ForeignKey('SpecificRockType',null=True,blank=True)
@@ -329,10 +329,10 @@ class Stelae(models.Model):
     objects = models.GeoManager()
     # New field Jan 2015
     discovery = models.ForeignKey('Discovery',null=True,blank=True)
-    location_summary = models.ManyToManyField('LocationSummary',null=True,blank=True)
-    stelae_type = models.ManyToManyField('StelaeType',null=True,blank=True)
-    type_of_land = models.ManyToManyField('TypeOfLand',null=True,blank=True)
-    human_figure_m2m = models.ManyToManyField('HumanFigure',null=True,blank=True)
+    location_summary = models.ManyToManyField('LocationSummary',blank=True)
+    stelae_type = models.ManyToManyField('StelaeType',blank=True)
+    type_of_land = models.ManyToManyField('TypeOfLand',blank=True)
+    human_figure_m2m = models.ManyToManyField('HumanFigure',blank=True)
 
     discovery_raw = models.CharField(max_length=100,null=True,blank=True)
     location_summary_raw = models.CharField(max_length=100,null=True,blank=True)
@@ -340,7 +340,7 @@ class Stelae(models.Model):
     type_of_land_raw = models.CharField(max_length=100,null=True,blank=True)
     human_figure_m2m_raw = models.CharField(max_length=1000,null=True,blank=True)
 
-    motif = models.ManyToManyField('Motif',null=True,blank=True)
+    motif = models.ManyToManyField('Motif',blank=True)
 
     chronology_start_bc = models.IntegerField(null=True,blank=True)
     chronology_end_bc = models.IntegerField(null=True,blank=True)	
@@ -447,7 +447,7 @@ class Ogam(models.Model):
     contains_pn_bool = models.NullBooleanField(verbose_name='Contains personal names?')
     comment = models.CharField(max_length=100,null=True,blank=True)
     nf = models.CharField(max_length=100,null=True,blank=True,verbose_name='Name formulae')
-    name_forms_present = models.ManyToManyField('NameForm',blank=True,null=True,verbose_name='Name formulae M2M')
+    name_forms_present = models.ManyToManyField('NameForm',verbose_name='Name formulae M2M')
     # GeoDjango-specific: a geometry field (PointField) and
     # overriding the default manager with a GeoManager instance.
     point = models.PointField(null=True,blank=True)
@@ -519,10 +519,10 @@ class OgamFernandoRaw(models.Model):
 		
 class AbrazoFernandoRaw(models.Model):
     word = models.CharField(max_length=500,null=True,blank=True)
-    #toponyms = models.ManyToManyField('Toponyms',null=True,blank=True,through='Ab_to_Topo')
-    toponyms = models.ManyToManyField('Toponyms',null=True,blank=True)
-    #etymologies = models.ManyToManyField('EtymologyDescription',null=True,blank=True,through='Ab_to_Etym')
-    etymologydescription = models.ManyToManyField('EtymologyDescription',null=True,blank=True,verbose_name='Etymology description')
+    #toponyms = models.ManyToManyField('Toponyms',blank=True,through='Ab_to_Topo')
+    toponyms = models.ManyToManyField('Toponyms',blank=True)
+    #etymologies = models.ManyToManyField('EtymologyDescription',blank=True,through='Ab_to_Etym')
+    etymologydescription = models.ManyToManyField('EtymologyDescription',verbose_name='Etymology description')
     nr = models.CharField(max_length=1000,null=True,blank=True)
     source  = models.CharField(max_length=1000,null=True,blank=True)
     context  = models.TextField(null=True,blank=True)
@@ -640,7 +640,7 @@ class OgamSite(models.Model):
     contains_pn_bool = models.NullBooleanField(verbose_name='Contains personal names?')
     comment = models.CharField(max_length=100,null=True,blank=True)
     nf = models.CharField(max_length=100,null=True,blank=True,verbose_name='Name formulae')
-    name_forms_present = models.ManyToManyField('NameForm',blank=True,null=True,verbose_name='Name formulae M2M')
+    name_forms_present = models.ManyToManyField('NameForm',verbose_name='Name formulae M2M')
     # GeoDjango-specific: a geometry field (PointField) and
     # overriding the default manager with a GeoManager instance.
     point = models.PointField(null=True,blank=True)
@@ -807,12 +807,12 @@ class Hoards(models.Model):
     find_type_cleaned = models.CharField(choices=hoard_find_type_choices,max_length=2,null=True,blank=True)
     material_type = models.CharField(max_length=1000,null=True,blank=True)
     #m2m
-    material_type_fk = models.ManyToManyField(HoardMaterial,null=True,blank=True)
+    material_type_fk = models.ManyToManyField(HoardMaterial,blank=True)
     summary_deposit_type = models.CharField(max_length=1000,null=True,blank=True)
     general_type = models.CharField(max_length=1000,null=True,blank=True)
     #m2m
-    general_type_m2m = models.ManyToManyField(HoardType,null=True,blank=True)
-    specific_object_type_m2m = models.ManyToManyField(HoardSpecificObject,null=True,blank=True)
+    general_type_m2m = models.ManyToManyField(HoardType,blank=True)
+    specific_object_type_m2m = models.ManyToManyField(HoardSpecificObject,blank=True)
     specific_object_description = models.TextField(max_length=1000,null=True,blank=True)
     arrangement_of_objects = models.TextField(max_length=1000,null=True,blank=True)
     object_condition = models.CharField(max_length=1000,null=True,blank=True)
@@ -822,7 +822,7 @@ class Hoards(models.Model):
     dry_wet_context_choice = models.CharField(max_length=2,choices=hoard_context_choice,null=True,blank=True)
     metal_analysis_summary_1 = models.CharField(max_length=1000,null=True,blank=True)
     context_summary = models.CharField(max_length=1000,null=True,blank=True)
-    context_summary_m2m = models.ManyToManyField(HoardContextSummary,null=True,blank=True)
+    context_summary_m2m = models.ManyToManyField(HoardContextSummary,blank=True)
     chronology_date_bracket_BC = models.CharField(max_length=1000,null=True,blank=True)
     chronology_start_date_BC = models.IntegerField(null=True,blank=True)
     chronoloy_end_date_BC = models.IntegerField(null=True,blank=True)
@@ -1024,12 +1024,12 @@ class Miscellaneous(models.Model):
     find_type_cleaned = models.CharField(choices=hoard_find_type_choices,max_length=2,null=True,blank=True)
     material_type = models.CharField(max_length=1000,null=True,blank=True)
     #m2m
-    material_type_fk = models.ManyToManyField(HoardMaterial,null=True,blank=True)
+    material_type_fk = models.ManyToManyField(HoardMaterial,blank=True)
     summary_deposit_type = models.CharField(max_length=1000,null=True,blank=True)
     general_type = models.CharField(max_length=1000,null=True,blank=True)
     #m2m
-    general_type_m2m = models.ManyToManyField(HoardType,null=True,blank=True)
-    specific_object_type_m2m = models.ManyToManyField(HoardSpecificObject,null=True,blank=True)
+    general_type_m2m = models.ManyToManyField(HoardType,blank=True)
+    specific_object_type_m2m = models.ManyToManyField(HoardSpecificObject,blank=True)
     specific_object_description = models.TextField(max_length=1000,null=True,blank=True)
     arrangement_of_objects = models.TextField(max_length=1000,null=True,blank=True)
     object_condition = models.CharField(max_length=1000,null=True,blank=True)
@@ -1039,7 +1039,7 @@ class Miscellaneous(models.Model):
     dry_wet_context_choice = models.CharField(max_length=2,choices=hoard_context_choice,null=True,blank=True)
     material_analysis_summary = models.CharField(max_length=1000,null=True,blank=True)
     context_summary = models.CharField(max_length=1000,null=True,blank=True)
-    context_summary_m2m = models.ManyToManyField(HoardContextSummary,null=True,blank=True)
+    context_summary_m2m = models.ManyToManyField(HoardContextSummary,blank=True)
     chronology_date_bracket_BC = models.CharField(max_length=1000,null=True,blank=True)
     chronology_start_date_BC = models.IntegerField(null=True,blank=True)
     chronoloy_end_date_BC = models.IntegerField(null=True,blank=True)

@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+from django.conf.urls import *
 
 urlpatterns = patterns('view_views',
     url(r'^burials/(\d+)/$','burial_view'),

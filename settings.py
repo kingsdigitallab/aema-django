@@ -74,6 +74,18 @@
 #
 # BLOG_USE_FEATURED_IMAGE = True
 
+import os
+
+#########
+# PATHS #
+#########
+
+# Full filesystem path to the project.
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+
+# Name of the directory for the project.
+PROJECT_DIRNAME = PROJECT_ROOT.split(os.sep)[-1]
+
 
 ########################
 # MAIN DJANGO SETTINGS #
@@ -132,24 +144,51 @@ SECRET_KEY = "55ca04e7-76ec-4979-9736-37e2da87b23e89e5c906-28ba-4dec-885f-29b7d8
 #   * Receive x-headers
 INTERNAL_IPS = ("127.0.0.1",)
 
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    "django.template.loaders.filesystem.Loader",
-    "django.template.loaders.app_directories.Loader",
-)
+TEMPLATES = [{
+    u'APP_DIRS': True,
+    u'BACKEND': u'django.template.backends.django.DjangoTemplates',
+    u'DIRS': [os.path.join(PROJECT_ROOT, "templates")],
+    u'OPTIONS': {
+        # TODO: django 1.11
+        # u'builtins': [
+        #     u'mezzanine.template.loader_tags'
+        # ],
+        u'context_processors': (
+            'django.contrib.auth.context_processors.auth',
+            'django.contrib.messages.context_processors.messages',
+            'django.core.context_processors.debug',
+            'django.core.context_processors.i18n',
+            'django.core.context_processors.static',
+            'django.core.context_processors.media',
+            'django.core.context_processors.request',
+            'django.core.context_processors.tz',
+            'mezzanine.conf.context_processors.settings',
+            'mezzanine.pages.context_processors.page',
+        )
+    }
+}]
 
-AUTHENTICATION_BACKENDS = (
+
+TIME_ZONE = 'Europe/London'
+
+# List of callables that know how to import templates from various sources.
+# TEMPLATE_LOADERS = (
+#     "django.template.loaders.filesystem.Loader",
+#     "django.template.loaders.app_directories.Loader",
+# )
+
+AUTHENTICATION_BACKENDS = [
     "mezzanine.core.auth_backends.MezzanineBackend",
     "django.contrib.auth.backends.RemoteUserBackend",
-    )
+]
 
 # List of finder classes that know how to find static files in
 # various locations.
-STATICFILES_FINDERS = (
+STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
-)
+]
 
 
 #############
@@ -172,19 +211,6 @@ DATABASES = {
         "PORT": "",
     }
 }
-
-
-#########
-# PATHS #
-#########
-
-import os
-
-# Full filesystem path to the project.
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-
-# Name of the directory for the project.
-PROJECT_DIRNAME = PROJECT_ROOT.split(os.sep)[-1]
 
 # Every cache key will get prefixed with this value - here we set it to
 # the name of the directory the project is in to try and use something
@@ -221,8 +247,10 @@ ROOT_URLCONF = "urls"
 # or "C:/www/django/templates".
 # Always use forward slashes, even on Windows.
 # Don't forget to use absolute paths, not relative paths.
-TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, "templates"),)
+# TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, "templates"),)
 
+# Commented out, we manage it manually, instead of deferring to mezzanine
+# USE_MODELTRANSLATION = True
 
 ################
 # APPLICATIONS #
@@ -243,13 +271,11 @@ INSTALLED_APPS = (
     "mezzanine.core",
     "mezzanine.generic",
     "mezzanine.blog",
-    "mezzanine.forms",
     "mezzanine.pages",
+    "mezzanine.forms",
     "mezzanine.galleries",
     "mezzanine.twitter",
-    #"whoosh",
     #"mezzanine.accounts",
-    #"mezzanine.mobile",
     "modeltranslation",
     "haystack",	
     "aema_db",
@@ -258,21 +284,6 @@ INSTALLED_APPS = (
     "early_celtic_society",
     "geofield",
     "sorl.thumbnail",
-)
-
-# List of processors used by RequestContext to populate the context.
-# Each one should be a callable that takes the request object as its
-# only parameter and returns a dictionary to add to the context.
-TEMPLATE_CONTEXT_PROCESSORS = (
-    "django.contrib.auth.context_processors.auth",
-    "django.contrib.messages.context_processors.messages",
-    "django.core.context_processors.debug",
-    "django.core.context_processors.i18n",
-    "django.core.context_processors.static",
-    "django.core.context_processors.media",
-    "django.core.context_processors.request",
-    "django.core.context_processors.tz",
-    "mezzanine.conf.context_processors.settings",
 )
 
 # List of middleware classes to use. Order is important; in the request phase,
@@ -289,8 +300,8 @@ MIDDLEWARE_CLASSES = (
     "django.contrib.messages.middleware.MessageMiddleware",
     "mezzanine.core.request.CurrentRequestMiddleware",
     "mezzanine.core.middleware.RedirectFallbackMiddleware",
-    "mezzanine.core.middleware.TemplateForDeviceMiddleware",
-    "mezzanine.core.middleware.TemplateForHostMiddleware",
+    # "mezzanine.core.middleware.TemplateForDeviceMiddleware",
+    # "mezzanine.core.middleware.TemplateForHostMiddleware",
     "mezzanine.core.middleware.AdminLoginInterfaceSelectorMiddleware",
     #Authentication using REMOTE_USER
     "django.contrib.auth.middleware.RemoteUserMiddleware",
@@ -300,6 +311,7 @@ MIDDLEWARE_CLASSES = (
     "mezzanine.pages.middleware.PageMiddleware",
     "mezzanine.core.middleware.FetchFromCacheMiddleware",
 )
+MIDDLEWARE = MIDDLEWARE_CLASSES
 
 # Store these package names here as they may change in the future since
 # at the moment we are using custom forks of them.

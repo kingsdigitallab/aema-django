@@ -1,5 +1,5 @@
 from django.template import RequestContext
-from django.shortcuts import get_object_or_404, render_to_response
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.gis.geos import GEOSGeometry
 from django.views.decorators.csrf import csrf_exempt
@@ -24,7 +24,7 @@ from aema_db.models import *
 def export_json(request,layer):
     context = {}
     context['json'] = request.POST.get('stringified-json','')
-    return render_to_response('aema_db/db_query.js',context,context_instance=RequestContext(request),mimetype='application/force-download')
+    return render(request, 'aema_db/db_query.js', context, content_type='application/force-download')
 
 @csrf_exempt	
 def export_csv(request,layer):

@@ -43,7 +43,7 @@ class Core(models.Model):
     nrth = models.FloatField(null=True,	blank=True)
     # Temp field
     no_of_houses = models.IntegerField(null=True,blank=True)
-    type_m2m = models.ManyToManyField('Type',null=True,blank=True)
+    type_m2m = models.ManyToManyField('Type',blank=True)
 					
     class Meta:
         verbose_name = "Core data"
