@@ -324,6 +324,56 @@ PACKAGE_NAME_GRAPPELLI = "grappelli_safe"
 #PACKAGE_NAME_GRAPPELLI = "grappelli"
 
 #########################
+# LOGS                  #
+#########################
+
+LOG_ROOT = os.path.join(PROJECT_ROOT, 'logs')
+os.makedirs(LOG_ROOT, exist_ok=True)
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "filters": {"require_debug_false": {"()": "django.utils.log.RequireDebugFalse"}},
+    "formatters": {
+        "verbose": {
+            "format": "%(levelname)s %(asctime)s %(module)s "
+            "%(process)d %(thread)d %(message)s"
+        }
+    },
+    "handlers": {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(LOG_ROOT, 'debug.log'),
+            "formatter": "verbose",
+        },
+        "mail_admins": {
+            "level": "ERROR",
+            "filters": ["require_debug_false"],
+            "class": "django.utils.log.AdminEmailHandler",
+        },
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+    },
+    "root": {"level": "INFO", "handlers": ["console"]},
+    "loggers": {
+        "django.request": {
+            "handlers": ["mail_admins", "file"],
+            "level": "WARNING",
+            "propagate": True,
+        },
+        "django.security.DisallowedHost": {
+            "level": "ERROR",
+            "handlers": ["console", "mail_admins"],
+            "propagate": True,
+        },
+    },
+}
+
+#########################
 # OPTIONAL APPLICATIONS #
 #########################
 
