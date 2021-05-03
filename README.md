@@ -10,6 +10,8 @@ running the [AEMA online resource](www.aemap.ac.uk).
 
 * May 2021: Converted from SVN, Django 1.5, Python 2 to Github and Django 1.8 and Python 3.6
 by Geoffroy Noel, and instance migrated to new virtual machine aema2.  
+* 2016: Software maintained by KDL
+* 2013-2016: Software development
 
 # Setup
 
