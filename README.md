@@ -15,6 +15,12 @@ by Geoffroy Noel, and instance migrated to new virtual machine aema2.
 
 # Setup
 
+## Install system packages
+
+[Geospatial libraries for Django](https://docs.djangoproject.com/en/1.8/ref/contrib/gis/install/geolibs/)
+
+`sudo apt-get install binutils libproj-dev gdal-bin`
+
 ## Local settings
 
 The secret, instance-specific settings should be placed in a local file called:
@@ -38,7 +44,7 @@ pip install pip-tools
 pip-sync
 ```
 
-# update haystack index
+## Update search index
 
 `python manage.py rebuild_index`
 
