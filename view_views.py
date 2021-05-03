@@ -7,6 +7,7 @@ from aema_db.models import *
 from aema_geography.models import *
 from early_celtic_society.models import Core
 
+
 def burial_view(request,id):
     id = id
     context = {}

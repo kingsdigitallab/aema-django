@@ -1,6 +1,6 @@
 from django.contrib.gis import admin
 from django.contrib.admin import TabularInline,StackedInline, ModelAdmin
-from models import *
+from .models import *
 
 #class PalstavesRawAdmin(admin.OSMGeoAdmin):
     #list_display = ('id','site_name','object','datasheet_name','museum','analysis_code')

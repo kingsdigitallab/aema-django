@@ -3,7 +3,7 @@ from django.db import models
 
 from django.contrib.gis.db import models
 
-from auxilliaryModels import *
+from .auxilliaryModels import *
 
 # Create your models here.
 		
@@ -48,8 +48,8 @@ class Metallurgy(models.Model):
     Adjusted_Co	= models.FloatField(null=True,blank=True)
     Adjusted_Fe	= models.FloatField(null=True,blank=True)
 	
-    def __unicode__(self):
-        return u'%s, %s' % ( str(self.oxford_database_code) , self.find_place )
+    def __str__(self):
+        return '%s, %s' % ( str(self.oxford_database_code) , self.find_place )
 
     class Meta:
         ordering = ('oxford_database_code','id')

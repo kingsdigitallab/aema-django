@@ -8,7 +8,7 @@ from django.contrib.gis.db import models
 class PalstaveAverageValues(models.Model):
     average_sn = models.FloatField(null=True,blank=True)
     average_pb = models.FloatField(null=True,blank=True)
-    def __unicode__(self):
+    def __str__(self):
         return ('Sn: %s, Pb: %s') % (self.average_sn,self.average_pb)
     
 

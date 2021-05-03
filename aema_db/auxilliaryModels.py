@@ -5,7 +5,7 @@
 
 from django.contrib.gis.db import models
 from django.contrib.gis.geos import GEOSGeometry,Point
-from choices import *
+from .choices import *
 from aema_db.models import *
 
 
@@ -20,7 +20,7 @@ class Site(models.Model):
     area_fk = models.ForeignKey('Area',null=True,blank=True)
     region = models.CharField(max_length=100,null=True,blank=True)
     country = models.CharField(max_length=100,null=True,blank=True)
-    def __unicode__(self):
+    def __str__(self):
         if self.area_fk:
             area = self.area_fk.area_name
             if self.area_fk.region_fk:
@@ -50,7 +50,7 @@ class Area(models.Model):
     region = models.CharField(max_length=100,null=True,blank=True)
     region_fk = models.ForeignKey('Region',null=True,blank=True)
     country = models.CharField(max_length=100,null=True,blank=True)
-    def __unicode__(self):
+    def __str__(self):
         if self.area_name:
             area = self.area_name
         else:
@@ -77,7 +77,7 @@ class Region(models.Model):
     region_name = models.CharField(max_length=100,null=True,blank=True)
     country = models.CharField(max_length=100,null=True,blank=True)
     country_fk = models.ForeignKey('Country',null=True,blank=True)
-    def __unicode__(self):
+    def __str__(self):
         if self.region_name:
             region = self.region_name
             if self.country_fk:
@@ -99,7 +99,7 @@ class Region(models.Model):
  
 class Country(models.Model):
     country_name = models.CharField(max_length=100,null=True,blank=True)
-    def __unicode__(self):
+    def __str__(self):
         if self.country_name:
             country  = self.country_name
         else:
@@ -115,15 +115,15 @@ class Country(models.Model):
 # Linked to Burials by M2M
 class SiteType(models.Model):
     site_type = models.CharField(max_length=100)
-    def __unicode__(self):
+    def __str__(self):
         return self.site_type
     class Meta:
         ordering = ('site_type','id')
 
 class SiteTypeSpecific(models.Model):
     description = models.CharField(max_length=100)
-    def __unicode__(self):
-        return u'%s' % self.description
+    def __str__(self):
+        return '%s' % self.description
     class Meta:
         ordering = ('description','id')
     
@@ -168,7 +168,7 @@ class BurialIndividuals(models.Model):
         super(BurialIndividuals, self).save(*args, **kwargs)
 
     def site_name_fake(self):
-        return u'%s' % self.burial.site_fk.site_name
+        return '%s' % self.burial.site_fk.site_name
 
     def haystack_name(self):
         return 'individuals'
@@ -189,7 +189,7 @@ class BurialIndividuals(models.Model):
             pass
             return None
         
-    def __unicode__(self):
+    def __str__(self):
         #TO DO - crappy code quick fix
         if self.age is not None and self.gender is not None:
             return self.get_gender_display() + ', ' + self.get_age_display()
@@ -239,7 +239,7 @@ class BurialIndividuals(models.Model):
 # Linked to Burials by M2M
 class Gender(models.Model):
     gender_name = models.CharField(max_length=30)
-    def __unicode__(self):
+    def __str__(self):
         return self.gender_name
     class Meta:
         ordering = ('gender_name',)
@@ -247,8 +247,8 @@ class Gender(models.Model):
 class BurialPosition(models.Model):
     short_desc = models.CharField(max_length=2,null=True,blank=True)
     description = models.CharField(max_length=50)
-    def __unicode__(self):
-        return u'%s' % self.description
+    def __str__(self):
+        return '%s' % self.description
     class Meta:
         ordering = ('description',)
 
@@ -264,14 +264,14 @@ class OrganicMaterial(models.Model):
         if self.sub_class:
             self.material_class = self.material_class  + ', %s' % self.sub_class
         super(OrganicMaterial, self).save()
-    def __unicode__(self):
+    def __str__(self):
         if self.sub_class:
             return '%s, %s' % (self.master,self.sub_class)
         elif self.material_class:
             return self.material_class
         else:
             return '%s' % (self.id)
-    def __unicode__(self):
+    def __str__(self):
         return self.material_class
                 
     class Meta:
@@ -281,7 +281,7 @@ class OrganicMaterial(models.Model):
 
 class OrganicMaterialMaster(models.Model):
     master = models.CharField(max_length=30)
-    def __unicode__(self):
+    def __str__(self):
         return self.master
     class Meta:
         ordering = ('master',)
@@ -289,7 +289,7 @@ class OrganicMaterialMaster(models.Model):
         
 class OrganicMaterialSubClass(models.Model):
     material_sub_class = models.CharField(max_length=50)
-    def __unicode__(self):
+    def __str__(self):
         return self.material_sub_class
     class Meta:
         ordering = ('material_sub_class',)
@@ -329,9 +329,9 @@ class GraveGood(models.Model):
             return None
 
     def haystack_name(self):
-        return u'gravegoods'
+        return 'gravegoods'
     
-    def __unicode__(self):
+    def __str__(self):
         if self.functional_type_fk is not None:
             type = self.functional_type_fk
         elif self.type is not None:
@@ -342,21 +342,21 @@ class GraveGood(models.Model):
         #    site = self.burial.site_fk.site_name
         #    site_id = self.burial.id
         #    return u'%s, from %s (SITE ID:%s)' % (type,site,site_id)
-        return u'%s, (ID:%s)' % (type,str(self.id))
+        return '%s, (ID:%s)' % (type,str(self.id))
     class Meta:
         ordering = ('functional_type_fk','id')
 
 
 class GraveGoodClass(models.Model):
     description = models.CharField(max_length=50)
-    def __unicode__(self):
+    def __str__(self):
         return self.description
     class Meta:
         ordering = ('description','id',)
         
 class GraveGoodType(models.Model):
     description = models.CharField(max_length=50)
-    def __unicode__(self):
+    def __str__(self):
         return self.description
     class Meta:
         ordering = ('description','id',)
@@ -364,7 +364,7 @@ class GraveGoodType(models.Model):
 class GraveGoodFunctionalType(models.Model):
     short_desc = models.CharField(max_length=2,null=True,blank=True)
     description = models.CharField(max_length=50)
-    def __unicode__(self):
+    def __str__(self):
         return self.description
     class Meta:
         ordering = ('description','id',)
@@ -372,7 +372,7 @@ class GraveGoodFunctionalType(models.Model):
 
 class GraveGoodRawMaterialType(models.Model):
     description = models.CharField(max_length=50)
-    def __unicode__(self):
+    def __str__(self):
         return self.description
     class Meta:
         ordering = ('description','id',)        
@@ -381,7 +381,7 @@ class GraveGoodRawMaterialType(models.Model):
 class GraveGoodPlacement(models.Model):
     short_desc = models.CharField(max_length=2,null=True,blank=True)
     description = models.CharField(max_length=50)
-    def __unicode__(self):
+    def __str__(self):
         return self.description
 
 
@@ -398,8 +398,8 @@ class Dating(models.Model):
     approx_uncalibrated_date_bp = models.IntegerField(null=True,blank=True)
     error_margin = models.IntegerField(null=True,blank=True)
 
-    def __unicode__(self):
-        return u'date for %s' % self.burial 
+    def __str__(self):
+        return 'date for %s' % self.burial 
 
            
            
@@ -421,10 +421,10 @@ class Pot(models.Model):
     pot_type_fk = models.ForeignKey('SpecificPotType',null=True,blank=True)
     burial = models.ForeignKey('Burials',related_name='Burial')
     raw_notes = models.TextField(null=True,blank=True)	
-    def __unicode__(self):
+    def __str__(self):
         if self.pot_type_fk:
-            return u'%s (ID:%s)' % (self.pot_type_fk.description,str(self.id))
-        return u'%s (ID:%s)' % (self.description,str(self.id))
+            return '%s (ID:%s)' % (self.pot_type_fk.description,str(self.id))
+        return '%s (ID:%s)' % (self.description,str(self.id))
         
     def site_name_fake(self):
         return self.burial.site_fk.site_name
@@ -451,49 +451,49 @@ class SpecificPotType(models.Model):
     description = models.CharField(max_length=50)
     short_code = models.CharField(max_length=10)
     major_type = models.ForeignKey('MajorPotType',null=True,blank=True)
-    def __unicode__(self):
+    def __str__(self):
         return self.description
 
 class MajorPotType(models.Model):
     description = models.CharField(max_length=50)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.description
 
         
 class PotType(models.Model):
     description = models.CharField(max_length=50)
     short_code = models.CharField(max_length=10)
-    def __unicode__(self):
+    def __str__(self):
         return self.description
         
 
 class Script(models.Model):
     description = models.CharField(max_length=50)
     sub_type = models.ForeignKey('ScriptSubType',null=True,blank=True)
-    def __unicode__(self):
+    def __str__(self):
         st = ''
         try:
             if self.sub_type:
                 st = self.sub_type.description
         except Exception:
             st = ''
-        return u'%s, %s' % (self.description,st)
+        return '%s, %s' % (self.description,st)
 
 class ScriptSubType(models.Model):
     description = models.CharField(max_length=50)
-    def __unicode__(self):
+    def __str__(self):
         return self.description		
 
 class Language(models.Model):
     description = models.CharField(max_length=50)
-    def __unicode__(self):
+    def __str__(self):
         return self.description
 
 
 class NameForm(models.Model):
     description = models.CharField(max_length=50)
-    def __unicode__(self):
+    def __str__(self):
        return self.description
 
     class Meta:
@@ -506,55 +506,55 @@ class NameForm(models.Model):
 
 class HoardType(models.Model):        
     description = models.CharField(max_length=50)
-    def __unicode__(self):
+    def __str__(self):
         return self.description
 
         
 class PeriodSummary(models.Model):
     description = models.CharField(max_length=50)
-    def __unicode__(self):
+    def __str__(self):
         return self.description
 		
 class HoardMaterial(models.Model):
     description = models.CharField(max_length=50)
-    def __unicode__(self):
+    def __str__(self):
         return self.description
 
 class StelaeStoneShape(models.Model):
     description = models.CharField(max_length=50)
-    def __unicode__(self):
+    def __str__(self):
         return self.description
 
 class RockFamily(models.Model):
     description =  models.CharField(max_length=50)
-    def __unicode__(self):
+    def __str__(self):
         return self.description
 
 class RockType(models.Model):
     family = models.ForeignKey(RockFamily)
     description =  models.CharField(max_length=50)
-    def __unicode__(self):
+    def __str__(self):
         return self.description
 
 class SpecificRockType(models.Model):
     type = models.ForeignKey(RockType)
     description =  models.CharField(max_length=50)
-    def __unicode__(self):
-        return u'%s, %s, %s' % (self.description,self.type,self.type.family)
+    def __str__(self):
+        return '%s, %s, %s' % (self.description,self.type,self.type.family)
     def short_name(self):
         return self.description
 
 class HoardSpecificObject(models.Model):
     description = models.CharField(max_length=50)
-    def __unicode__(self):
-        return u'%s' % self.description
+    def __str__(self):
+        return '%s' % self.description
     class Meta:
         ordering = ('description',)
 
 class HoardContextSummary(models.Model):
     description = models.CharField(max_length=50)
-    def __unicode__(self):
-        return u'%s' % self.description
+    def __str__(self):
+        return '%s' % self.description
     class Meta:
         ordering = ('description',)
 
@@ -563,8 +563,8 @@ class OgamImage(models.Model):
     ogam_fk = models.ForeignKey('OgamInscription')
     type = models.CharField(max_length=2,choices=ogam_image_type)
     image =  models.ImageField(upload_to='static/media/uploads/Ogam/')
-    def __unicode__(self):
-        return u'%s' % self.description
+    def __str__(self):
+        return '%s' % self.description
     class Meta:
         ordering = ('description',)
 
@@ -575,8 +575,8 @@ class MiscellaneousImage(models.Model):
     miscellaneous = models.ForeignKey('Miscellaneous')
     type = models.CharField(max_length=2,choices=ogam_image_type)
     image =  models.ImageField(upload_to='static/media/uploads/Misc/')
-    def __unicode__(self):
-        return u'%s' % self.description
+    def __str__(self):
+        return '%s' % self.description
     class Meta:
         ordering = ('description',)
 
@@ -586,8 +586,8 @@ class BurialImage(models.Model):
     burial_fk = models.ForeignKey('Burials')
     type = models.ForeignKey('BurialImageType',null=True,blank=True)
     image = models.ImageField(upload_to='static/media/uploads/Burial/')
-    def __unicode__(self):
-        return u'%s' % self.description
+    def __str__(self):
+        return '%s' % self.description
     class Meta:
         ordering = ('description',)
 
@@ -595,8 +595,8 @@ class HoardImage(models.Model):
     description = models.CharField(max_length=200)
     hoard_fk = models.ForeignKey('Hoards')
     image = models.ImageField(upload_to='static/media/uploads/Hoards/')
-    def __unicode__(self):
-        return u'%s' % self.description
+    def __str__(self):
+        return '%s' % self.description
     class Meta:
         ordering = ('description',)
 
@@ -608,22 +608,22 @@ class StelaeImage(models.Model):
     burial_fk = models.ForeignKey('Stelae')
     type = models.ForeignKey('StelaeImageType',null=True,blank=True)
     image = models.ImageField(upload_to='static/media/uploads/Stelae/')
-    def __unicode__(self):
-        return u'%s' % self.description
+    def __str__(self):
+        return '%s' % self.description
     class Meta:
         ordering = ('description',)
 
 class StelaeImageType(models.Model):
     description = models.CharField(max_length=50)
-    def __unicode__(self):
-        return u'%s' % self.description
+    def __str__(self):
+        return '%s' % self.description
     class Meta:
         ordering = ('description',)
 
 class BurialImageType(models.Model):
     description = models.CharField(max_length=50)
-    def __unicode__(self):
-        return u'%s' % self.description
+    def __str__(self):
+        return '%s' % self.description
     class Meta:
         ordering = ('description',)
 
@@ -633,8 +633,8 @@ class BurialImageType(models.Model):
 class StelaeTechnique(models.Model):
     description = models.CharField(max_length=50)
 
-    def __unicode__(self):
-        return u'%s' % self.description
+    def __str__(self):
+        return '%s' % self.description
     class Meta:
         ordering = ('description',)
 
@@ -644,15 +644,15 @@ class StelaeTechnique(models.Model):
 class StoredQuery(models.Model):
     geojson_rep = models.TextField()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.id
 
 		
 class Discovery(models.Model):
     description = models.CharField(max_length=50)
 
-    def __unicode__(self):
-        return u'%s' % self.description
+    def __str__(self):
+        return '%s' % self.description
     class Meta:
         ordering = ('description',)    
 
@@ -660,32 +660,32 @@ class Discovery(models.Model):
 class LocationSummary(models.Model):
     description = models.CharField(max_length=50)
 
-    def __unicode__(self):
-        return u'%s' % self.description
+    def __str__(self):
+        return '%s' % self.description
     class Meta:
         ordering = ('description',)
 		
 class StelaeType(models.Model):
     description = models.CharField(max_length=50)
 
-    def __unicode__(self):
-        return u'%s' % self.description
+    def __str__(self):
+        return '%s' % self.description
     class Meta:
         ordering = ('description',) 
 		
 class TypeOfLand(models.Model):
     description = models.CharField(max_length=50)
 
-    def __unicode__(self):
-        return u'%s' % self.description
+    def __str__(self):
+        return '%s' % self.description
     class Meta:
         ordering = ('description',) 
 		
 class HumanFigure(models.Model):
     description = models.CharField(max_length=50)
 
-    def __unicode__(self):
-        return u'%s' % self.description
+    def __str__(self):
+        return '%s' % self.description
     class Meta:
         ordering = ('description',) 
 
@@ -693,15 +693,15 @@ class HumanFigure(models.Model):
 class Motif(models.Model):
     description = models.CharField(max_length=50)
 
-    def __unicode__(self):
-        return u'%s' % self.description
+    def __str__(self):
+        return '%s' % self.description
     class Meta:
         ordering = ('description',)    
 
 class GeneralChronology(models.Model):
     description = models.CharField(max_length=100)
-    def __unicode__(self):
-        return u'%s' % self.description
+    def __str__(self):
+        return '%s' % self.description
     class Meta:
         ordering = ('description',)    
 
@@ -741,8 +741,8 @@ class Etymology(models.Model):
     manx = models.CharField(max_length=1000,null=True,blank=True)
     goidelic = models.CharField(max_length=1000,null=True,blank=True)
     morphology  = models.TextField(max_length=1000,null=True,blank=True)    
-    def __unicode__(self):
-        return u'%s' % self.description.description
+    def __str__(self):
+        return '%s' % self.description.description
     class Meta:
         ordering = ('description',)
         verbose_name_plural = 'Etymologies'
@@ -752,22 +752,22 @@ class EtymologyDescription(models.Model):
     description = models.CharField(max_length=50,verbose_name='Form')
     long_description = models.CharField(max_length=200,null=True,blank=True,verbose_name='Extended form')
     en_cognate = models.CharField(max_length=200,null=True,blank=True,verbose_name='English definition')
-    def __unicode__(self):
-        return u'%s' % self.description
+    def __str__(self):
+        return '%s' % self.description
     class Meta:
         ordering = ('description',)
 
 class EtymologyType(models.Model):
     description = models.CharField(max_length=50)
-    def __unicode__(self):
-        return u'%s' % self.description
+    def __str__(self):
+        return '%s' % self.description
     class Meta:
         ordering = ('description',)
 
 class SettlementType(models.Model):
     description = models.CharField(max_length=50)
-    def __unicode__(self):
-        return u'%s' % self.description
+    def __str__(self):
+        return '%s' % self.description
     class Meta:
         ordering = ('description',)
 
@@ -775,8 +775,8 @@ class BurialDates(models.Model):
     burial = models.ForeignKey('Burials')
     approx_uncalibrated_date_bp = models.IntegerField()
     error_margin = models.IntegerField()
-    def __unicode__(self):
-        return u'%s +/- %s'% (str(self.approx_uncalibrated_date_bp),str(self.error_margin))
+    def __str__(self):
+        return '%s +/- %s'% (str(self.approx_uncalibrated_date_bp),str(self.error_margin))
     class Meta:
         ordering = ('approx_uncalibrated_date_bp','error_margin')
 
@@ -784,8 +784,8 @@ class BurialIndividualDates(models.Model):
     individual = models.ForeignKey('BurialIndividuals')
     approx_uncalibrated_date_bp = models.IntegerField()
     error_margin = models.IntegerField()
-    def __unicode__(self):
-        return u'%s +/- %s'% (str(self.approx_uncalibrated_date_bp),str(self.error_margin))
+    def __str__(self):
+        return '%s +/- %s'% (str(self.approx_uncalibrated_date_bp),str(self.error_margin))
     class Meta:
         ordering = ('approx_uncalibrated_date_bp','error_margin')        
 
@@ -802,5 +802,5 @@ class Bibliography(models.Model):
     volume = models.CharField(max_length=200,null=True,blank=True)    
     page_numbers = models.CharField(max_length=200,null=True,blank=True)    
 
-    def __unicode__(self):
-        return u'%s, %s' % (self.title, self.editors)    
+    def __str__(self):
+        return '%s, %s' % (self.title, self.editors)    

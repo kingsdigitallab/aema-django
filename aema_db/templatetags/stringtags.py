@@ -26,7 +26,7 @@ def iterable(value):
     try:
         test = value.all()
         test.all()
-        print value.all()
+        print(value.all())
         return 'true'
     except Exception:
         return 'false'

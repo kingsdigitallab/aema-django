@@ -5,8 +5,8 @@ from django.db import models
 from django.contrib.gis.db import models
 from django.contrib.gis.geos import GEOSGeometry,Point
 
-from auxilliaryModels import *
-from choices import *
+from .auxilliaryModels import *
+from .choices import *
 
 from django.utils.safestring import mark_safe
 from django.template.defaultfilters import stringfilter
@@ -127,7 +127,7 @@ class Burials(models.Model):
     local_coordinates_string = models.CharField(max_length=50,null=True,blank=True)
     local_coordinates_epsg_code = models.IntegerField(null=True,blank=True)
     # Returns the string representation of the model.
-    def __unicode__(self):
+    def __str__(self):
         if self.site:
             if self.date_ref:
                 return "%s, %s, %s" % (self.site,self.date_ref,self.id)
@@ -345,8 +345,8 @@ class Stelae(models.Model):
     chronology_start_bc = models.IntegerField(null=True,blank=True)
     chronology_end_bc = models.IntegerField(null=True,blank=True)	
 
-    def __unicode__(self):
-        return u'%s' % (self.site_fk)
+    def __str__(self):
+        return '%s' % (self.site_fk)
 		
     #For elastic search spatial query
     def get_location(self):
@@ -373,7 +373,7 @@ class Stelae(models.Model):
             str = "<table><thead>"
             try:			
                 str += "<tr><th colspan='2'><a target='_blank' href='/view/stelae_full/" + \
-                    self.id.__str__() + "'>" + u'%s' % self.site_fk.site_name + "</a></th></tr></thead><tbody>"
+                    self.id.__str__() + "'>" + '%s' % self.site_fk.site_name + "</a></th></tr></thead><tbody>"
             except Exception as e:
                 str += "<tr><th colspan='2'><a target='_blank' href='/admin/aema_db/stelae/" + \
                     self.id.__str__() + "'>No site assigned</a></th></tr></thead><tbody>"			
@@ -399,7 +399,7 @@ class Stelae(models.Model):
             if self.technique_m2m.all().count() > 0:
                 str += "<tr><th>Technique</th><td>"
                 for cn in self.technique_m2m.all():
-                    str +=  cn.__unicode__() + ', '
+                    str +=  cn.__str__() + ', '
                 str = str[0:-2]
                 str += "</td></tr>"		
             str += "</tbody></table>"
@@ -453,7 +453,7 @@ class Ogam(models.Model):
     point = models.PointField(null=True,blank=True)
     objects = models.GeoManager()	
 
-    def __unicode__(self):
+    def __str__(self):
         id = str(self.site_fk)
         return id
 
@@ -512,7 +512,7 @@ class OgamFernandoRaw(models.Model):
     type = models.CharField(max_length=500,null=True,blank=True)
     dates = models.CharField(max_length=500,null=True,blank=True)
 	
-    def __unicode__(self):
+    def __str__(self):
         if self.word:
             return self.word
         return self.id
@@ -579,7 +579,7 @@ class AbrazoFernandoRaw(models.Model):
         super(AbrazoFernandoRaw, self).save(*args, **kwargs)
         
 	
-    def __unicode__(self):
+    def __str__(self):
         if self.word:
             return self.word
         return self.id
@@ -646,13 +646,13 @@ class OgamSite(models.Model):
     point = models.PointField(null=True,blank=True)
     objects = models.GeoManager()   
 
-    def __unicode__(self):
+    def __str__(self):
         try:
-            site = u'%s' % self.site_fk.site_name #str(self.site_fk)
+            site = '%s' % self.site_fk.site_name #str(self.site_fk)
             id = str(self.id)
         except Exception:
             return 'No site name specified'
-        return u'%s, site id: %s' % (site,id)
+        return '%s, site id: %s' % (site,id)
 
     def get_geojson(self):
         string = ''
@@ -680,7 +680,7 @@ class OgamSite(models.Model):
     def popup_content(self):
         try:
             str = "<table><thead>"
-            str += "<tr><th colspan='2'><a target='_blank' href='/view/ogamsite_full/" + self.id.__str__() + "'>" + u'%s' % self.site_fk.site_name + "</a></th></tr></thead><tbody>"
+            str += "<tr><th colspan='2'><a target='_blank' href='/view/ogamsite_full/" + self.id.__str__() + "'>" + '%s' % self.site_fk.site_name + "</a></th></tr></thead><tbody>"
             str += "<tr><th>Ancient name</th><td>"
             str += self.ancient_name.__str__()
             str += "</td></tr>"
@@ -779,10 +779,10 @@ class OgamInscription(models.Model):
 
     matchstring = models.CharField(max_length=200,null=True,blank=True)
     
-    def __unicode__(self):
+    def __str__(self):
         if self.name:
-            return u'%s' % self.name
-        return u'%s' % str(self.id) 
+            return '%s' % self.name
+        return '%s' % str(self.id) 
 
 
 # Now renamed metalwork in front end
@@ -838,10 +838,10 @@ class Hoards(models.Model):
     point = models.PointField(null=True,blank=True)
     objects = models.GeoManager()	
 
-    def __unicode__(self):
+    def __str__(self):
         if self.site_fk:
             return self.site_fk.site_name
-        return u'None'
+        return 'None'
 
     def haystack_name(self):
         #return 'hoards'
@@ -867,7 +867,7 @@ class Hoards(models.Model):
         try:	
             str = "<table><thead>"
             str += "<tr><th colspan='2'><a target='_blank' href='/view/hoard_full/" + \
-                self.id.__str__() + "'>" + u'%s' % self.site_fk.site_name + "</a></th></tr></thead><tbody>"
+                self.id.__str__() + "'>" + '%s' % self.site_fk.site_name + "</a></th></tr></thead><tbody>"
             str += "<tr><th>Find type</th><td>"
             str += self.get_find_type_cleaned_display()
             str += "</td></tr>"
@@ -942,8 +942,8 @@ class Toponyms(models.Model):
     class Meta:
         db_table = 'aema_db_toponyms'
         ordering = ('name',)
-    def __unicode__(self):
-        return u'%s' % (self.name)
+    def __str__(self):
+        return '%s' % (self.name)
 	
 
     #For elastic search spatial query
@@ -969,7 +969,7 @@ class Toponyms(models.Model):
         return 'toponyms'
 
     def site_name_fake(self):
-        return u'%s' % self.name
+        return '%s' % self.name
 
     def popup_content(self):
         str = "<table><thead>"
@@ -1055,10 +1055,10 @@ class Miscellaneous(models.Model):
     point = models.PointField(null=True,blank=True)
     objects = models.GeoManager()   
 
-    def __unicode__(self):
+    def __str__(self):
         if self.site_fk:
             return self.site_fk.site_name
-        return u'None'
+        return 'None'
 
     def haystack_name(self):
         #return 'hoards'
@@ -1084,7 +1084,7 @@ class Miscellaneous(models.Model):
         try:    
             str = "<table><thead>"
             str += "<tr><th colspan='2'><a target='_blank' href='/view/miscellaneous_full/" + \
-                self.id.__str__() + "'>" + u'%s' % self.site_fk.site_name + "</a></th></tr></thead><tbody>"
+                self.id.__str__() + "'>" + '%s' % self.site_fk.site_name + "</a></th></tr></thead><tbody>"
             str += "<tr><th>Find type</th><td>"
             str += self.get_find_type_cleaned_display()
             str += "</td></tr>"

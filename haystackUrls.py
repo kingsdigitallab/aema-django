@@ -16,7 +16,8 @@ from aema_db.models import *
 from aema_db.auxilliaryModels import *
 from early_celtic_society.models import Core
 import datetime
-import settings
+# from . import settings
+from django.conf import settings
 
 
 burial_facets = ['burials_individual_burial_type',\
@@ -124,15 +125,15 @@ class CustomSearchForm(FacetedSearchForm):
                     field,value = facet.split(":",1)
                     if value:
                         value = value.replace('%20',' ')
-                        print sqs.query.clean(value)
+                        print(sqs.query.clean(value))
                         #sqs = sqs.narrow(u'%s_exact:"%s"' % (field,sqs.query.clean(value)))
-                        facetString += u'.filter_or(%s_exact=Exact("%s"))' % (field , sqs.query.clean(value))
-                        print facetString
+                        facetString += '.filter_or(%s_exact=Exact("%s"))' % (field , sqs.query.clean(value))
+                        print(facetString)
                 facetString = 'sqs=sqs' + facetString
                 exec(facetString)
                 #return sqs # Don't return here cos we want to process the filters as well as the facets
             # And filters to filter..!
-                print 'Narrowed: ' + str(sqs.count())
+                print('Narrowed: ' + str(sqs.count()))
             if self.selected_filters:
                 filterString = ''
                 for filter in self.selected_filters:
@@ -141,7 +142,7 @@ class CustomSearchForm(FacetedSearchForm):
                     field,value = filter.split(":",1)
                     if value:
                         value = value.replace('%20',' ')
-                        filterString += u'.filter(%s_exact=Exact("%s"))' % (field , sqs.query.clean(value)) 
+                        filterString += '.filter(%s_exact=Exact("%s"))' % (field , sqs.query.clean(value)) 
                 filterString = 'sqs=sqs' + filterString
                 exec(filterString)
             # And filters to exclude..!
@@ -153,7 +154,7 @@ class CustomSearchForm(FacetedSearchForm):
                     field,value = filter.split(":",1)
                     if value:
                         value = value.replace('%20',' ')
-                        exFilterString += u'.exclude(%s_exact=Exact("%s"))' % (field , sqs.query.clean(value))						
+                        exFilterString += '.exclude(%s_exact=Exact("%s"))' % (field , sqs.query.clean(value))						
                 exFilterString = 'sqs=sqs' + exFilterString
                 exec(exFilterString)
             if self.date_range:
@@ -227,7 +228,7 @@ class CustomSearchView(FacetedSearchView):
         Generates the actual HttpResponse to send back to the user.
         """
         (paginator, page) = self.build_page()
-        print self.request.GET.get("query_type")		
+        print(self.request.GET.get("query_type"))		
         context = {
             'query': self.query,
             'form': self.form,

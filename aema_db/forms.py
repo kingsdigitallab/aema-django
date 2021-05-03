@@ -9,10 +9,10 @@ class MflcLinkWidget(forms.Widget):
 
     def render(self, name, value, attrs=None):
         if self.object.pk:
-            return mark_safe(u'<a onclick="return showRelatedObjectLookupPopup(this);" href="../../../%s/%s/%s/">%s</a>' % \
+            return mark_safe('<a onclick="return showRelatedObjectLookupPopup(this);" href="../../../%s/%s/%s/">%s</a>' % \
                              (self.object._meta.app_label, self.object._meta.object_name.lower(), self.object.pk, self.object))
         else:
-            return mark_safe(u'')
+            return mark_safe('')
 
 class MflcForm(forms.ModelForm):
     '''This form renders the Feature model and adds a link to edit the Feature. This is useful for \ 

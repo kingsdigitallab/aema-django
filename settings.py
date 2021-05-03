@@ -145,15 +145,15 @@ SECRET_KEY = "55ca04e7-76ec-4979-9736-37e2da87b23e89e5c906-28ba-4dec-885f-29b7d8
 INTERNAL_IPS = ("127.0.0.1",)
 
 TEMPLATES = [{
-    u'APP_DIRS': True,
-    u'BACKEND': u'django.template.backends.django.DjangoTemplates',
-    u'DIRS': [os.path.join(PROJECT_ROOT, "templates")],
-    u'OPTIONS': {
+    'APP_DIRS': True,
+    'BACKEND': 'django.template.backends.django.DjangoTemplates',
+    'DIRS': [os.path.join(PROJECT_ROOT, "templates")],
+    'OPTIONS': {
         # TODO: django 1.11
         # u'builtins': [
         #     u'mezzanine.template.loader_tags'
         # ],
-        u'context_processors': (
+        'context_processors': (
             'django.contrib.auth.context_processors.auth',
             'django.contrib.messages.context_processors.messages',
             'django.core.context_processors.debug',
@@ -374,7 +374,7 @@ LOCALE_PATHS = (
 try:
     from local_settings import *
 except ImportError:
-    pass
+    raise Exception('local_settings.py could not be imported')
 
 
 ####################
@@ -390,6 +390,7 @@ except ImportError:
 try:
     from mezzanine.utils.conf import set_dynamic_settings
 except ImportError:
+    print('WARNING: could not import mezzanine.utils.conf.set_dynamic_settings')
     pass
 else:
     set_dynamic_settings(globals())
