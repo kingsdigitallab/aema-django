@@ -154,14 +154,15 @@ TEMPLATES = [{
         #     u'mezzanine.template.loader_tags'
         # ],
         'context_processors': (
+            'django.template.context_processors.debug',
+            'django.template.context_processors.request',
             'django.contrib.auth.context_processors.auth',
             'django.contrib.messages.context_processors.messages',
-            'django.core.context_processors.debug',
             'django.core.context_processors.i18n',
             'django.core.context_processors.static',
             'django.core.context_processors.media',
-            'django.core.context_processors.request',
             'django.core.context_processors.tz',
+
             'mezzanine.conf.context_processors.settings',
             'mezzanine.pages.context_processors.page',
         )
@@ -263,6 +264,7 @@ INSTALLED_APPS = (
     "django.contrib.contenttypes",
     "django.contrib.redirects",
     "django.contrib.sessions",
+    "django.contrib.messages",
     "django.contrib.sites",
     "django.contrib.sitemaps",
     "django.contrib.staticfiles",
@@ -275,7 +277,6 @@ INSTALLED_APPS = (
     "mezzanine.forms",
     "mezzanine.galleries",
     "mezzanine.twitter",
-    #"mezzanine.accounts",
     "modeltranslation",
     "haystack",	
     "aema_db",
@@ -291,25 +292,28 @@ INSTALLED_APPS = (
 # response phase the middleware will be applied in reverse order.
 MIDDLEWARE_CLASSES = (
     "mezzanine.core.middleware.UpdateCacheMiddleware",
+
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.locale.LocaleMiddleware",
-    #"aema_db.middleware.AdminLocaleURLMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    "django.contrib.auth.middleware.RemoteUserMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.locale.LocaleMiddleware",
+    'django.middleware.security.SecurityMiddleware',
+
     "mezzanine.core.request.CurrentRequestMiddleware",
     "mezzanine.core.middleware.RedirectFallbackMiddleware",
-    # "mezzanine.core.middleware.TemplateForDeviceMiddleware",
-    # "mezzanine.core.middleware.TemplateForHostMiddleware",
     "mezzanine.core.middleware.AdminLoginInterfaceSelectorMiddleware",
-    #Authentication using REMOTE_USER
-    "django.contrib.auth.middleware.RemoteUserMiddleware",
-    #"mezzanine.core.middleware.SitePermissionMiddleware",
-    # Uncomment the following if using any of the SSL settings:
-    # "mezzanine.core.middleware.SSLRedirectMiddleware",
     "mezzanine.pages.middleware.PageMiddleware",
     "mezzanine.core.middleware.FetchFromCacheMiddleware",
+
+    # "aema_db.middleware.AdminLocaleURLMiddleware",
+    # Authentication using REMOTE_USER
+    # Uncomment the following if using any of the SSL settings:
+    # "mezzanine.core.middleware.SSLRedirectMiddleware",
 )
 MIDDLEWARE = MIDDLEWARE_CLASSES
 
@@ -357,6 +361,7 @@ DEBUG_TOOLBAR_CONFIG = {"INTERCEPT_REDIRECTS": False}
 #     "ADMIN_PASS": "", # Live admin user password
 # }
 
+WSGI_APPLICATION = 'wsgi.application'
 
 ##################
 # LOCAL SETTINGS #
