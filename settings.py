@@ -137,7 +137,7 @@ LANGUAGES = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = "55ca04e7-76ec-4979-9736-37e2da87b23e89e5c906-28ba-4dec-885f-29b7d86df4f63a9181a2-0e5e-481a-9fa1-c07300313d9e"
+SECRET_KEY = ""
 
 # Tuple of IP addresses, as strings, that:
 #   * See debug comments, when DEBUG is true
