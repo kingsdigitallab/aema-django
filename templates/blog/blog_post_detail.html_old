@@ -1,5 +1,5 @@
 {% extends "blog/blog_post_list.html" %}
-{% load mezzanine_tags comment_tags keyword_tags rating_tags i18n future disqus_tags %}
+{% load mezzanine_tags comment_tags keyword_tags rating_tags i18n future disqus_tags stringtags %}
 
 {% block meta_title %}{{ blog_post.meta_title }}{% endblock %}
 
@@ -62,7 +62,7 @@
 
 {% block blog_post_detail_content %}
 {% editable blog_post.content %}
-{{ blog_post.content|richtext_filters }}
+{{ blog_post.content|richtext_filters|fix_media_path }}
 {% endeditable %}
 {% endblock %}
 

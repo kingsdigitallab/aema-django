@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n future mezzanine_tags blog_tags keyword_tags disqus_tags %}
+{% load i18n future mezzanine_tags blog_tags keyword_tags disqus_tags stringtags %}
 
 {% block meta_title %}{% if page %}{{ page.richtextpage.meta_title }}{% else %}{% trans "Blog" %}{% endif %}{% endblock %}
 
@@ -63,7 +63,7 @@
     {% if page %}
     {% block blog_post_list_pagecontent %}
     {% editable page.richtextpage.content %}
-    {{ page.richtextpage.content|richtext_filters }}
+    {{ page.richtextpage.content|richtext_filters|fix_media_path }}
     {% endeditable %}
     {% endblock %}
     {% endif %}
