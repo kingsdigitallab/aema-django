@@ -108,7 +108,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('description', models.CharField(max_length=200)),
-                ('image', models.ImageField(upload_to='static/media/uploads/Burial/')),
+                ('image', models.ImageField(upload_to='media/uploads/Burial/')),
             ],
             options={
                 'ordering': ('description',),
@@ -440,7 +440,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('description', models.CharField(max_length=200)),
-                ('image', models.ImageField(upload_to='static/media/uploads/Hoards/')),
+                ('image', models.ImageField(upload_to='media/uploads/Hoards/')),
             ],
             options={
                 'ordering': ('description',),
@@ -608,7 +608,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('description', models.CharField(max_length=100)),
                 ('type', models.CharField(max_length=2, choices=[('GN', 'General'), ('IN', 'Inscription'), ('DW', 'Drawing')])),
-                ('image', models.ImageField(upload_to='static/media/uploads/Misc/')),
+                ('image', models.ImageField(upload_to='media/uploads/Misc/')),
                 ('miscellaneous', models.ForeignKey(to='aema_db.Miscellaneous')),
             ],
             options={
@@ -719,7 +719,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('description', models.CharField(max_length=100)),
                 ('type', models.CharField(max_length=2, choices=[('GN', 'General'), ('IN', 'Inscription'), ('DW', 'Drawing')])),
-                ('image', models.ImageField(upload_to='static/media/uploads/Ogam/')),
+                ('image', models.ImageField(upload_to='media/uploads/Ogam/')),
             ],
             options={
                 'ordering': ('description',),
@@ -1095,7 +1095,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('description', models.CharField(max_length=200)),
-                ('image', models.ImageField(upload_to='static/media/uploads/Stelae/')),
+                ('image', models.ImageField(upload_to='media/uploads/Stelae/')),
                 ('burial_fk', models.ForeignKey(to='aema_db.Stelae')),
             ],
             options={

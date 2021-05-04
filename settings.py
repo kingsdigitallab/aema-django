@@ -220,6 +220,10 @@ CACHE_MIDDLEWARE_KEY_PREFIX = PROJECT_DIRNAME
 CACHE_MIDDLEWARE_SECONDS = 5000
 CACHE_MIDDLEWARE_ALIAS = 'default'
 
+STATICFILES_DIRS = [
+    os.path.join(PROJECT_ROOT, 'node_modules'),
+    os.path.join(PROJECT_ROOT, 'assets'),
+]
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -234,11 +238,11 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, STATIC_URL.strip("/"))
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = STATIC_URL + "media/"
+MEDIA_URL = "/media/"
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = os.path.join(PROJECT_ROOT, *MEDIA_URL.strip("/").split("/"))
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, MEDIA_URL.split("/"))
 
 # Package/module name to import the root urlpatterns from for the project.
 #ROOT_URLCONF = "%s.urls" % PROJECT_DIRNAME

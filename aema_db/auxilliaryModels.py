@@ -562,7 +562,7 @@ class OgamImage(models.Model):
     description = models.CharField(max_length=100)
     ogam_fk = models.ForeignKey('OgamInscription')
     type = models.CharField(max_length=2,choices=ogam_image_type)
-    image =  models.ImageField(upload_to='static/media/uploads/Ogam/')
+    image =  models.ImageField(upload_to='media/uploads/Ogam/')
     def __str__(self):
         return '%s' % self.description
     class Meta:
@@ -574,7 +574,7 @@ class MiscellaneousImage(models.Model):
     description = models.CharField(max_length=100)
     miscellaneous = models.ForeignKey('Miscellaneous')
     type = models.CharField(max_length=2,choices=ogam_image_type)
-    image =  models.ImageField(upload_to='static/media/uploads/Misc/')
+    image =  models.ImageField(upload_to='media/uploads/Misc/')
     def __str__(self):
         return '%s' % self.description
     class Meta:
@@ -585,7 +585,7 @@ class BurialImage(models.Model):
     description = models.CharField(max_length=200)
     burial_fk = models.ForeignKey('Burials')
     type = models.ForeignKey('BurialImageType',null=True,blank=True)
-    image = models.ImageField(upload_to='static/media/uploads/Burial/')
+    image = models.ImageField(upload_to='media/uploads/Burial/')
     def __str__(self):
         return '%s' % self.description
     class Meta:
@@ -594,7 +594,7 @@ class BurialImage(models.Model):
 class HoardImage(models.Model):
     description = models.CharField(max_length=200)
     hoard_fk = models.ForeignKey('Hoards')
-    image = models.ImageField(upload_to='static/media/uploads/Hoards/')
+    image = models.ImageField(upload_to='media/uploads/Hoards/')
     def __str__(self):
         return '%s' % self.description
     class Meta:
@@ -607,7 +607,7 @@ class StelaeImage(models.Model):
     description = models.CharField(max_length=200)
     burial_fk = models.ForeignKey('Stelae')
     type = models.ForeignKey('StelaeImageType',null=True,blank=True)
-    image = models.ImageField(upload_to='static/media/uploads/Stelae/')
+    image = models.ImageField(upload_to='media/uploads/Stelae/')
     def __str__(self):
         return '%s' % self.description
     class Meta:

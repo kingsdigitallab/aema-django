@@ -115,7 +115,7 @@
       <div id="panel5" class="content">
   		<ul class="clearing-thumbs  small-block-grid-6" data-clearing>
           {% for i in burial.burialimage_set.all %}
-  			<li><a href="/static/media/{{ i.image }}"><img  data-caption="{{ i.description }}" src="/static/media/{% thumbnail i.image 200 0 %}"></a></li>
+  			<li><a href="/media/{{ i.image }}"><img  data-caption="{{ i.description }}" src="/media/{% thumbnail i.image 200 0 %}"></a></li>
           {% endfor %}
   		</ul>
       </div>

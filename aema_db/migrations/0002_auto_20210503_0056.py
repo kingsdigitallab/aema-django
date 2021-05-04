@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='burialimage',
             name='image',
-            field=models.ImageField(upload_to='static/media/uploads/Burial/'),
+            field=models.ImageField(upload_to='media/uploads/Burial/'),
         ),
         migrations.AlterField(
             model_name='burialindividuals',
@@ -270,7 +270,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='hoardimage',
             name='image',
-            field=models.ImageField(upload_to='static/media/uploads/Hoards/'),
+            field=models.ImageField(upload_to='media/uploads/Hoards/'),
         ),
         migrations.AlterField(
             model_name='hoards',
@@ -315,7 +315,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='miscellaneousimage',
             name='image',
-            field=models.ImageField(upload_to='static/media/uploads/Misc/'),
+            field=models.ImageField(upload_to='media/uploads/Misc/'),
         ),
         migrations.AlterField(
             model_name='miscellaneousimage',
@@ -350,7 +350,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='ogamimage',
             name='image',
-            field=models.ImageField(upload_to='static/media/uploads/Ogam/'),
+            field=models.ImageField(upload_to='media/uploads/Ogam/'),
         ),
         migrations.AlterField(
             model_name='ogamimage',
@@ -510,7 +510,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='stelaeimage',
             name='image',
-            field=models.ImageField(upload_to='static/media/uploads/Stelae/'),
+            field=models.ImageField(upload_to='media/uploads/Stelae/'),
         ),
         migrations.AlterField(
             model_name='toponyms',
