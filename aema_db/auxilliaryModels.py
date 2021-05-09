@@ -297,11 +297,11 @@ class OrganicMaterialSubClass(models.Model):
 
 class GraveGood(models.Model):
     type = models.ForeignKey('GraveGoodType',null=True,blank=True,help_text='Possibly redundant field to be removed after updates')
-    functional_type = models.CharField(max_length='2',null=True,blank=True,choices=burial_grave_good_type_choices\
+    functional_type = models.CharField(max_length=2,null=True,blank=True,choices=burial_grave_good_type_choices\
         ,help_text='Use the new fk field below')    
     functional_type_fk = models.ForeignKey('GraveGoodFunctionalType',default=1)
     condition = models.BooleanField(default=False,verbose_name='Fragmentary?')    
-    placement = models.CharField(max_length='2',choices=burial_pot_and_good_placement_choices,null=True,blank=True)
+    placement = models.CharField(max_length=2,choices=burial_pot_and_good_placement_choices,null=True,blank=True)
     placement_fk = models.ForeignKey('GraveGoodPlacement',null=True,blank=True)
     description = models.CharField(max_length=100,null=True,blank=True)
     burial = models.ForeignKey('Burials')
@@ -409,14 +409,14 @@ class Pot(models.Model):
 
     description = models.CharField(max_length=100)
     count = models.IntegerField(null=True,blank=True,help_text='Redundant - to be replaced/moved')    
-    pot_placement = models.CharField(max_length='2',choices=amended_choices,null=True,blank=True)
-    pot_disposition = models.CharField(max_length='2',choices=burial_pot_position_choices,null=True,blank=True,\
+    pot_placement = models.CharField(max_length=2,choices=amended_choices,null=True,blank=True)
+    pot_disposition = models.CharField(max_length=2,choices=burial_pot_position_choices,null=True,blank=True,\
         verbose_name = 'Pot position')
     pot_placement_fk = models.ForeignKey('GraveGoodPlacement',null=True,blank=True)
     condition = models.CharField(max_length=2,choices=burial_pot_condition_choices,default='CP');    
     type = models.ForeignKey('PotType',null=True,blank=True,help_text='Possibly redundant field to be removed\
         after data migrated to new field')
-    specific_type = models.CharField(max_length='2',null=True,blank=True,choices=burial_pot_type_choices,verbose_name\
+    specific_type = models.CharField(max_length=2,null=True,blank=True,choices=burial_pot_type_choices,verbose_name\
         ='Type')
     pot_type_fk = models.ForeignKey('SpecificPotType',null=True,blank=True)
     burial = models.ForeignKey('Burials',related_name='Burial')

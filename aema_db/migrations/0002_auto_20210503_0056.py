@@ -100,7 +100,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='burials',
             name='burial_type',
-            field=models.CharField(max_length='2', blank=True, null=True, choices=[('CR', 'Cremation'), ('IH', 'Inhumation'), ('MX', 'Mixed')]),
+            field=models.CharField(max_length=2, blank=True, null=True, choices=[('CR', 'Cremation'), ('IH', 'Inhumation'), ('MX', 'Mixed')]),
         ),
         migrations.AlterField(
             model_name='burials',
@@ -190,7 +190,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='burials',
             name='usage',
-            field=models.CharField(max_length='2', blank=True, null=True, choices=[('MP', 'Multi period'), ('SP', 'Single period')]),
+            field=models.CharField(max_length=2, blank=True, null=True, choices=[('MP', 'Multi period'), ('SP', 'Single period')]),
         ),
         migrations.AlterField(
             model_name='burials',
@@ -250,12 +250,12 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='gravegood',
             name='functional_type',
-            field=models.CharField(max_length='2', blank=True, null=True, choices=[('AX', 'Axehead'), ('AH', 'Arrowhead'), ('AW', 'Awl'), ('AT', 'Amulet'), ('AM', 'Armlet'), ('AT', 'Animal bone burnt'), ('AB', 'Animal bone unburnt'), ('BG', 'Beltring or toggle'), ('BT', 'Button'), ('BD', 'Bead'), ('BR', 'Bracelet'), ('BC', 'Bracer'), ('BL', 'Blade'), ('CO', 'Core'), ('CU', 'Cushion stone'), ('CP', 'Cup non ceramic'), ('CL', 'Cauldron'), ('DG', 'Dagger'), ('DC', 'Disc'), ('DF', 'Dress fastener'), ('DK', 'Dirk'), ('EG', 'Earring basket ornamnent'), ('FA', 'Fabricator'), ('FL', 'Flake'), ('FN', 'Flint nodule'), ('FB', 'Fibula'), ('FS', 'Fossil'), ('FR', 'Fur'), ('GG', 'Gorget'), ('HM', 'Hammerstone'), ('HB', 'Halberd'), ('HN', 'Horn'), ('KN', 'Knife'), ('LU', 'Lunulae'), ('LZ', 'Lozenge'), ('MC', 'Macehead'), ('NK', 'Necklace'), ('OT', 'Other'), ('PB', 'Polished bone'), ('PQ', 'Quartz pebble'), ('PE', 'Pebble'), ('PI', 'Pin'), ('PT', 'Pendant'), ('PO', 'Point'), ('RA', 'Rock art'), ('RG', 'Ring'), ('RU', 'Rubber'), ('RZ', 'Razor'), ('SC', 'Scraper'), ('SP', 'Spoon'), ('SW', 'Sword'), ('SH', 'Shell'), ('SM', 'Smoother'), ('SL', 'Strike-a-light'), ('SP', 'Spearhead'), ('TX', 'Textile'), ('QS', 'Quern - grinding stone'), ('UK', 'Unknown'), ('WH', 'Whetstone'), ('WS', 'Worked slate')], help_text='Use the new fk field below'),
+            field=models.CharField(max_length=2, blank=True, null=True, choices=[('AX', 'Axehead'), ('AH', 'Arrowhead'), ('AW', 'Awl'), ('AT', 'Amulet'), ('AM', 'Armlet'), ('AT', 'Animal bone burnt'), ('AB', 'Animal bone unburnt'), ('BG', 'Beltring or toggle'), ('BT', 'Button'), ('BD', 'Bead'), ('BR', 'Bracelet'), ('BC', 'Bracer'), ('BL', 'Blade'), ('CO', 'Core'), ('CU', 'Cushion stone'), ('CP', 'Cup non ceramic'), ('CL', 'Cauldron'), ('DG', 'Dagger'), ('DC', 'Disc'), ('DF', 'Dress fastener'), ('DK', 'Dirk'), ('EG', 'Earring basket ornamnent'), ('FA', 'Fabricator'), ('FL', 'Flake'), ('FN', 'Flint nodule'), ('FB', 'Fibula'), ('FS', 'Fossil'), ('FR', 'Fur'), ('GG', 'Gorget'), ('HM', 'Hammerstone'), ('HB', 'Halberd'), ('HN', 'Horn'), ('KN', 'Knife'), ('LU', 'Lunulae'), ('LZ', 'Lozenge'), ('MC', 'Macehead'), ('NK', 'Necklace'), ('OT', 'Other'), ('PB', 'Polished bone'), ('PQ', 'Quartz pebble'), ('PE', 'Pebble'), ('PI', 'Pin'), ('PT', 'Pendant'), ('PO', 'Point'), ('RA', 'Rock art'), ('RG', 'Ring'), ('RU', 'Rubber'), ('RZ', 'Razor'), ('SC', 'Scraper'), ('SP', 'Spoon'), ('SW', 'Sword'), ('SH', 'Shell'), ('SM', 'Smoother'), ('SL', 'Strike-a-light'), ('SP', 'Spearhead'), ('TX', 'Textile'), ('QS', 'Quern - grinding stone'), ('UK', 'Unknown'), ('WH', 'Whetstone'), ('WS', 'Worked slate')], help_text='Use the new fk field below'),
         ),
         migrations.AlterField(
             model_name='gravegood',
             name='placement',
-            field=models.CharField(max_length='2', blank=True, null=True, choices=[('NH', 'Near head'), ('BB', 'Behind back'), ('ND', 'Near hands'), ('PE', 'Pelvis'), ('NF', 'Near feet'), ('NK', 'Neck'), ('FF', 'In front of face'), ('WC', 'With cremation')]),
+            field=models.CharField(max_length=2, blank=True, null=True, choices=[('NH', 'Near head'), ('BB', 'Behind back'), ('ND', 'Near hands'), ('PE', 'Pelvis'), ('NF', 'Near feet'), ('NK', 'Neck'), ('FF', 'In front of face'), ('WC', 'With cremation')]),
         ),
         migrations.AlterField(
             model_name='gravegood',
@@ -490,17 +490,17 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='pot',
             name='pot_disposition',
-            field=models.CharField(verbose_name='Pot position', max_length='2', blank=True, null=True, choices=[('UP', 'Upright'), ('IN', 'Inverted'), ('SO', 'On side')]),
+            field=models.CharField(verbose_name='Pot position', max_length=2, blank=True, null=True, choices=[('UP', 'Upright'), ('IN', 'Inverted'), ('SO', 'On side')]),
         ),
         migrations.AlterField(
             model_name='pot',
             name='pot_placement',
-            field=models.CharField(max_length='2', blank=True, null=True, choices=[('NH', 'Near head'), ('BB', 'Behind back'), ('ND', 'Near hands'), ('PE', 'Pelvis'), ('NF', 'Near feet'), ('NK', 'Neck'), ('FF', 'In front of face'), ('WC', 'With cremation'), ('CN', 'Container')]),
+            field=models.CharField(max_length=2, blank=True, null=True, choices=[('NH', 'Near head'), ('BB', 'Behind back'), ('ND', 'Near hands'), ('PE', 'Pelvis'), ('NF', 'Near feet'), ('NK', 'Neck'), ('FF', 'In front of face'), ('WC', 'With cremation'), ('CN', 'Container')]),
         ),
         migrations.AlterField(
             model_name='pot',
             name='specific_type',
-            field=models.CharField(verbose_name='Type', max_length='2', blank=True, null=True, choices=[('UK', 'Unknown'), ('BB', 'Bell beaker'), ('BL', 'Beaker local or derived'), ('BU', 'Bucket urn'), ('CU', 'Collared urn'), ('CO', 'Cordoned urn'), ('EN', 'Encrusted urn'), ('FV', 'Food vessel'), ('GU', 'Globular urn'), ('GW', 'Grooved ware'), ('LN', 'Late Neolithic'), ('EB', 'Early Bronze age'), ('MB', 'Middle Bronze age'), ('MV', 'Miniature vessel'), ('LB', 'Late Bronze age'), ('LI', 'Late Bronze Iron age'), ('VU', 'Vase urn')]),
+            field=models.CharField(verbose_name='Type', max_length=2, blank=True, null=True, choices=[('UK', 'Unknown'), ('BB', 'Bell beaker'), ('BL', 'Beaker local or derived'), ('BU', 'Bucket urn'), ('CU', 'Collared urn'), ('CO', 'Cordoned urn'), ('EN', 'Encrusted urn'), ('FV', 'Food vessel'), ('GU', 'Globular urn'), ('GW', 'Grooved ware'), ('LN', 'Late Neolithic'), ('EB', 'Early Bronze age'), ('MB', 'Middle Bronze age'), ('MV', 'Miniature vessel'), ('LB', 'Late Bronze age'), ('LI', 'Late Bronze Iron age'), ('VU', 'Vase urn')]),
         ),
         migrations.AlterField(
             model_name='pot',
