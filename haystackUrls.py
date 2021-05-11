@@ -120,7 +120,6 @@ class CustomSearchForm(FacetedSearchForm):
                 #            sqs = sqs.exclude(spatial_exclude=s.spatial_exclude)
 
             if self.selected_facets:
-                facetString = ''
                 for facet in self.selected_facets:
                     if ":" not in facet:
                         continue
@@ -128,12 +127,12 @@ class CustomSearchForm(FacetedSearchForm):
                     if value:
                         value = value.replace('%20',' ')
                         #sqs = sqs.narrow(u'%s_exact:"%s"' % (field,sqs.query.clean(value)))
-                        facetString += '.filter_or(%s_exact=Exact("%s"))' % (field , sqs.query.clean(value))
-                facetString = 'sqs=sqs' + facetString
-                exec(facetString)
+                        sqs = sqs.filter_or(**{f'{field}_exact': Exact(sqs.query.clean(value))})
+
                 #return sqs # Don't return here cos we want to process the filters as well as the facets
+
             # And filters to filter..!
-                print('Narrowed: ' + str(sqs.count()))
+                # print('Narrowed: ' + str(sqs.count()))
 
             if self.selected_filters:
                 for filter in self.selected_filters:
@@ -146,16 +145,13 @@ class CustomSearchForm(FacetedSearchForm):
 
             # And filters to exclude..!
             if self.deselected_filters:
-                exFilterString = ''
                 for filter in self.deselected_filters:
                     if ":" not in filter:
                         continue
                     field,value = filter.split(":",1)
                     if value:
                         value = value.replace('%20',' ')
-                        exFilterString += '.exclude(%s_exact=Exact("%s"))' % (field , sqs.query.clean(value))						
-                exFilterString = 'sqs=sqs' + exFilterString
-                exec(exFilterString)
+                        sqs = sqs.exclude(**{f'{field}_exact': Exact(sqs.query.clean(value))})
 
             if self.date_range:
                 # Parse the dates to to and from values:
