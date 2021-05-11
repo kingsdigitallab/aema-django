@@ -16,7 +16,13 @@
   <link rel="stylesheet" href="{% static 'css/stylesheets/app.css' %}">
   <!-- FontAwesome -->
   <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}">
-  <script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
+  {% if debug %}
+    <script src="{% static 'jquery/dist/jquery.js' %}"></script>
+    <script src="{% static 'jquery-migrate/dist/jquery-migrate.js' %}"></script>
+  {% else %}
+    <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+    <script src="{% static 'jquery-migrate/dist/jquery-migrate.min.js' %}"></script>
+  {% endif %}
   <!-- Typekit fonts -->
   <script type="text/javascript" src="//use.typekit.net/cfi1aga.js"></script>
   <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
