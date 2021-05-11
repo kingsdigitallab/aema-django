@@ -1,12 +1,13 @@
 from django.template import RequestContext
 from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpRequest
 from django.contrib.gis.geos import GEOSGeometry
 from django.views.decorators.csrf import csrf_exempt
 
 import urllib.request, urllib.error, urllib.parse
 
 # from .settings import *
+from haystackUrls import CustomSearchView
 
 """
 req = urllib2.Request("http://vimeo.com/api/v2/video/38356.json", None, {'user-agent':'syncstream/vimeo'})
@@ -28,17 +29,15 @@ def export_json(request, layer):
 
 @csrf_exempt
 def export_csv(request, layer):
-    context = {}
     query = request.POST.get('stringified-csv', '')
     queryModelType = request.POST.get('textsearchmodel', '')
     req = urllib.request.Request(
-        'https://' +
-        request.META['HTTP_HOST'] +
-        "/search/csv/?" +
+        request.build_absolute_uri('/search/csv/') +
+        '?' +
         query.replace(' ', '%20') +
         "&textsearchmodel=" +
         queryModelType
     )
     opener = urllib.request.build_opener()
     csv = opener.open(req)
-    return HttpResponse(csv.read(), mimetype='application/force-download')
+    return HttpResponse(csv.read(), content_type='application/force-download')
