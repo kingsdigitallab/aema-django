@@ -248,6 +248,9 @@ MEDIA_ROOT = os.path.join(PROJECT_ROOT, MEDIA_URL.strip("/"))
 #ROOT_URLCONF = "%s.urls" % PROJECT_DIRNAME
 ROOT_URLCONF = "urls"
 
+# needed to avoid https -> http redirect by django when appending missing end /
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 # Put strings here, like "/home/html/django_templates"
 # or "C:/www/django/templates".
 # Always use forward slashes, even on Windows.
@@ -455,5 +458,4 @@ except ImportError:
     pass
 else:
     set_dynamic_settings(globals())
-
 
