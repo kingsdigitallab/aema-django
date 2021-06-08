@@ -423,7 +423,7 @@ WSGI_APPLICATION = 'wsgi.application'
 # LOCAL SETTINGS #
 ##################
 
-GEOSERVER_WEBPATH = 'http://www.aemap.ac.uk/geoserver/'
+GEOSERVER_WEBPATH = 'https://www.aemap.ac.uk/geoserver/'
 
 LOCALE_PATHS = (
     os.path.join(PROJECT_ROOT, "locale"),
