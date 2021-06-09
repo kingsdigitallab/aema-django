@@ -732,12 +732,11 @@ $(document).ready(function() {
 			//marker.on('click',function(){
 			marker.on('mouseintent',function(){
                 var m = this
-				$.ajax('/view/get-burial-popup/' + feature.properties.id ,{
-                    			cache:true,
+				$.ajax('/view/get-burial-popup/' + feature.properties.id + '/' ,{
+                    cache:true,
 					async:false,
 					success: function(data){
 						m.bindPopup(data);
-
 					}
 				})
 				m.openPopup()
@@ -757,7 +756,7 @@ $(document).ready(function() {
 			//marker.on('click',function(){
 			marker.on('mouseintent',function(){
                 var m = this
-				$.ajax('/view/get-miscellaneous-popup/' + feature.properties.id ,{
+				$.ajax('/view/get-miscellaneous-popup/' + feature.properties.id  + '/',{
 					async:false,
 					success: function(data){
 						m.bindPopup(data);
@@ -784,7 +783,7 @@ $(document).ready(function() {
 
                 var m = this
 			
-                                $.ajax('/view/get-gravegoods-popup/' + feature.properties.id ,{
+                                $.ajax('/view/get-gravegoods-popup/' + feature.properties.id  + '/',{
                                         async:false,
                                         success: function(data){
                                                 m.bindPopup(data);
@@ -812,7 +811,7 @@ $(document).ready(function() {
 
                 var m = this
                 
-				$.ajax('/view/get-pots-popup/' + feature.properties.id ,{
+				$.ajax('/view/get-pots-popup/' + feature.properties.id + '/',{
 					async:false,
 					success: function(data){
 						m.bindPopup(data);
@@ -835,7 +834,7 @@ $(document).ready(function() {
 			//marker.bindPopup(feature.properties.popupContent);
 			marker.on('mouseintent',function(){
                                 var m = this
-				$.ajax('/view/get-burial-popup/' + feature.properties.id ,{
+				$.ajax('/view/get-burial-popup/' + feature.properties.id  + '/',{
 					async:false,
 					success: function(data){
 						m.bindPopup(data);
@@ -859,7 +858,7 @@ $(document).ready(function() {
 			//marker.bindPopup(feature.properties.popupContent);
 			marker.on('mouseintent',function(){
                                 var m = this
-				$.ajax('/view/get-metalwork-popup/' + feature.properties.id ,{
+				$.ajax('/view/get-metalwork-popup/' + feature.properties.id  + '/',{
 					async:false,
 					success: function(data){
 						m.bindPopup(data);
@@ -877,7 +876,7 @@ $(document).ready(function() {
                         var marker = L.circleMarker(latlng,{color:'#cccc33',opacity:0.9,fillColor:'#cccc33',fillOpacity:0.6}).setRadius(5)
                         marker.on('mouseintent',function(){
                                 var m = this
-                                $.ajax('/view/get-toponyms-popup/' + feature.properties.id ,{
+                                $.ajax('/view/get-toponyms-popup/' + feature.properties.id  + '/',{
                                         async:false,
                                         success: function(data){
                                                 m.bindPopup(data);
@@ -898,7 +897,7 @@ $(document).ready(function() {
                         //marker.bindPopup(feature.properties.popupContent);
                         marker.on('mouseintent',function(){
                                 var m = this
-                                $.ajax('/view/get-settlements-popup/' + feature.properties.id ,{
+                                $.ajax('/view/get-settlements-popup/' + feature.properties.id  + '/',{
                                         async:false,
                                         success: function(data){
                                                 m.bindPopup(data);
@@ -920,7 +919,7 @@ $(document).ready(function() {
 			//marker.bindPopup(feature.properties.popupContent);
 			marker.on('mouseintent',function(){
                                 var m = this
-				$.ajax('/view/get-stelae-popup/' + feature.properties.id ,{
+				$.ajax('/view/get-stelae-popup/' + feature.properties.id  + '/',{
 					async:false,
 					success: function(data){
 						m.bindPopup(data);
@@ -939,7 +938,7 @@ $(document).ready(function() {
 			//marker.bindPopup(feature.properties.popupContent);
 			marker.on('mouseintent',function(){
                                 var m = this
-				$.ajax('/view/get-inscriptions-popup/' + feature.properties.id ,{
+				$.ajax('/view/get-inscriptions-popup/' + feature.properties.id  + '/',{
 					async:false,
 					success: function(data){
 						m.bindPopup(data);
@@ -957,7 +956,7 @@ $(document).ready(function() {
                         //marker.bindPopup(feature.properties.popupContent);
                         marker.on('mouseintent',function(){
                                 var m = this
-                                $.ajax('/view/get-individuals-popup/' + feature.properties.id ,{
+                                $.ajax('/view/get-individuals-popup/' + feature.properties.id  + '/',{
                                         async:false,
                                         success: function(data){
                                                 m.bindPopup(data);
@@ -1026,7 +1025,7 @@ $(document).ready(function() {
         "<button class='expand button popup-extra radius less-padding' data-reveal-id='layer-modal' data-reveal>More layers...</button>");
 	
 	// Populate the more layers function
-	$.ajax('/view/geojson_layers',{
+	$.ajax('/view/geojson_layers/',{
 		success:function(data){
 			$('#layer-modal').html(data);
 			
