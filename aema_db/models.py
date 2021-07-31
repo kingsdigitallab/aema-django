@@ -212,7 +212,7 @@ class Burials(models.Model):
             str += "</td></tr>"            
         str += "</tbody></table>"
         #str += "<a href='#' data-reveal-id='myModal'>Click Me For A Modal</a>"
-        str += "<button class='button tiny popup-extra' data-reveal-id='more-detail-modal' data-reveal-ajax='/view/burials/"+ self.id.__str__() +"'>More</button>"
+        str += "<button class='button tiny popup-extra' data-reveal-id='more-detail-modal' data-reveal-ajax='https://aemap.ac.uk/view/burials/"+ self.id.__str__() +"'>More</button>"
 
         return str
 
