@@ -449,7 +449,7 @@ $(document).ready(function() {
 	{attribution:'Map base by <a href="http://awmc.unc.edu/">AWMC</a>'}).addTo(resultMap);
 
 	legacy_terrain = new L.TileLayer("/geoserver/gwc/service/tms/1.0.0/Project_data%3Adcow_backdrop_aema@EPSG%3A900913@jpeg/{z}/{x}/{y}.jpeg",
-	{tms:true}).addTo(resultMap);
+	{tms:true})//.addTo(resultMap);
 
 	plain_map = new L.TileLayer("/geoserver/gwc/service/tms/1.0.0/world_simple@EPSG%3A900913@png/{z}/{x}/{y}.png",
 	{tms:true})//.addTo(resultMap);
@@ -461,7 +461,7 @@ $(document).ready(function() {
 	
 	miniBase = new L.TileLayer('http://{s}.acetate.geoiq.com/tiles/acetate-base/{z}/{x}/{y}.png',{subdomains:['a1','a2','a3','a4'],maxzoom:5})
 	
-    var esri_streets = new L.TileLayer("http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}");
+    var esri_streets = new L.TileLayer("http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}").addTo(resultMap);
 		
 	resultMap.on('zoomstart', function(e){
 	    $('.spinner').addClass('active').removeClass('inactive')
@@ -978,7 +978,8 @@ $(document).ready(function() {
 		})	
 
     // var base_layers = {'Ancient':ancient_world,'Modern landscape':landscape,'Plain':plain_map,'Streets':esri_streets,'Legacy':legacy_terrain};
-	var base_layers = {'Legacy':legacy_terrain,'Modern landscape':landscape,'Plain':plain_map,'Streets':esri_streets};
+	// var base_layers = {'Legacy':legacy_terrain,'Modern landscape':landscape,'Plain':plain_map,'Streets':esri_streets};
+	var base_layers = {'Default':esri_streets};
 
 	layerSwitcher = new L.Control.Layers(base_layers,{'Burials':burials_markers,
 	    //'Hoards':hoards_markers,'Stelae':stelae_markers,'Ogam':ogam_markers/*,'UK contours':uk_mainland_contours,'Surface water':surface_water*/}).addTo(resultMap);
