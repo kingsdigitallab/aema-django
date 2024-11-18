@@ -145,23 +145,24 @@ SECRET_KEY = ""
 INTERNAL_IPS = ("127.0.0.1",)
 
 TEMPLATES = [{
-    u'APP_DIRS': True,
-    u'BACKEND': u'django.template.backends.django.DjangoTemplates',
-    u'DIRS': [os.path.join(PROJECT_ROOT, "templates")],
-    u'OPTIONS': {
+    'APP_DIRS': True,
+    'BACKEND': 'django.template.backends.django.DjangoTemplates',
+    'DIRS': [os.path.join(PROJECT_ROOT, "templates")],
+    'OPTIONS': {
         # TODO: django 1.11
         # u'builtins': [
         #     u'mezzanine.template.loader_tags'
         # ],
-        u'context_processors': (
+        'context_processors': (
+            'django.template.context_processors.debug',
+            'django.template.context_processors.request',
             'django.contrib.auth.context_processors.auth',
             'django.contrib.messages.context_processors.messages',
-            'django.core.context_processors.debug',
             'django.core.context_processors.i18n',
             'django.core.context_processors.static',
             'django.core.context_processors.media',
-            'django.core.context_processors.request',
             'django.core.context_processors.tz',
+
             'mezzanine.conf.context_processors.settings',
             'mezzanine.pages.context_processors.page',
         )
@@ -219,6 +220,10 @@ CACHE_MIDDLEWARE_KEY_PREFIX = PROJECT_DIRNAME
 CACHE_MIDDLEWARE_SECONDS = 5000
 CACHE_MIDDLEWARE_ALIAS = 'default'
 
+STATICFILES_DIRS = [
+    os.path.join(PROJECT_ROOT, 'node_modules'),
+    os.path.join(PROJECT_ROOT, 'assets'),
+]
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -233,15 +238,18 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, STATIC_URL.strip("/"))
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = STATIC_URL + "media/"
+MEDIA_URL = "/media/"
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = os.path.join(PROJECT_ROOT, *MEDIA_URL.strip("/").split("/"))
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, MEDIA_URL.strip("/"))
 
 # Package/module name to import the root urlpatterns from for the project.
 #ROOT_URLCONF = "%s.urls" % PROJECT_DIRNAME
 ROOT_URLCONF = "urls"
+
+# needed to avoid https -> http redirect by django when appending missing end /
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Put strings here, like "/home/html/django_templates"
 # or "C:/www/django/templates".
@@ -263,6 +271,7 @@ INSTALLED_APPS = (
     "django.contrib.contenttypes",
     "django.contrib.redirects",
     "django.contrib.sessions",
+    "django.contrib.messages",
     "django.contrib.sites",
     "django.contrib.sitemaps",
     "django.contrib.staticfiles",
@@ -275,7 +284,6 @@ INSTALLED_APPS = (
     "mezzanine.forms",
     "mezzanine.galleries",
     "mezzanine.twitter",
-    #"mezzanine.accounts",
     "modeltranslation",
     "haystack",	
     "aema_db",
@@ -290,26 +298,31 @@ INSTALLED_APPS = (
 # these middleware classes will be applied in the order given, and in the
 # response phase the middleware will be applied in reverse order.
 MIDDLEWARE_CLASSES = (
+    'django.middleware.security.SecurityMiddleware',
+
     "mezzanine.core.middleware.UpdateCacheMiddleware",
+
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
-    #"aema_db.middleware.AdminLocaleURLMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    # "django.contrib.auth.middleware.RemoteUserMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
     "mezzanine.core.request.CurrentRequestMiddleware",
     "mezzanine.core.middleware.RedirectFallbackMiddleware",
-    # "mezzanine.core.middleware.TemplateForDeviceMiddleware",
-    # "mezzanine.core.middleware.TemplateForHostMiddleware",
     "mezzanine.core.middleware.AdminLoginInterfaceSelectorMiddleware",
-    #Authentication using REMOTE_USER
-    "django.contrib.auth.middleware.RemoteUserMiddleware",
-    #"mezzanine.core.middleware.SitePermissionMiddleware",
-    # Uncomment the following if using any of the SSL settings:
-    # "mezzanine.core.middleware.SSLRedirectMiddleware",
+    'mezzanine.core.middleware.SitePermissionMiddleware',
     "mezzanine.pages.middleware.PageMiddleware",
     "mezzanine.core.middleware.FetchFromCacheMiddleware",
+
+    # "aema_db.middleware.AdminLocaleURLMiddleware",
+    # Authentication using REMOTE_USER
+    # Uncomment the following if using any of the SSL settings:
+    # "mezzanine.core.middleware.SSLRedirectMiddleware",
 )
 MIDDLEWARE = MIDDLEWARE_CLASSES
 
@@ -318,6 +331,56 @@ MIDDLEWARE = MIDDLEWARE_CLASSES
 PACKAGE_NAME_FILEBROWSER = "filebrowser_safe"
 PACKAGE_NAME_GRAPPELLI = "grappelli_safe"
 #PACKAGE_NAME_GRAPPELLI = "grappelli"
+
+#########################
+# LOGS                  #
+#########################
+
+LOG_ROOT = os.path.join(PROJECT_ROOT, 'logs')
+os.makedirs(LOG_ROOT, exist_ok=True)
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "filters": {"require_debug_false": {"()": "django.utils.log.RequireDebugFalse"}},
+    "formatters": {
+        "verbose": {
+            "format": "%(levelname)s %(asctime)s %(module)s "
+            "%(process)d %(thread)d %(message)s"
+        }
+    },
+    "handlers": {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(LOG_ROOT, 'debug.log'),
+            "formatter": "verbose",
+        },
+        "mail_admins": {
+            "level": "ERROR",
+            "filters": ["require_debug_false"],
+            "class": "django.utils.log.AdminEmailHandler",
+        },
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+    },
+    "root": {"level": "WARNING", "handlers": ["console"]},
+    "loggers": {
+        "django.request": {
+            "handlers": ["mail_admins", "file"],
+            "level": "WARNING",
+            "propagate": True,
+        },
+        "django.security.DisallowedHost": {
+            "level": "ERROR",
+            "handlers": ["console", "mail_admins"],
+            "propagate": True,
+        },
+    },
+}
 
 #########################
 # OPTIONAL APPLICATIONS #
@@ -357,12 +420,13 @@ DEBUG_TOOLBAR_CONFIG = {"INTERCEPT_REDIRECTS": False}
 #     "ADMIN_PASS": "", # Live admin user password
 # }
 
+WSGI_APPLICATION = 'wsgi.application'
 
 ##################
 # LOCAL SETTINGS #
 ##################
 
-GEOSERVER_WEBPATH = 'http://www.aemap.ac.uk/geoserver/'
+GEOSERVER_WEBPATH = 'https://www.aemap.ac.uk/geoserver/'
 
 LOCALE_PATHS = (
     os.path.join(PROJECT_ROOT, "locale"),
@@ -374,7 +438,7 @@ LOCALE_PATHS = (
 try:
     from local_settings import *
 except ImportError:
-    pass
+    raise Exception('local_settings.py could not be imported')
 
 
 ####################
@@ -390,8 +454,8 @@ except ImportError:
 try:
     from mezzanine.utils.conf import set_dynamic_settings
 except ImportError:
+    print('WARNING: could not import mezzanine.utils.conf.set_dynamic_settings')
     pass
 else:
     set_dynamic_settings(globals())
-
 

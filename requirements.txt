@@ -4,8 +4,6 @@
 #
 #    pip-compile
 #
-backports.functools-lru-cache==1.6.4
-    # via soupsieve
 beautifulsoup4==4.9.3
     # via mezzanine
 bleach==3.3.0

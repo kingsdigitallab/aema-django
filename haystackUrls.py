@@ -16,7 +16,8 @@ from aema_db.models import *
 from aema_db.auxilliaryModels import *
 from early_celtic_society.models import Core
 import datetime
-import settings
+# from . import settings
+from django.conf import settings
 
 
 burial_facets = ['burials_individual_burial_type',\
@@ -83,9 +84,9 @@ class CustomSearchForm(FacetedSearchForm):
         if not self.cleaned_data.get('q'):
             return self.no_query_found()
 
-        sqs = SearchQuerySet()    
+        sqs = SearchQuerySet()
         if self.models:
-            for m in self.models:        
+            for m in self.models:
                 qmodel = object_type_for_sqs.get( m )
                 sqs = sqs.models( qmodel )
         else:
@@ -98,12 +99,14 @@ class CustomSearchForm(FacetedSearchForm):
         #If there is no query string we want to filter based on selected facet(s) only...		
         ###
         # Use facets to narrow..! NB THIS amounts to an AND query... I think...
+
         if self.selected_facets or self.deselected_filters or self.selected_filters or self.date_range:
             model = self.query_type
             # AHGG hacky alert!
             if model == None:
                 model = 'burials' #Stick any old crap in here, it'll work
             sqs = SearchQuerySet().models(object_type_for_sqs.get(model)) #.all()
+
             if self.polygon:
                 #ret = []
                 polygon = GEOSGeometry(self.polygon.replace('%20',' '))
@@ -117,52 +120,47 @@ class CustomSearchForm(FacetedSearchForm):
                 #            sqs = sqs.exclude(spatial_exclude=s.spatial_exclude)
 
             if self.selected_facets:
-                facetString = ''
                 for facet in self.selected_facets:
                     if ":" not in facet:
                         continue
                     field,value = facet.split(":",1)
                     if value:
                         value = value.replace('%20',' ')
-                        print sqs.query.clean(value)
                         #sqs = sqs.narrow(u'%s_exact:"%s"' % (field,sqs.query.clean(value)))
-                        facetString += u'.filter_or(%s_exact=Exact("%s"))' % (field , sqs.query.clean(value))
-                        print facetString
-                facetString = 'sqs=sqs' + facetString
-                exec(facetString)
+                        sqs = sqs.filter_or(**{f'{field}_exact': Exact(sqs.query.clean(value))})
+
                 #return sqs # Don't return here cos we want to process the filters as well as the facets
+
             # And filters to filter..!
-                print 'Narrowed: ' + str(sqs.count())
+                # print('Narrowed: ' + str(sqs.count()))
+
             if self.selected_filters:
-                filterString = ''
                 for filter in self.selected_filters:
                     if ":" not in filter:
                         continue
-                    field,value = filter.split(":",1)
+                    field, value = filter.split(":",1)
                     if value:
                         value = value.replace('%20',' ')
-                        filterString += u'.filter(%s_exact=Exact("%s"))' % (field , sqs.query.clean(value)) 
-                filterString = 'sqs=sqs' + filterString
-                exec(filterString)
+                        sqs = sqs.filter(**{f'{field}_exact': Exact(sqs.query.clean(value))})
+
             # And filters to exclude..!
             if self.deselected_filters:
-                exFilterString = ''
                 for filter in self.deselected_filters:
                     if ":" not in filter:
                         continue
                     field,value = filter.split(":",1)
                     if value:
                         value = value.replace('%20',' ')
-                        exFilterString += u'.exclude(%s_exact=Exact("%s"))' % (field , sqs.query.clean(value))						
-                exFilterString = 'sqs=sqs' + exFilterString
-                exec(exFilterString)
+                        sqs = sqs.exclude(**{f'{field}_exact': Exact(sqs.query.clean(value))})
+
             if self.date_range:
                 # Parse the dates to to and from values:
                 start_date = int(self.date_range.split('-')[0])
                 end_date = int(self.date_range.split('-')[1])
                 sqs = sqs.filter(date_from__gte=datetime.date(start_date,1,1)).filter(date_to__lte=datetime.date(end_date,1,1))
-            #return sqs.order_by('site_name')
+
             sqs = sqs.order_by('site_name_sort_exact',)
+
             return sqs
         
         # Otherwise return the entire set
@@ -172,11 +170,13 @@ class CustomSearchForm(FacetedSearchForm):
 
 
 class CustomSearchView(FacetedSearchView):
+
     def __init__(self, *args, **kwargs):
         # Needed to switch out the default form class.
         if kwargs.get('form_class') is None:
             kwargs['form_class'] = CustomSearchForm
         super(CustomSearchView, self).__init__(*args, **kwargs)
+
     def extra_context(self):
         extra = super(CustomSearchView, self).extra_context()
         extra['selected_filters'] = self.request.GET.getlist("selected_filters")
@@ -188,6 +188,7 @@ class CustomSearchView(FacetedSearchView):
         extra['polygon'] =  self.request.GET.get("polygon")		
         model = object_type_for_sqs.get(self.request.GET.get("query_type"))
         # AHGG hacky alert!
+
         if model == None:
             model = object_type_for_sqs.get('burials') #Stick any old crap in here, it'll work
         if self.results.count() == 0:
@@ -201,7 +202,8 @@ class CustomSearchView(FacetedSearchView):
             for facet in facet_groups.get(model):
                 sqs = sqs.facet(facet)
             extra['facets'] = sqs.facet_counts()
-        return extra   
+        return extra
+
     def build_form(self, form_kwargs=None):
         if form_kwargs is None:
             form_kwargs = {}
@@ -227,7 +229,7 @@ class CustomSearchView(FacetedSearchView):
         Generates the actual HttpResponse to send back to the user.
         """
         (paginator, page) = self.build_page()
-        print self.request.GET.get("query_type")		
+        print(self.request.GET.get("query_type"))		
         context = {
             'query': self.query,
             'form': self.form,

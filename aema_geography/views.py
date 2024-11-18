@@ -11,9 +11,9 @@ def geoJsonLayer(request):
     layer = request.GET.get('layer')
     context = {}
     context['layer_name'] = layer
-    print layer
+    print(layer)
     model = layers_dictionary.get(layer)
-    print model
+    print(model)
     context['layer'] = model.objects.all()
     if hasattr(model.objects.all()[0],'polygon'):
         #Return a geojson polygon?

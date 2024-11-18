@@ -8,7 +8,7 @@
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'leaflet/leaflet.css' %}">
 <link rel="stylesheet" href="{% static 'leaflet/Leaflet.markercluster-master/dist/MarkerCluster.Default.css' %}">
-<link rel="stylesheet" href="{% static 'js/c3-0.4.9/c3.min.css' %}">
+<link rel="stylesheet" href="{% static 'c3/c3.min.css' %}">
 <link rel="stylesheet" href="{% static 'leaflet/leaflet.label.css' %}">
 <link rel="stylesheet" href="{% static 'leaflet/leaflet.draw.css' %}">
 <link rel="stylesheet" href="{% static 'leaflet/leaflet.fullscreen.css' %}">
@@ -17,7 +17,6 @@
 <script>
 	L_PREFER_CANVAS = true;
 </script>
-<script src="{% static 'js/jquery-migrate-1.2.1.min.js' %}"></script>
 <script>
 	function columnHide(){
 		if ($('.paginate-count').attr('colspan') == 3) {
@@ -30,15 +29,15 @@
 	}
 </script>
 <script src="{% static 'leaflet/mapbox.js' %}"></script>
-<script src="{% static 'spin/spin.min.js' %}"></script>
+<script src="{% static 'spin/dist/spin.min.js' %}"></script>
 <script src="{% static 'leaflet/Leaflet.markercluster-master/dist/leaflet.markercluster.js' %}"></script>
-<script src="{% static 'js/c3-0.4.9/c3.min.js' %}"></script>
-<script src="{% static 'js/d3.min.js' %}" charset="utf-8"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+<script src="{% static 'c3/c3.min.js' %}"></script>
+<script src="{% static 'd3/d3.min.js' %}" charset="utf-8"></script>
+<script src="{% static 'underscore/underscore-min.js' %}"></script>
 <script src="{% static 'leaflet/leaflet.label.js' %}"></script>
 <script src="{% static 'leaflet/leaflet-graticule.js' %}"></script>
 <script src="{% static 'leaflet/leaflet.draw.js' %}"></script>
-<script src="{% static 'leaflet/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js' %}"></script>
+<script src="{% static 'leaflet-ajax/dist/leaflet.ajax.min.js' %}"></script>
 <script src="{% static 'leaflet/leaflet-image.js' %}"></script>
 <script src="{% static 'leaflet/Leaflet.fullscreen.min.js' %}"></script>
 <script src="{% static 'leaflet/Leaflet.OverIntent-gh-pages/leaflet.overintent.js' %}"></script>
@@ -48,15 +47,15 @@
 <script src="{% static 'js/analysis.js' %}"></script>
 <script src="{% static 'js/aema_language.js' %}"></script>
 <!-- Sticky bit -->
-<script type="text/javascript" src="{% static 'js/garand-sticky/jquery.sticky.js' %}"></script>
+<script type="text/javascript" src="{% static 'jquery-sticky/jquery.sticky.js' %}"></script>
 <script>
-	$(window).load(function(){
+	$(function(){
 	  $("#content").sticky({ topSpacing: 0, bottomSpacing: 250 }).removeClass('large-5');
 	});
 </script>
 
 <script type="text/javascript">
-	$(window).load(function(){
+	$(function(){
 		$('.toggler').click(function() {
 		  	$(this).next('div.facetz').slideToggle(400).removeClass('hidden');
 		    $(this).toggleClass("expanded collapsed");

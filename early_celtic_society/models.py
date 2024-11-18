@@ -48,8 +48,8 @@ class Core(models.Model):
     class Meta:
         verbose_name = "Core data"
         verbose_name_plural = "Core data"
-    def __unicode__(self):
-        return u'%s' % self.name
+    def __str__(self):
+        return '%s' % self.name
 
     #For elastic search spatial query
     def get_location(self):
@@ -67,7 +67,7 @@ class Core(models.Model):
             return None
             
     def site_name_fake(self):
-        return u'%s' %  self.name
+        return '%s' %  self.name
 
     def haystack_name(self):
         return 'settlements'
@@ -189,8 +189,8 @@ class HouseData(models.Model):
     class Meta:
         verbose_name = "House data"
         verbose_name_plural = verbose_name
-    def __unicode__(self):
-        return u'House data - %s' % self.prn.name	
+    def __str__(self):
+        return 'House data - %s' % self.prn.name	
 						
 						
 class EnviroData(models.Model):						
@@ -236,8 +236,8 @@ class EnviroData(models.Model):
     class Meta:
         verbose_name = "Enviro data"
         verbose_name_plural = verbose_name
-    def __unicode__(self):
-        return u'Enviro data - %s' % self.prn.name						
+    def __str__(self):
+        return 'Enviro data - %s' % self.prn.name						
 						
 						
 class GeneralInfo(models.Model):						
@@ -262,8 +262,8 @@ class GeneralInfo(models.Model):
     class Meta:
         verbose_name = "General Information"
         verbose_name_plural = verbose_name
-    def __unicode__(self):
-        return u'General info - %s' % self.prn.name			
+    def __str__(self):
+        return 'General info - %s' % self.prn.name			
 						
 						
 class SiteAttributes(models.Model):						
@@ -299,8 +299,8 @@ class SiteAttributes(models.Model):
     class Meta:
         verbose_name = "Site attributes"
         verbose_name_plural = verbose_name
-    def __unicode__(self):
-        return u'Attributes - %s' % self.prn.name
+    def __str__(self):
+        return 'Attributes - %s' % self.prn.name
 						
 class RadioCarbonDates(models.Model):
     site_name = models.CharField(max_length=100	,	 null=True,blank=True) 			
@@ -320,8 +320,8 @@ class RadioCarbonDates(models.Model):
     class Meta:
         verbose_name = "Radio Carbon Dates"
         verbose_name_plural = "Radio Carbon Dates"
-    def __unicode__(self):
-        return u'RC dates - %s' % self.prn.name
+    def __str__(self):
+        return 'RC dates - %s' % self.prn.name
 	
 class Finds(models.Model):						
     finds_assemblage_id = models.IntegerField(null=True	,	 blank=True) 			
@@ -372,8 +372,8 @@ class Finds(models.Model):
     class Meta:
         verbose_name = "Find"
         verbose_name_plural = "Find"
-    def __unicode__(self):
-        return u'Find - %s' % self.prn.name
+    def __str__(self):
+        return 'Find - %s' % self.prn.name
 						
 class Sources(models.Model):						
     source_id = models.IntegerField(null=True,		 blank=True) 			
@@ -393,8 +393,8 @@ class Sources(models.Model):
     class Meta:
         verbose_name = "Source"
         verbose_name_plural = "Sources"
-    def __unicode__(self):
-        return u'Source - %s' % self.prn.name
+    def __str__(self):
+        return 'Source - %s' % self.prn.name
 
 
 
@@ -402,13 +402,13 @@ class Sources(models.Model):
 class Type(models.Model):
     description = models.CharField(max_length=80)
     sub_type = models.ForeignKey('SubType',null=True,blank=True)
-    def __unicode__(self):
-        return u'%s' % self.description
+    def __str__(self):
+        return '%s' % self.description
 
 class SubType(models.Model):
     description = models.CharField(max_length=80)
-    def __unicode__(self):
-        return u'%s' % self.description						
+    def __str__(self):
+        return '%s' % self.description						
 						
 						
 						

@@ -25,11 +25,11 @@ class RitualSitesIronAgeRoman(models.Model):
     species = models.CharField(max_length=60,null=True,blank=True)
     dating = models.CharField(max_length=50,null=True,blank=True)
     region = models.CharField(max_length=50,null=True,blank=True)
-    def __unicode__(self):
+    def __str__(self):
         return self.description
     class Meta:
-    	verbose_name = 'Ritual Sites - Iron Age/Roman'
-      	verbose_name_plural = verbose_name
+        verbose_name = 'Ritual Sites - Iron Age/Roman'
+        verbose_name_plural = verbose_name
 
     def popup_content(self):
         str = '<p>'+self.location.__str__() +'</p><p>'+self.description.__str__() +'</p>'
@@ -46,10 +46,9 @@ class TribalRegalExtent(models.Model):
     def popup_content(self):
         return '<p>'+self.description+'</p>'
 
-
     class Meta:
-    	verbose_name = 'Tribal and Royal influence'
-    	verbose_name_plural = verbose_name
+        verbose_name = 'Tribal and Royal influence'
+        verbose_name_plural = verbose_name
 
 
 class Halsatt(models.Model):
@@ -71,7 +70,7 @@ class GeojsonFile(models.Model):
     short_description = models.CharField(max_length=100,null=True,blank=True)
     friendly_description = models.CharField(max_length=100,null=True,blank=True)
     file_path = models.CharField(max_length=500)
-    def __unicode__(self):
+    def __str__(self):
         return self.friendly_description
     class Meta:
         ordering = ('friendly_description','category')
@@ -80,15 +79,15 @@ class GeojsonCategory(models.Model):
     short_description = models.CharField(max_length=100,null=True,blank=True)
     description = models.CharField(max_length=500,null=True,blank=True)
     major_category = models.ForeignKey('GeojsonMajorCategory',null=True,blank=True)
-    def __unicode__(self):
+    def __str__(self):
         str = ''
         if self.major_category:
             str += self.major_category.description
-        return u'%s (%s)' % (self.short_description,str)
+        return '%s (%s)' % (self.short_description,str)
 
 class GeojsonMajorCategory(models.Model):
     description = models.CharField(max_length=30,null=True,blank=True)
-    def __unicode__(self):
+    def __str__(self):
         return self.description
 
 

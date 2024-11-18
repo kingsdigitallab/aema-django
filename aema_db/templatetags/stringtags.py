@@ -1,4 +1,5 @@
 from django import template
+from django.utils.safestring import mark_safe
 
 register = template.Library()
 
@@ -26,7 +27,7 @@ def iterable(value):
     try:
         test = value.all()
         test.all()
-        print value.all()
+        print(value.all())
         return 'true'
     except Exception:
         return 'false'
@@ -34,5 +35,8 @@ def iterable(value):
 @register.filter
 def divide(value, arg): return int(value) / int(arg)	
 
-
-
+@register.filter
+def fix_media_path(value):
+    # media used to be placed within /static
+    # before we migrated to django 1.8
+    return mark_safe(value.replace('/static/media/', '/media/'))

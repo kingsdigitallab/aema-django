@@ -9,10 +9,20 @@
   {% endblock %}
   <meta name="description" content="Atlantic Europe in the Metal Ages explores the development of language in Atlantic Europe (Britain, Ireland, northwest France, western Iberia) from 2900BC to the arrival of Latin (AD 400).">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  {# empty favicon, https://stackoverflow.com/a/13416784 #}
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+
   <link rel="stylesheet" href="{% static 'css/stylesheets/app.css' %}">
   <!-- FontAwesome -->
   <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}">
-  <script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
+  {% if debug %}
+    <script src="{% static 'jquery/dist/jquery.js' %}"></script>
+    <script src="{% static 'jquery-migrate/dist/jquery-migrate.js' %}"></script>
+  {% else %}
+    <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+    <script src="{% static 'jquery-migrate/dist/jquery-migrate.min.js' %}"></script>
+  {% endif %}
   <!-- Typekit fonts -->
   <script type="text/javascript" src="//use.typekit.net/cfi1aga.js"></script>
   <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
@@ -69,7 +79,7 @@
 <footer>
   <div class="row footer">
     <div class="large-12 columns">
-      <p>{% now "Y" %} &copy; Atlantic Europe in the Metal Ages - Design by <a href="http://www.kcl.ac.uk/artshums/depts/ddh/" title="www.kcl.ac.uk/artshums/depts/ddh/">DDH King's College London</a></p>
+      <p>{% now "Y" %} &copy; Atlantic Europe in the Metal Ages - Design by <a href="https://www.kcl.ac.uk/artshums/depts/ddh/" title="www.kcl.ac.uk/artshums/depts/ddh/">DDH King's College London</a></p>
       <img style="max-width:120px;" src="/static/img/KCL-KDL-logo-white.svg">
       <img style="max-width:400px;" src="/static/img/university_of_wales_logo.png">
     </div>

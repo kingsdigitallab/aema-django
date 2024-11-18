@@ -1,15 +1,10 @@
 from django.contrib.gis import admin
 from django import forms
 from django.contrib.admin import TabularInline,StackedInline, ModelAdmin
-from models import *
-
-
-
-
+from .models import *
 from django.contrib.gis import admin
 from django import forms
 from django.contrib.admin import TabularInline,StackedInline, ModelAdmin
-
 
 
 class RitualSitesIronAgeRomanAdmin(admin.OSMGeoAdmin):

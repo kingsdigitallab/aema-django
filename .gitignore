@@ -28,3 +28,5 @@ local_settings.py
 .svn
 /apache
 freeze*.txt
+/logs/
+/static/
